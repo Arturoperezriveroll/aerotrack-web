@@ -131,8 +131,11 @@ function addAircraftMarkers(aircraftData) {
         .setRotation(Number.isFinite(aircraft.track) ? aircraft.track : 0)
         .addTo(mapboxMap);
 
-      markerElement.addEventListener('click', () => {
+      markerElement.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         updateAircraftDetails(aircraft);
+        marker.togglePopup();
       });
 
       aircraftMarkers.push(marker);
