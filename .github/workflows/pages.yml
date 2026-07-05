@@ -34,7 +34,8 @@ jobs:
           cat > config.js <<'EOF'
           window.AEROTRACK_CONFIG = {
             mapboxAccessToken: "${{ secrets.MAPBOX_ACCESS_TOKEN }}",
-            mapboxStyle: "mapbox://styles/arturoriverol/clmofit4704je01ma2d8fblkr"
+            mapboxStyle: "mapbox://styles/arturoriverol/clmofit4704je01ma2d8fblkr",
+            adsbRapidApiKey: "${{ secrets.ADSB_RAPIDAPI_KEY }}"
           };
           EOF
 

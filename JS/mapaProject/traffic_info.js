@@ -1,195 +1,198 @@
-let aircraftMarkers = [];  // Save a reference to all markers
-let trackingInterval = null;  // Reference to the tracking interval
+let aircraftMarkers = [];
+let trackingInterval = null;
 let selectedAircraft = null;
 
-// Define your three center points
-// Define your three center points
-const centerPoints = [
-  {lat: 21, lon: -89.5},  // replace these with your actual coordinates
-  {lat: 30, lon: 40},
-  {lat: 50, lon: 60},
-];
+const TRAFFIC_REFRESH_MS = 30000;
+const TRAFFIC_RADIUS_NM = 300;
+const TRAFFIC_API_HOST = 'adsbexchange-com1.p.rapidapi.com';
 
-// a partir de aquí EMPIEZA EL CODIGO PARA OBTENER INFORMACION DE LAS AERONAVES
-// Modify your updateAircraft function to take a center parameter
-function updateAircraft(center) {
-  // Remove all previous aircraft markers
-  for (let i = 0; i < aircraftMarkers.length; i++) {
-    aircraftMarkers[i].remove();
-  }
-  aircraftMarkers = [];
-  // Now check if a center was provided
-  if (center) {
-    fetchDataAndAddMarkers(center.lat, center.lon);
-  } else {
-    navigator.geolocation.getCurrentPosition(
-      function(position) {
-        // Extract latitude and longitude from the position object
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
+function setTrafficStatus(message, type = 'info') {
+  const aircraftDetailsDiv = document.getElementById('aircraftDetails');
+  if (!aircraftDetailsDiv) return;
 
-        fetchDataAndAddMarkers(latitude, longitude);
-      },
-      function(error) {
-        // Handle any errors occurred while getting the geolocation
-        console.error("Error occurred while getting geolocation", error);
-      }
-    );
-  }
+  aircraftDetailsDiv.innerHTML = `<div class="traffic-status traffic-status-${type}">${message}</div>`;
 }
 
+function clearAircraftMarkers() {
+  aircraftMarkers.forEach(marker => marker.remove());
+  aircraftMarkers = [];
+}
 
-function fetchDataAndAddMarkers(latitude, longitude) {
-  const xhr = new XMLHttpRequest();
-  xhr.withCredentials = true;
-
-  xhr.addEventListener('readystatechange', function () {
-    if (this.readyState === this.DONE) {
-      const data = JSON.parse(this.responseText);
-      console.log(data);  // Output the response data to the console
-
-      const aircraftData = data.ac;  // Assuming the aircraft data is in a property called 'ac'
-      // Remove all previous aircraft markers
-      for (let i = 0; i < aircraftMarkers.length; i++) {
-        aircraftMarkers[i].remove();
-      }
-      aircraftMarkers = [];
-
-// Add a marker for each aircraft
-for (let i = 0; i < aircraftData.length; i++) {
-  const aircraft = aircraftData[i];
-  const pos = [aircraft.lon, aircraft.lat]; // Assuming the aircraft data includes 'lon' and 'lat' properties
-  const flight = aircraft.flight && aircraft.flight !== "Unknown" ? aircraft.flight : "";
-  const type = aircraft.t ? aircraft.t : "Unknown";
-  const gs = aircraft.gs ? Math.floor(aircraft.gs) : "Unknown";
-  const reg = aircraft.r ? aircraft.r : "Unknown";
-  const squawk = aircraft.squawk ? aircraft.squawk : "Unknown";
-  // Assuming the aircraft data includes 'track' and 'dst' properties
-  const heading = aircraft.track ? String(aircraft.track.toFixed(0)).padStart(3, '0') : "Unknown";
-  const distance = aircraft.dst ? aircraft.dst : "Unknown";
-
-  // Assuming 'track' is a property of 'aircraft' and is in degrees
-  const track = aircraft.track;
-  const flightInfo = flight ? '<div class="popup-content">' + flight +'<br>' : '<div class="popup-content">';
-  const typeInfo = type !== "Unknown" ? ' ' + type + '<br>'  : '';
-  const distanceInNM = Math.floor(aircraft.dst);
-  const distanceInfo = aircraft.dst ? + distanceInNM + 'NM' + '</div>' : '';
-  const regInfo = reg !== "" ? '<div class="popup-content">' + reg : '';
-  const squawkInfo = squawk !== "Unknown" ? ' ' + squawk + '</div>' : '';
-  const altbaro = aircraft.alt_baro;
-
-  let altbaroInfo;
-  if (altbaro === 'ground') {
-    altbaroInfo = '<div class="popup-content">GND';
-  } else if (altbaro) {
-    altbaroInfo = '<div class="popup-content">' + 'F' + String(Math.floor(altbaro / 100)).padStart(3, '0');
-  } else {
-  altbaroInfo = 'Unknown';
+function getTrafficSearchCenter() {
+  if (typeof currentLocation !== 'undefined' && currentLocation) {
+    return { lat: currentLocation.lat, lon: currentLocation.lng, source: 'GPS' };
   }
-  const gsInfo = gs !== "Unknown" ? ' N' + gs + '</div>' : '';
 
-  // Prepare the heading and distance information for the popup
-  const headingInfo = heading ? '<div class="popup-content">'+'H'+ heading+'</div>' : '' ;
+  if (typeof mapboxMap !== 'undefined' && mapboxMap?.getCenter) {
+    const center = mapboxMap.getCenter();
+    return { lat: center.lat, lon: center.lng, source: 'map center' };
+  }
 
-  // Create a HTML element for the marker's popup
-  const popup = new mapboxgl.Popup({ offset: 10 })
-  .setHTML(flightInfo + typeInfo + distanceInfo);
+  return { lat: 21, lon: -89.5, source: 'default' };
+}
 
-// Create a custom marker for aircraft icon
-  let el = document.createElement('div');
-  el.className = 'marker';
-  el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="30px" height="30px"> <path fill="yellow" stroke="black" stroke-width="1" d="M 12 2 A 2 2 0 0 0 10 4 L 10 9.0039062 L 2 14 L 2 16 L 10 13.507812 L 10 19.003906 L 8 20.5 L 8 22 L 12 21 L 16 22 L 16 20.5 L 14 19.003906 L 14 13.507812 L 22 16 L 22 14 L 14 9.0039062 L 14 4 A 2 2 0 0 0 12 2 z"/></svg>';
-  el.style.width = '20px';  // Adjust 
-  el.style.height = '30px';  // Adjust
-  el.style.backgroundSize = 'cover'; 
+function getAircraftLabel(aircraft) {
+  const flight = aircraft.flight && aircraft.flight.trim() && aircraft.flight !== 'Unknown'
+    ? aircraft.flight.trim()
+    : aircraft.hex || 'Unknown';
+  const altitude = aircraft.alt_baro === 'ground'
+    ? 'GND'
+    : aircraft.alt_baro
+      ? `F${String(Math.floor(aircraft.alt_baro / 100)).padStart(3, '0')}`
+      : '';
+  const speed = aircraft.gs ? `N${Math.floor(aircraft.gs)}` : '';
 
-    // Create the marker with the popup and set attributes and run methods
-    const marker = new mapboxgl.Marker(el, { 
-      pitchAlignment: 'map', // This line makes the marker tilt with the map
-      rotationAlignment: 'auto' }) // Use the custom marker
-      .setLngLat(pos)
-      .setPopup(popup) // sets a popup on this marker
-      .setRotation(track) // rotates the marker
-      .addTo(mapboxMap)
-      .togglePopup(); // Open the popup
+  return [flight, altitude, speed].filter(Boolean).join(' ');
+}
 
-    // Add a click event listener to the marker
-    marker.getElement().addEventListener("click", () => {
-      selectedAircraft = aircraft; // Store the selected aircraft
-      updateAircraftDetails(aircraft); // Update the aircraft details div
-      onAircraftClick(aircraft);
+function getAircraftPopupHtml(aircraft) {
+  const flight = aircraft.flight && aircraft.flight.trim() ? aircraft.flight.trim() : 'Unknown';
+  const type = aircraft.t || 'Unknown';
+  const distance = Number.isFinite(aircraft.dst) ? `${Math.floor(aircraft.dst)} NM` : 'Unknown';
+  const altitude = aircraft.alt_baro === 'ground'
+    ? 'GND'
+    : aircraft.alt_baro
+      ? `F${String(Math.floor(aircraft.alt_baro / 100)).padStart(3, '0')}`
+      : 'Unknown';
+  const speed = aircraft.gs ? `${Math.floor(aircraft.gs)} kt` : 'Unknown';
+  const heading = aircraft.track ? `${String(aircraft.track.toFixed(0)).padStart(3, '0')} deg` : 'Unknown';
+
+  return `
+    <div class="aircraft-popup">
+      <strong>${flight}</strong>
+      <span>${type}</span>
+      <span>${altitude} / ${speed}</span>
+      <span>TRK ${heading} / ${distance}</span>
+    </div>
+  `;
+}
+
+function updateAircraftDetails(aircraft) {
+  selectedAircraft = aircraft;
+
+  const aircraftDetailsDiv = document.getElementById('aircraftDetails');
+  if (!aircraftDetailsDiv) return;
+
+  const flight = aircraft.flight && aircraft.flight.trim() ? aircraft.flight.trim() : 'Unknown';
+  const type = aircraft.t || 'Unknown';
+  const gs = aircraft.gs ? `${Math.floor(aircraft.gs)} kt` : 'Unknown';
+  const reg = aircraft.r || 'Unknown';
+  const squawk = aircraft.squawk || 'Unknown';
+  const hex = aircraft.hex || 'Unknown';
+  const altGeom = aircraft.alt_geom || 'Unknown';
+  const altitude = aircraft.alt_baro === 'ground'
+    ? 'GND'
+    : aircraft.alt_baro
+      ? `F${String(Math.floor(aircraft.alt_baro / 100)).padStart(3, '0')}`
+      : 'Unknown';
+
+  aircraftDetailsDiv.innerHTML = `
+    <div class="aircraft-detail-grid">
+      <div><span>FN</span><strong>${flight}</strong></div>
+      <div><span>AC</span><strong>${type}</strong></div>
+      <div><span>GS</span><strong>${gs}</strong></div>
+      <div><span>FL</span><strong>${altitude}</strong></div>
+      <div><span>GPS ALT</span><strong>${altGeom}</strong></div>
+      <div><span>REG</span><strong>${reg}</strong></div>
+      <div><span>HEX</span><strong>${hex}</strong></div>
+      <div><span>SQUAWK</span><strong>${squawk}</strong></div>
+    </div>
+  `;
+}
+
+function addAircraftMarkers(aircraftData) {
+  clearAircraftMarkers();
+
+  aircraftData
+    .filter(aircraft => Number.isFinite(aircraft.lat) && Number.isFinite(aircraft.lon))
+    .forEach(aircraft => {
+      const markerElement = document.createElement('button');
+      markerElement.type = 'button';
+      markerElement.className = 'aircraft-marker';
+      markerElement.setAttribute('aria-label', getAircraftLabel(aircraft));
+      markerElement.innerHTML = `
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2a2 2 0 0 0-2 2v5L2 14v2l8-2.5V19l-2 1.5V22l4-1 4 1v-1.5L14 19v-5.5l8 2.5v-2l-8-5V4a2 2 0 0 0-2-2Z"/>
+        </svg>
+      `;
+
+      const popup = new mapboxgl.Popup({
+        className: 'aircraft-mapbox-popup',
+        closeButton: false,
+        offset: 16
+      }).setHTML(getAircraftPopupHtml(aircraft));
+
+      const marker = new mapboxgl.Marker(markerElement, {
+        pitchAlignment: 'map',
+        rotationAlignment: 'map'
+      })
+        .setLngLat([aircraft.lon, aircraft.lat])
+        .setPopup(popup)
+        .setRotation(Number.isFinite(aircraft.track) ? aircraft.track : 0)
+        .addTo(mapboxMap);
+
+      markerElement.addEventListener('click', () => {
+        updateAircraftDetails(aircraft);
+      });
+
+      aircraftMarkers.push(marker);
     });
 
-    aircraftMarkers.push(marker);
-  }
+  setTrafficStatus(`${aircraftMarkers.length} aircraft displayed. Updates every ${TRAFFIC_REFRESH_MS / 1000}s.`, 'success');
 }
 
-// Function to update the aircraft details in the aircraftDetails div
-function updateAircraftDetails(aircraft) {
-  const aircraftDetailsDiv = document.getElementById("aircraftDetails");
-  const flight = aircraft.flight && aircraft.flight !== "Unknown" ? aircraft.flight : "";
-  const type = aircraft.t ? aircraft.t : "Unknown";
-  const gs = aircraft.gs ? Math.floor(aircraft.gs) : "Unknown";
-  const reg = aircraft.r ? aircraft.r : "Unknown";
-  const squawk = aircraft.squawk ? aircraft.squawk : "Unknown";
-  const altbaro = aircraft.alt_baro;
-  let altbaroInfo;
+async function fetchTrafficData(latitude, longitude) {
+  const apiKey = window.AEROTRACK_CONFIG?.adsbRapidApiKey;
 
-  if (altbaro === 'ground') {
-    altbaroInfo = 'GND';
-  } else if (altbaro) {
-    altbaroInfo = 'F' + String(Math.floor(altbaro / 100)).padStart(3, '0');
-  } else {
-    altbaroInfo = 'Unknown';
+  if (!apiKey) {
+    throw new Error('Missing ADS-B RapidAPI key. Add adsbRapidApiKey to config.local.js or ADSB_RAPIDAPI_KEY in GitHub Secrets.');
   }
 
-    // Extract the 'hex' property from the aircraft data
-    const hex = aircraft.hex ? aircraft.hex : "Unknown";
-    const altgeom = aircraft.alt_geom ? aircraft.alt_geom : "Unknown";
-
-  // Prepare the HTML content for the aircraft details
-  const aircraftInfo = `
-      <div class="popup-infoContent">FN: ${flight}</div>
-      <div class="popup-infoContent">AC: ${type}</div>
-      <div class="popup-infoContent">GS: ${gs}N</div>
-      <div class="popup-infoContent">FL: ${altbaroInfo}</div>
-      <div class="popup-infoContent">Alt GPS: ${altgeom}</div>
-      <div class="popup-infoContent">REG: ${reg}</div>
-      <div class="popup-infoContent">Hex: ${hex}</div>  <!-- New data point -->
-      <div class="popup-infoContent">Squawk: ${squawk}</div>
-  `;
-
-  // Update the content of the aircraftDetails div
-  aircraftDetailsDiv.innerHTML = aircraftInfo;
-}
-});
-
-   // Use the latitude and longitude in the API request
-   xhr.open('GET', `https://adsbexchange-com1.p.rapidapi.com/v2/lat/${latitude}/lon/${longitude}/dist/300/`);
-      xhr.setRequestHeader('X-RapidAPI-Key', 'd7b91b8f4cmshcac9d1ff6f0bfe9p1df759jsn8692821b5ddc');
-      xhr.setRequestHeader('X-RapidAPI-Host', 'adsbexchange-com1.p.rapidapi.com');
-
-      xhr.send(null);
+  const url = `https://${TRAFFIC_API_HOST}/v2/lat/${latitude}/lon/${longitude}/dist/${TRAFFIC_RADIUS_NM}/`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': apiKey,
+      'X-RapidAPI-Host': TRAFFIC_API_HOST
     }
+  });
 
-// Button to start tracking
+  if (!response.ok) {
+    throw new Error(`ADS-B request failed: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+async function updateAircraft(center) {
+  const searchCenter = center || getTrafficSearchCenter();
+  setTrafficStatus(`Loading air traffic near ${searchCenter.source}...`, 'info');
+
+  try {
+    const data = await fetchTrafficData(searchCenter.lat, searchCenter.lon);
+    const aircraftData = Array.isArray(data.ac) ? data.ac : [];
+    addAircraftMarkers(aircraftData);
+  } catch (error) {
+    console.error(error);
+    clearAircraftMarkers();
+    setTrafficStatus(error.message, 'error');
+  }
+}
+
 document.getElementById('startTrackingFlights').addEventListener('click', function () {
-  // Update aircraft data every 30 seconds
+  updateAircraft();
+
   if (!trackingInterval) {
-    trackingInterval = setInterval(updateAircraft, 30000);
+    trackingInterval = setInterval(updateAircraft, TRAFFIC_REFRESH_MS);
   }
 });
 
-// Button to stop tracking
 document.getElementById('stopTrackingFlights').addEventListener('click', function () {
   if (trackingInterval) {
     clearInterval(trackingInterval);
     trackingInterval = null;
-
-    // Remove all markers when stop tracking
-    for (let i = 0; i < aircraftMarkers.length; i++) {
-      aircraftMarkers[i].remove();
-    }
-    aircraftMarkers = [];
   }
+
+  clearAircraftMarkers();
+  setTrafficStatus('Air traffic removed.', 'info');
 });

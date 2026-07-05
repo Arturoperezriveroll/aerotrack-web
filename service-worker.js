@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aerotrack-v2';
+const CACHE_NAME = 'aerotrack-v3';
 const APP_SHELL = [
   './',
   './index.html',
@@ -29,6 +29,13 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
+  const requestUrl = new URL(event.request.url);
+
+  if (requestUrl.pathname.endsWith('/config.js') || requestUrl.pathname.endsWith('/config.local.js')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then(response => {
