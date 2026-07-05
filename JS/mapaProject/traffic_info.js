@@ -106,9 +106,10 @@ function addAircraftMarkers(aircraftData) {
   aircraftData
     .filter(aircraft => Number.isFinite(aircraft.lat) && Number.isFinite(aircraft.lon))
     .forEach(aircraft => {
-      const markerElement = document.createElement('button');
-      markerElement.type = 'button';
+      const markerElement = document.createElement('div');
       markerElement.className = 'aircraft-marker';
+      markerElement.setAttribute('role', 'button');
+      markerElement.setAttribute('tabindex', '0');
       markerElement.setAttribute('aria-label', getAircraftLabel(aircraft));
       markerElement.innerHTML = `
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -131,11 +132,24 @@ function addAircraftMarkers(aircraftData) {
         .setRotation(Number.isFinite(aircraft.track) ? aircraft.track : 0)
         .addTo(mapboxMap);
 
-      markerElement.addEventListener('click', (event) => {
+      let lastMarkerActivation = 0;
+      const activateMarker = (event) => {
+        const now = Date.now();
+        if (now - lastMarkerActivation < 250) return;
+        lastMarkerActivation = now;
+
         event.preventDefault();
         event.stopPropagation();
         updateAircraftDetails(aircraft);
         marker.togglePopup();
+      };
+
+      markerElement.addEventListener('pointerdown', activateMarker);
+      markerElement.addEventListener('click', activateMarker);
+      markerElement.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          activateMarker(event);
+        }
       });
 
       aircraftMarkers.push(marker);
