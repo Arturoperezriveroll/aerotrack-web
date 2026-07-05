@@ -2372,3 +2372,74 @@ h3 {
     font-size: clamp(21px, 6.7vw, 29px) !important;
   }
 }
+
+/* Final mobile position and control toggle polish */
+#cont3 {
+  grid-template-columns: repeat(2, minmax(130px, 1fr));
+}
+
+.track-toggle.is-active,
+.traffic-toggle.is-active {
+  background: #166534;
+}
+
+@media (max-width: 760px) {
+  #cont21 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #posInfo.posInfo {
+    display: flex;
+    grid-column: 1 / -1;
+    min-height: 30px;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 4px 8px;
+    border: 1px solid #b9c7d2;
+    border-radius: 6px;
+    background: #eef6fb;
+    color: #172033;
+    font-size: clamp(11px, 3.1vw, 14px);
+    font-weight: 700;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  #posInfo.posInfo:empty {
+    display: none;
+  }
+
+  #posInfo.posInfo span {
+    white-space: nowrap;
+  }
+
+  #posInfo.posInfo strong {
+    color: #2b94d6;
+    font-weight: 900;
+  }
+
+  #cont3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .traffic-btn {
+    min-height: 48px;
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 430px) {
+  #posInfo.posInfo {
+    gap: 6px;
+    padding: 4px 6px;
+    font-size: clamp(10px, 2.9vw, 12px);
+  }
+
+  .traffic-btn {
+    min-height: 44px;
+    font-size: clamp(13px, 3.7vw, 16px);
+  }
+}

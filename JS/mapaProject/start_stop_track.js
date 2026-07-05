@@ -91,7 +91,10 @@ function startTracking() {
       maximumAge: 0
     });
     console.log("🚀 Trip tracking started: trip path and distance reset.");
+    return true;
   }
+
+  return watchId !== null;
 }
 
 function stopTracking() {
@@ -120,11 +123,39 @@ function stopTracking() {
     }
 
     console.log("🛑 Trip tracking stopped and reset.");
+    return true;
   }
+
+  return watchId === null;
 }
 
-document.getElementById('startTracking').addEventListener('click', startTracking);
-document.getElementById('stopTracking').addEventListener('click', stopTracking);
+function updateTrackingButton() {
+  const trackingButton = document.getElementById('startTracking');
+  if (!trackingButton) {
+    return;
+  }
+
+  const isRecording = watchId !== null;
+  trackingButton.textContent = isRecording ? 'Stop Recording' : 'Record Path';
+  trackingButton.setAttribute('aria-pressed', String(isRecording));
+  trackingButton.classList.toggle('is-active', isRecording);
+}
+
+function toggleTracking() {
+  if (watchId === null) {
+    startTracking();
+  } else {
+    stopTracking();
+  }
+
+  updateTrackingButton();
+}
+
+const trackingButton = document.getElementById('startTracking');
+if (trackingButton) {
+  trackingButton.addEventListener('click', toggleTracking);
+  updateTrackingButton();
+}
 console.log(pathCoordinates);
 
 // función para analizar algunos valores con los datos del vuelo, como max alt, min alt, etc.

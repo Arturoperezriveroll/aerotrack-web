@@ -73,7 +73,8 @@ if (lastPos) {
 
 lastPos = currentPos; // update the last position
 
-console.log(`Current location set: Latitude: ${currentLocation.lat}, Longitude: ${currentLocation.lng}, Acc: ${currentLocation.acc}, gpsAlt: ${altitude}`);
+const altitudeText = Number.isFinite(altitude) ? `${altitude.toFixed(0)} m` : '';
+console.log(`Current location set: Latitude: ${currentLocation.lat}, Longitude: ${currentLocation.lng}, Acc: ${currentLocation.acc}, gpsAlt: ${altitudeText}`);
 
 // Update pathCoordinates with the new location
 pathCoordinates.push([currentLocation.lng, currentLocation.lat]);
@@ -94,11 +95,17 @@ if (speed !== null) {
 
 document.getElementById('speed').textContent = `${speedKt}`;
 
-// Display latitude, longitude, and altitude in the coordinates div
-document.getElementById('posInfo').innerHTML = 
-  `Pos: ${currentLocation.lat.toFixed(2)}, ${currentLocation.lng.toFixed(2)}<br>` +
-  `Acc: ${currentLocation.acc.toFixed()}<br>` + 
-  `gpsAlt: ${altitude.toFixed(2)} m`;
+// Display latitude, longitude, accuracy, and altitude.
+const posInfo = document.getElementById('posInfo');
+const posParts = [
+  `<span><strong>POS</strong> ${currentLocation.lat.toFixed(2)}, ${currentLocation.lng.toFixed(2)}</span>`,
+  `<span><strong>ACC</strong> ${currentLocation.acc.toFixed(0)} m</span>`,
+  altitudeText ? `<span><strong>ALT</strong> ${altitudeText}</span>` : ''
+].filter(Boolean);
+
+if (posInfo) {
+  posInfo.innerHTML = posParts.join('');
+}
 
 // Call the function to update the polyline on the map
 //updatePolyline(); //this f is commented bc it is being called since the beginning and I dont want the blue line printed since the beginning
