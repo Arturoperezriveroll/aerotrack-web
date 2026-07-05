@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AeroTrack flight and route tracking web app.">
+<title>AeroTrack</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="./css/mapa_style.css">
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
+<script src="./config.local.js?v=20260705e"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet" />
+<script src='https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js'></script>
+   <!-- Include Turf.js -->
+<script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" />
+<script src="./JS/geojson/mexicoAirports.js"></script> <!-- Mx AD db -->
+<link rel="manifest" href="./manifest.json">
+</head>
+
+<body>
+   <div id="cont2"> 
+      <div id="cont21">
+        <div class="infoBox">
+          <p>THdg</p>
+          <p id="heading" class="numbers">StdBy</p>     
+        </div><!-- termina  heading infobox-->
+        <div class="infoBox">
+          <p>GS (KT)</p>
+          <p id="speed" class="numbers">StdBy</p>
+        </div><!-- termina speed infobox-->
+        <div class="infoBox">
+          <p>TrckdD(km)</p>
+          <p id="distance" class="numbers">StdBy</p>
+        </div>
+        <div id="posInfo" class="posInfo">
+          <!--<div id="coordinates" class="coordinates"></div>-->
+        </div>
+      </div><!-- cierra cont21-->
+    </div><!-- aquí cierra cont2 -->
+<!-- Make the mapboxMap container-->
+  <div id="mapContainer"> 
+   
+
+  
+        
+    <!-- HTML: Add a container for the mapboxMap -->
+    <div id="mapbox">        
+    </div>
+  </div>  <!-- aquí cierra mapContainer -->  
+
+    <div id="cont3">
+      <button id="startTracking" class="traffic-btn">Record New Path</button>
+        <button id="stopTracking" class="traffic-btn">Stop Recording</button>
+        <button id="startTrackingFlights" class="traffic-btn">Display Air Traffic</button>
+        <button id="stopTrackingFlights" class="traffic-btn">Remove Air Traffic</button>
+    </div>
+
+<div class="mapboxDetails">
+          <div id="md1">
+            <h3>FPL data</h3>
+            <label>DEP</label>
+            <input type="text" id="depAd" placeholder="DEP AD">
+            <button onclick="displayAirportInfo()">Enter</button>
+            <label>DEST</label>
+            <input type="text" id="destAd" placeholder="Dest AD">
+            <button onclick="displayAirportInfo()">Enter</button>
+            <label>ETD</label>
+            <input type="text" id="etd" placeholder="ETD">
+            <input type="text" id="fixes" placeholder="Route">
+            <button onclick="displayLatLong()">displayLatLong</button>
+            <button id="drawRouteBtn">Display on map</button>
+            <button id="zoomToLastFix">Zoom Dest AD</button>
+            <h2>DEST AD info</h2>
+
+          <div id="airportInfo">
+          </div>
+          </div>
+
+          <div id="md2">
+            <h3>Distances data</h3>
+            <div id="tableContainer">
+            <table id="distanceTable">
+              <thead class="thead-light">
+                <tr>
+                  <th>WP</th>
+                  <th>D- FPL (NM)</th>
+                  <th>Ttl- D (NM)</th>
+                  <th>Dct (NM)</th>
+                </tr>
+              </thead>
+              <tbody>
+              <!-- Table rows will be added here dynamically -->
+              </tbody>
+              </table>
+
+
+            </div><!--finaliza div de table-->
+          </div>
+</div>
+<div class="mapboxDetails">
+        <h3>Selected Flight Info </h3>
+          <div id="aircraftDetails" class="details-content">
+            <p>Select flight</p>
+          </div>
+</div>
+<div id="lugar">
+</div>
+<p class="pwaypoints">Waypoints</p>
+<table id="fixTable">
+        <tr>
+        <th>Fix</th>
+        <th>Lat</th>
+        <th>Long</th>
+        </tr>
+        <!-- Rows will be added here -->
+</table>
+
+<script src="./JS/display_airport_info.js"></script>
+<script src="./JS/mapaProject/data.js"></script>
+<script src="./JS/updatePolyline.js"></script>
+<script src="./JS/mapaProject/add_map_and_get_pos-1.js?v=20260705e">//f invocadas updatePolyline(), writePos(), updateDistanceFromCurrent()</script>
+<script src="./JS/get_distance_haversine.js"></script>
+<script src="./JS/mapaProject/updateDistfromCurrent.js"></script>
+<script src="./JS/mapaProject/fill_distance_table.js?v=20260705e"></script>
+<script src="./JS/mapaProject/display_route_line.js"></script>
+<script src="./JS/mapaProject/zoom_last_fix.js"></script>
+<script src="./JS/mapaProject/start_stop_track.js"></script>
+<script src="./JS/mapaProject/traffic_info.js"></script>
+<script src="./JS/get_address_and_wx.js?v=20260705e">//obtener oisicion con la api de google y al mismo tiempo el wx del lugar</script>
+<script src="./JS/geojson/generadorRutas.js"></script>
+
+<script>
+// Function to generate KML content from tracked data
+function generateKMLContent() {
+  // Create the KML content using the tracked data (e.g., flight paths and aircraft details)
+  // Format the data as per KML standards
+  // Concatenate the data into a string with KML tags
+  const kmlContent = `
+    <?xml version="1.0" encoding="UTF-8"?>
+    <kml xmlns="http://www.opengis.net/kml/2.2">
+      <!-- Add your KML data here -->
+    </kml>
+  `;
+  return kmlContent;
+}
+
+// Add a click event listener to the "stop tracking" button
+document.getElementById('stopTrackingFlights').addEventListener('click', function () {
+  // Stop tracking logic
+  if (trackingInterval) {
+    clearInterval(trackingInterval);
+    trackingInterval = null;
+
+    // Remove all markers when stop tracking
+    for (let i = 0; i < aircraftMarkers.length; i++) {
+      aircraftMarkers[i].remove();
+    }
+    aircraftMarkers = [];
+
+    // Generate KML content
+    const kmlContent = generateKMLContent();
+
+    // Save the KML file
+    const blob = new Blob([kmlContent], { type: 'application/vnd.google-earth.kml+xml' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a link to download the KML file
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'tracked_data.kml';
+    link.click();
+
+    // Clean up the URL object
+    URL.revokeObjectURL(url);
+  }
+});
+
+
+</script>
+
+
+
+<script>
+/*
+** Assuming 'mapboxMap' is your mapboxMap instance.
+mapboxMap.on('mousemove', function(e) {
+    document.getElementById('coordinates').innerHTML = `
+        <span class="longitude-label"></span> 
+        <span class="longitude-value">
+        ${e.lngLat.lng.toFixed(2)}
+        <br>
+        <span class="latitude-label"></span> 
+        <span class="latitude-value">
+        ${e.lngLat.lat.toFixed(2)}</span>`;
+});
+*/
+
+</script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('Service Worker registered:', reg.scope))
+      .catch(err => console.error('Service Worker registration failed:', err));
+  }
+</script>
+
+
+
+  </body>
+</html>

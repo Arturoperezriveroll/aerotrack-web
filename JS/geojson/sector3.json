@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "sector3",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "SECTOR 3", "description": "SECTOR2\n125.8", "timestamp": null, "begin": null, "end": null, "altitudeMode": "absolute", "tessellate": 1, "extrude": 1, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -86.0, 24.0, 7000.0 ], [ -86.0, 22.0, 7000.0 ], [ -85.4802777777778, 20.988888888888901, 7000.0 ], [ -85.980555555555597, 20.835555555555601, 7000.0 ], [ -87.040277777777803, 21.405, 7000.0 ], [ -87.255277777777806, 22.9825, 7000.0 ], [ -89.141111111111101, 23.98, 7000.0 ], [ -89.3333333333333, 24.5, 7000.0 ], [ -88.0, 24.5, 7000.0 ], [ -86.0, 24.0, 7000.0 ] ] ] } }
+]
+}

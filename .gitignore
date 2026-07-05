@@ -1,0 +1,6 @@
+.DS_Store
+Thumbs.db
+.vscode/
+.agents/
+config.local.js
+*.log

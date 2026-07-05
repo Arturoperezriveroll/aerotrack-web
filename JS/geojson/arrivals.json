@@ -1,0 +1,250 @@
+
+   const  mmmxArrivals = [
+    { "ENAGA1A": [
+        {
+        "nombre": "MD600",
+        "coordenadas": {
+        "latitud": "20.92",
+        "longitud": "-89.59"
+        }
+    },
+    {
+    "nombre": "MD601",
+    "coordenadas": {
+    "latitud": "21.11",
+    "longitud": "-89.53"
+    }
+    },
+    {
+    "nombre": "MD602",
+    "coordenadas": {
+    "latitud": "21.17",
+    "longitud": "-89.76"
+    }
+    },
+    {
+    "nombre": "MD603",
+    "coordenadas": {
+    "latitud": "21.23",
+    "longitud": "-90.01"
+    }
+    },
+    {
+    "nombre": "MX751",
+    "coordenadas": {
+    "latitud": "19.91",
+    "longitud": "-98.74"
+    }
+    },
+    {
+    "nombre": "MX753",
+    "coordenadas": {
+    "latitud": "19.89",
+    "longitud": "-98.90"
+    }
+    },
+    {
+    "nombre": "MX755",
+    "coordenadas": {
+    "latitud": "19.92",
+    "longitud": "-99.29"
+    }
+    },
+    {
+    "nombre": "MX757",
+    "coordenadas": {
+    "latitud": "19.88",
+    "longitud": "-99.45"
+    }
+    },
+    {
+    "nombre": "MX759",
+    "coordenadas": {
+    "latitud": "19.77",
+    "longitud": "-99.58"
+    }
+    },
+    {
+    "nombre": "ALMIS",
+    "coordenadas": {
+    "latitud": "19.60",
+    "longitud": "-99.29"
+    }
+    },
+    {
+    "nombre": "MX717",
+    "coordenadas": {
+    "latitud": "19.53",
+    "longitud": "-99.24"
+    }
+    },
+    {
+    "nombre": "SUTAS",
+    "coordenadas": {
+    "latitud": "19.43",
+    "longitud": "-99.26"
+    }
+    },
+    {
+    "nombre": "MD600",
+    "coordenadas": {
+    "latitud": "20.92",
+    "longitud": "-89.59"
+    }
+    },
+    {
+    "nombre": "MD609",
+    "coordenadas": {
+    "latitud": "20.77",
+    "longitud": "-89.56"
+    }
+    },
+    {
+    "nombre": "MD604",
+    "coordenadas": {
+    "latitud": "20.70",
+    "longitud": "-89.56"
+    }
+    },
+    {
+    "nombre": "MD606",
+    "coordenadas": {
+    "latitud": "20.45",
+    "longitud": "-89.92"
+    }
+    },
+    {
+    "nombre": "ELSIP",
+    "coordenadas": {
+    "latitud": "20.26",
+    "longitud": "-90.18"
+    }
+    },
+    {
+    "nombre": "ENAGA",
+    "coordenadas": {
+    "latitud": "20.02",
+    "longitud": "-98.18"
+    }
+    },
+    {
+    "nombre": "MX751",
+    "coordenadas": {
+    "latitud": "19.91",
+    "longitud": "-98.74"
+    }
+    },
+    {
+    "nombre": "MX753",
+    "coordenadas": {
+    "latitud": "19.89",
+    "longitud": "-98.90"
+    }
+    },
+    {
+    "nombre": "MX755",
+    "coordenadas": {
+    "latitud": "19.92",
+    "longitud": "-99.29"
+    }
+    },
+    {
+    "nombre": "MX757",
+    "coordenadas": {
+    "latitud": "19.88",
+    "longitud": "-99.45"
+    }
+    },
+    {
+    "nombre": "MX759",
+    "coordenadas": {
+    "latitud": "19.77",
+    "longitud": "-99.58"
+    }
+    },
+    {
+    "nombre": "ALMIS",
+    "coordenadas": {
+    "latitud": "19.60",
+    "longitud": "-99.29"
+    }
+    },
+    {
+    "nombre": "MX717",
+    "coordenadas": {
+    "latitud": "19.53",
+    "longitud": "-99.24"
+    }
+    },
+    {
+    "nombre": "SUTAS",
+    "coordenadas": {
+    "latitud": "19.43",
+    "longitud": "-99.26"
+    }
+    },
+    {
+    "nombre": "LARLO",
+    "coordenadas": {
+    "latitud": "18.72",
+    "longitud": "-98.33"
+    }
+    },
+    {
+    "nombre": "MX771",
+    "coordenadas": {
+    "latitud": "18.80",
+    "longitud": "-98.81"
+    }
+    },
+    {
+    "nombre": "MX773",
+    "coordenadas": {
+    "latitud": "18.84",
+    "longitud": "-99.00"
+    }
+    },
+    {
+    "nombre": "MX775",
+    "coordenadas": {
+    "latitud": "18.87",
+    "longitud": "-99.15"
+    }
+    },
+    {
+    "nombre": "MX777",
+    "coordenadas": {
+    "latitud": "18.96",
+    "longitud": "-99.28"
+    }
+    },
+    {
+    "nombre": "URNOK",
+    "coordenadas": {
+    "latitud": "19.18",
+    "longitud": "-99.01"
+    }
+    },
+    {
+    "nombre": "MX741",
+    "coordenadas": {
+    "latitud": "19.24",
+    "longitud": "-99.08"
+    }
+    },
+    {
+    "nombre": "VOLUN",
+    "coordenadas": {
+    "latitud": "19.28",
+    "longitud": "-99.17"
+    }
+    },
+]
+    }
+];
+
+console.log(mmmxArrivals[0]);
+
+
+
+    

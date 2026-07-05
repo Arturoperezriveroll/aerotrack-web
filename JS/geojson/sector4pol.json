@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "sector4pol",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "SECTOR 4", "description": "SECTOR 4 125.2", "timestamp": null, "begin": null, "end": null, "altitudeMode": "absolute", "tessellate": 1, "extrude": 1, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -89.141111111111101, 23.98, 7000.0 ], [ -87.255277777777806, 22.9825, 7000.0 ], [ -87.040277777777803, 21.405, 7000.0 ], [ -88.096666666666707, 21.1666666666667, 7000.0 ], [ -89.481111111111105, 21.184722222222199, 7000.0 ], [ -89.641388888888898, 23.748055555555599, 7000.0 ], [ -89.141111111111101, 23.98, 7000.0 ] ] ] } }
+]
+}

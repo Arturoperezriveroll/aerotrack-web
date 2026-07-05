@@ -1,0 +1,713 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#infoContainer {
+    display: flex;
+    width: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+#mapContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 60vh; /* fill viewport height */
+  position: relative;
+}
+
+#cont2 {
+    flex: 1; /* Take up the remaining space */
+    background-color: #f0f0f0;
+    border: 1px solid black;
+    padding: 5px;
+    height: 10%;
+    overflow-x: auto; /* Horizontal scrolling if content overflows */
+    text-align: center;
+    margin:auto;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.infoBox {
+  flex: 1;
+  border-radius: 10px;
+  background-color: white;
+  width: fit-content;
+  text-align: center;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+#infoBox p {
+  font-size: 1em;
+  font-family: Verdana;
+  font-weight: bold;
+  margin-bottom: 1px;
+  width: 100%;
+}
+
+.posInfo {
+  flex: 1;
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-family: Verdana;
+  font-weight: bold;
+  background-color: white;
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.coordinates {
+  font-size: 10px;
+  font-family: Verdana;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 10%;
+  text-align: center;
+  padding:3px;
+  margin:auto;
+}
+
+#cont21 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;  /* 🔥 Distribute .infoBox evenly */
+  flex: 1;
+  height: 100%;
+}
+
+#mapbox {
+    flex: 80%;
+    height: 100%; /* Specific height */
+    position: relative;
+}
+
+.mapbox-token-warning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 280px;
+  padding: 24px;
+  color: #842029;
+  background: #f8d7da;
+  border: 1px solid #f5c2c7;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.wx {
+    width: 100%;
+    height: 75px;
+    bottom: 5%;
+    position: absolute;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5em;
+    line-height: 1.4;
+    color: #333;
+}
+
+.wx h3 {
+    color: #007bff; /* A shade of blue */
+    margin-bottom: 5px;
+    font-size: 1.2em;
+}
+
+.wx p {
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+/* Style for table within #cont2 */
+#cont2 table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: auto;
+    }
+
+#cont2 table th {
+    font-family: Verdana;
+    font-size: 3rem;
+    text-align: left; /* Aligns text to the left */
+    padding: 10px; /* Adds padding around the text */
+    background-color: #f2f2f2; /* Light grey background */
+    border-bottom: 2px solid #ccc; /* Adds a bottom border */
+    color: #333; /* Text color */
+}
+
+.traffic-btn {
+    font-family: Arial, sans-serif;
+    width: 80%;
+    color: white;
+    background-color: #4CAF50;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 2px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+.traffic-btn:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid #4CAF50;
+}
+
+#cont3 {
+  display: flex;              /* Flexbox layout makes inline easier */
+  flex-direction: row;        /* Layout children in a row (default) */
+  justify-content: start;     /* Align buttons to the start (left) */
+  align-items: center;        /* Vertically center if needed */
+  gap: 10px;                  /* Optional spacing between buttons */
+}
+
+#mapboxMap
+    {
+        height: 90%;
+        width: auto;
+      }
+
+    /* Flight buttons */
+#flightButtons  {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+/* Flight buttons */
+#flightButtons button {
+  padding: 10px 20px;
+  background-color: #FF5722;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+/* Selected point */
+#selectedPoint {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.mapboxDetails {
+  display: flex;
+    width: 100%;
+    color: rgb(0, 0, 0);
+    z-index: 4;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    border-style: solid;
+    border-color: Grey;
+    border-radius: 5px;
+    margin: 0;
+    margin-bottom: 20px;
+    background-color: #f7f7f7; /* Light background for visibility */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    padding:  0; /* Padding inside the container */
+}
+
+.mapboxDetails h2 {
+  width: 100%;
+  text-align: center;
+  font-family: Verdana;
+  background-color: white;
+  margin-top:0;
+  margin-bottom:0;
+  box-sizing: border-box; /* Include padding and border in the element's width */
+}
+
+.mapboxDetails input[type="text"] {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 8px;
+    margin-bottom: 10px; /* Space below the input field */
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 4px; /* Rounded corners */
+    box-sizing: border-box; /* Include padding and border in width */
+}
+
+.mapboxDetails button {
+    padding: 10px 15px;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none;
+    border-radius: 4px;
+    margin-right: 5px; /* Space between buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.mapboxDetails button:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+}
+
+.mapboxDetails hr {
+    border: 0;
+    height: 1px;
+    background-color: #ccc; /* Light grey line */
+    margin: 10px 0; /* Space above and below the line */
+}
+
+h3 {
+    width: 100%;
+    background-color: lightgrey;
+    margin-top: 0;
+    padding: 10px;
+    box-sizing: border-box; /* Include padding and border in the element's width */
+
+}
+
+.details-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center; /* Center the contents horizontally */
+}
+
+#aircraftDetails {
+    text-align: center; /* Center text within the aircraft details div */
+    padding: 5px; /* Padding for the content */
+    background-color: #ffffff; /* White background for the content */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin-bottom: 5px; /* Space below the details div */
+}
+
+.popup-infoContent {
+    font-size: 20px;
+    line-height: 1; /* Adjust this value as needed */
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+.remark {
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#airportInfo {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+    max-width: 100%;
+    background-color: #eef9f9; /* Light Blue */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#airportInfo span {
+    font-size: 20px;
+    font-family: Verdana;
+    margin: 0;
+    width:100%;
+    color: #333; /* Dark Grey */
+}
+
+.mapboxgl-ctrl-geolocate {
+    width: 60px !important; 
+    height: 60px !important;
+    background-size: 20px 20px !important;
+}
+
+.mapboxgl-popup-content {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.mapboxgl-popup-tip {
+    display: none;
+}
+
+.my-popup {
+    background-color: white; /* Set background color */
+    border-radius: 4px; /* Rounded corners */
+    border-style: solid;
+    border-color: Green;
+    padding: 2px; /* Padding inside the popup */
+    font-family: Verdana, sans-serif; /* Font style */
+    font-size: 14px; /* Font size */
+    color: #333333; /* Text color */
+    text-align: center; /* Center the text */
+    max-width: 100px; /* Maximum width */
+    line-height: 1; /* Line height for better readability */
+}
+
+.popup-content {
+  background-color: #f9f9f9; 
+  border: 1px solid Yellow; /*  */
+  border-radius: 8px; /*  */
+  padding: 5px; /*  */
+  font-family: Arial, sans-serif; /*  */
+  font-size: 10px; /* Font size */
+  font-weight: bold;
+  color: #333; /*  */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /*  */
+  text-align: center; /* Centered text */
+  max-width: 200px; /* Maximum width */
+  word-wrap: break-word; /* Prevent overflow */
+}
+
+#fixes, #depAd, #destAd, #etd {
+font-family: Verdana;
+font-size:25px;
+font-weight: bold;
+}
+
+#depAd, #destAd, #etd {
+    width: 7ch;
+}
+
+
+#distanceTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#distanceTable th, #distanceTable td {
+    font-family: Verdana;
+    font-size: 1.0rem;
+    text-align: left; /* Aligns text to the left */
+    padding: 10px; /* Adds padding around the text */
+    background-color: #f2f2f2; /* Light grey background */
+    border-bottom: 2px solid #ccc; /* Adds a bottom border */
+    color: #333; /* Text color */
+}
+
+#distanceTable th {
+    background-color: #f2f2f2;
+}
+
+/* Color alternating rows differently */
+#distanceTable tbody tr:nth-child(odd) {
+    background-color: #f2f2f2; /* Light gray */
+}
+
+#distanceTable tbody tr:nth-child(even) {
+    background-color: #e0f7fa; /* Light blue */
+}
+
+
+#md1 {
+  flex: 0 0 65%;
+  border-right: 2px solid #ccc; /* Adds a bottom border */
+}
+
+#md1 h3, #md2 h3 {
+  text-align:center; 
+  background-color: #e0f7fa;
+  margin:0;
+  padding:0;
+  border-bottom: 2px solid #ccc;
+}
+
+#md2 {
+  flex: 0 0 35%;
+}
+
+.weather-popup {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  color: #333;
+  padding: 10px;
+  border-radius: 8px;
+  border-style: solid;
+  border-color: #000;
+  background: #fff !important;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.weather-popup h3 {
+  margin-top: 0;
+    font-family: Arial, sans-serif;
+  color: #007bff;
+  font-size: 17px;
+
+}
+
+.weather-popup p {
+  margin: 4px 0;
+  font-size: 17px;
+  font-family: Arial, sans-serif;
+}
+
+.weather-popup strong {
+  color: #000;
+  font-size: 17px;
+}
+
+.weather-popup .mapboxgl-popup-close-button {
+  display: none;
+  aria-hidden: "true";
+}
+
+.mapboxgl-ctrl-top-right .mapboxgl-ctrl.mapboxgl-ctrl-group button {
+    width: 60px; /* Increase button width */
+    height: 60px; /* Increase button height */
+}
+
+.mapboxgl-ctrl-top-right .mapboxgl-ctrl.mapboxgl-ctrl-group button span {
+    font-size: 40px; /* Increase icon size */
+}
+
+
+
+
+@media (max-width: 999px) {
+
+ html, body {
+    height: 100vh; /* More accurate on mobile */
+    overflow-x: hidden;
+    font-size: 1em;
+  }
+
+#mapContainer {
+        display: flex;
+        flex-direction: column; /* Stack children vertically */
+        height: 70dvh;
+        width: 100vw /* Full width */
+}
+
+#cont2 {
+    position: sticky;              /* 🔥 Makes it stick to top */
+    top: 0;
+    left: 0;
+    width: 100vw;                 /* Full screen width */
+    height: fit-content;                  /* You already have this set — keep it */
+    background-color: lightgray;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0;
+    z-index: 1000;                /* 🔝 Ensure it stays above other elements */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* (Optional) subtle shadow */
+}
+
+#cont21 {
+    width: 100%;
+    height: 100%;
+    background-color: lightgray; /* Example to visualize */
+    display: flex; /* Flexbox behavior inside this div */
+    flex-direction: row;
+    align-items: center; /* Center items vertically */
+    justify-content: space-evenly;
+    margin: 0%;
+    padding: 0%;
+}
+
+.infoBox {
+    flex: 1;
+    display:flex;
+    flex-direction:column;
+    border: 1px solid #660000;
+    background-color: white;
+    text-align: center;
+    height:100%;
+    align-items:center;
+    margin: 0%;
+    border-radius: 0%;
+    
+}
+
+.infoBox p {
+    font-size: 3vw !important;
+    font-family: Verdana;
+    font-weight: bold;
+}
+
+.infoBox p.numbers {
+    font-family: Verdana; 
+    font-weight: bold;
+    font-size: 5vw !important;
+    color: #3498db !important;
+}
+
+.posInfo {
+  flex: 1.5;
+  height: 100%;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-family: Verdana;
+  font-weight: bold;
+  background-color: white;
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.coordinates {
+    font-size: 30px;
+    font-family: Verdana;
+    font-weight: bold;
+    margin:auto;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ccc;
+    height: 100%;
+    width: 100%; 
+    text-align: center;
+}
+
+#cont22 {
+    width: 15%; /* Full width */
+    background-color: lightgray; /* Example to visualize */
+    display: flex; /* Flexbox behavior inside this div */
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+    justify-content: space-evenly; /* Evenly space any elements inside */
+    align-items: center; /* Center items vertically */
+}
+
+#cont3 {
+  height: fit-content;
+  display: flex;              /* Flexbox layout makes inline easier */
+  flex-direction: row;        /* Layout children in a row (default) */
+  justify-content: space-evenly;     /* Align buttons to the start (left) */
+  align-items: center;        /* Vertically center if needed */
+  gap: 10px;                  /* Optional spacing between buttons */
+  padding: .5em;
+}
+
+.traffic-btn {
+    font-family: Arial, sans-serif;
+    font-size: 1.5em ;
+    max-width: 25%;
+    height: 100%;
+    padding: 1px;
+    color: white;
+    background-color: #4CAF50;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    margin-left:2px;
+    flex-grow: 1;
+    }
+
+#mapbox {
+        flex-grow: 2;
+        position: relative; /* Maintain relative positioning */
+        width: 100%; /* Ensure it stretches to full width */
+    }
+
+.popup-content {
+  background-color: #f9f9f9; /* Light grey background */
+  border: 1px solid Yellow; /* Dark border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 5px; /* Padding inside the popup */
+  font-family: Arial, sans-serif; /* Font family */
+  font-size: 20px; /* Font size */
+  font-weight: bold;
+  color: #333; /* Dark text color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  text-align: center; /* Centered text */
+  max-width: 250px; /* Maximum width */
+  word-wrap: break-word; /* Prevent overflow */
+  line-height: 1; /* Example: 1.5 times the font size */
+
+}
+
+.weather-popup {
+  font-family: Arial, sans-serif;
+  color: #333;
+  padding: 5px;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: #000;
+  background: #fff !important;
+  z-index: 2;
+  min-width:fit-content;
+  line-height: 1; /* Example: 1.5 times the font size */
+
+}
+
+#md1 {
+  flex: 0 0 55%;
+}
+
+#md2 {
+  flex: 0 0 45%;
+}
+
+#distanceTable th, #distanceTable td {
+    font-family: Verdana;
+    font-size: 1.5rem;
+    text-align: left; /* Aligns text to the left */
+    padding: 10px; /* Adds padding around the text */
+    background-color: #f2f2f2; /* Light grey background */
+    border-bottom: 2px solid #ccc; /* Adds a bottom border */
+    color: #333; /* Text color */
+}
+
+#distanceTable th {
+    background-color: #f2f2f2;
+}
+
+.wx {
+    width: 100%;
+    height: fit-content;
+    bottom: 0;
+    position: absolute;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2em;
+    line-height: 1.4;
+    color: #333;
+}
+
+.wx h3 {
+    color: #007bff; /* A shade of blue */
+    margin-bottom: 5px;
+    font-size: 1.5em;
+}
+
+.wx p {
+    margin: 5px 0;
+    font-size: 1.5em;
+}
+
+}
