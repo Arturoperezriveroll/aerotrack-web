@@ -66,10 +66,21 @@ function getTrafficSearchCenter() {
   return { lat: 21, lon: -89.5, source: 'default' };
 }
 
+function hasValue(value) {
+  return value !== undefined
+    && value !== null
+    && value !== ''
+    && value !== 'Unknown'
+    && value !== 'unknown';
+}
+
+function cleanText(value) {
+  if (!hasValue(value)) return '';
+  return String(value).trim();
+}
+
 function getAircraftLabel(aircraft) {
-  const flight = aircraft.flight && aircraft.flight.trim() && aircraft.flight !== 'Unknown'
-    ? aircraft.flight.trim()
-    : aircraft.hex || 'Unknown';
+  const flight = cleanText(aircraft.flight) || cleanText(aircraft.hex) || 'Aircraft';
   const altitude = aircraft.alt_baro === 'ground'
     ? 'GND'
     : aircraft.alt_baro
@@ -81,23 +92,27 @@ function getAircraftLabel(aircraft) {
 }
 
 function getAircraftPopupHtml(aircraft) {
-  const flight = aircraft.flight && aircraft.flight.trim() ? aircraft.flight.trim() : 'Unknown';
-  const type = aircraft.t || 'Unknown';
-  const distance = Number.isFinite(aircraft.dst) ? `${Math.floor(aircraft.dst)} NM` : 'Unknown';
+  const flight = cleanText(aircraft.flight) || cleanText(aircraft.hex) || 'Aircraft';
+  const type = cleanText(aircraft.t);
+  const distance = Number.isFinite(aircraft.dst) ? `${Math.floor(aircraft.dst)} NM` : '';
   const altitude = aircraft.alt_baro === 'ground'
     ? 'GND'
     : aircraft.alt_baro
       ? `F${String(Math.floor(aircraft.alt_baro / 100)).padStart(3, '0')}`
-      : 'Unknown';
-  const speed = aircraft.gs ? `${Math.floor(aircraft.gs)} kt` : 'Unknown';
-  const heading = aircraft.track ? `${String(aircraft.track.toFixed(0)).padStart(3, '0')} deg` : 'Unknown';
+      : '';
+  const speed = aircraft.gs ? `${Math.floor(aircraft.gs)} kt` : '';
+  const heading = Number.isFinite(aircraft.track)
+    ? `TRK ${String(aircraft.track.toFixed(0)).padStart(3, '0')}`
+    : '';
+  const performanceLine = [altitude, speed].filter(Boolean).join(' / ');
+  const navLine = [heading, distance].filter(Boolean).join(' / ');
 
   return `
     <div class="aircraft-popup">
       <strong>${flight}</strong>
-      <span>${type}</span>
-      <span>${altitude} / ${speed}</span>
-      <span>TRK ${heading} / ${distance}</span>
+      ${type ? `<span>${type}</span>` : ''}
+      ${performanceLine ? `<span>${performanceLine}</span>` : ''}
+      ${navLine ? `<span>${navLine}</span>` : ''}
     </div>
   `;
 }
@@ -108,18 +123,18 @@ function updateAircraftDetails(aircraft) {
   const aircraftDetailsDiv = document.getElementById('aircraftDetails');
   if (!aircraftDetailsDiv) return;
 
-  const flight = aircraft.flight && aircraft.flight.trim() ? aircraft.flight.trim() : 'Unknown';
-  const type = aircraft.t || 'Unknown';
-  const gs = aircraft.gs ? `${Math.floor(aircraft.gs)} kt` : 'Unknown';
-  const reg = aircraft.r || 'Unknown';
-  const squawk = aircraft.squawk || 'Unknown';
-  const hex = aircraft.hex || 'Unknown';
-  const altGeom = aircraft.alt_geom || 'Unknown';
+  const flight = cleanText(aircraft.flight);
+  const type = cleanText(aircraft.t);
+  const gs = aircraft.gs ? `${Math.floor(aircraft.gs)} kt` : '';
+  const reg = cleanText(aircraft.r);
+  const squawk = cleanText(aircraft.squawk);
+  const hex = cleanText(aircraft.hex);
+  const altGeom = hasValue(aircraft.alt_geom) ? aircraft.alt_geom : '';
   const altitude = aircraft.alt_baro === 'ground'
     ? 'GND'
     : aircraft.alt_baro
       ? `F${String(Math.floor(aircraft.alt_baro / 100)).padStart(3, '0')}`
-      : 'Unknown';
+      : '';
 
   aircraftDetailsDiv.innerHTML = `
     <div class="aircraft-detail-grid">
