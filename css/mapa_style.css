@@ -2285,3 +2285,90 @@ h3 {
     grid-column: 1 / -1;
   }
 }
+
+/* Final top instrument polish */
+#cont2 {
+  background: #d8e1e8;
+}
+
+#cont21 {
+  gap: 6px;
+  padding: 6px;
+  background: #d8e1e8;
+}
+
+.infoBox {
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #b9c7d2;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f9fc 100%);
+  box-shadow: inset 0 -1px 0 rgba(15, 23, 42, 0.06), 0 1px 4px rgba(15, 23, 42, 0.12);
+}
+
+.infoBox p:first-child {
+  padding: 6px 4px 0;
+  color: #111827;
+  font-size: clamp(14px, 2vw, 22px) !important;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.infoBox p.numbers,
+.infoBox .numbers {
+  padding: 6px 4px 9px;
+  color: #2b94d6 !important;
+  font-size: clamp(26px, 4vw, 40px) !important;
+  line-height: 0.95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+@media (max-width: 760px) {
+  #cont2 {
+    padding: 0;
+    background: #d8e1e8;
+  }
+
+  #cont21 {
+    min-height: 68px;
+    gap: 5px;
+    padding: 5px;
+  }
+
+  .infoBox {
+    border-color: #b7c5d0;
+    border-radius: 6px;
+  }
+
+  .infoBox p:first-child {
+    padding-top: 5px;
+    font-size: clamp(11px, 3.15vw, 16px) !important;
+  }
+
+  .infoBox p.numbers,
+  .infoBox .numbers {
+    padding: 5px 3px 7px;
+    font-size: clamp(24px, 7vw, 34px) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  #cont21 {
+    min-height: 60px;
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .infoBox p:first-child {
+    font-size: clamp(10px, 3vw, 14px) !important;
+  }
+
+  .infoBox p.numbers,
+  .infoBox .numbers {
+    font-size: clamp(21px, 6.7vw, 29px) !important;
+  }
+}
