@@ -1,6 +1,7 @@
 let aircraftMarkers = [];
 let trackingInterval = null;
 let selectedAircraft = null;
+let isTrafficLoading = false;
 
 const TRAFFIC_REFRESH_MS = 30000;
 const TRAFFIC_RADIUS_NM = 300;
@@ -16,6 +17,40 @@ function setTrafficStatus(message, type = 'info') {
 function clearAircraftMarkers() {
   aircraftMarkers.forEach(marker => marker.remove());
   aircraftMarkers = [];
+}
+
+function getTrafficToggleButton() {
+  return document.getElementById('startTrackingFlights');
+}
+
+function isTrafficVisible() {
+  return Boolean(trackingInterval || aircraftMarkers.length);
+}
+
+function setTrafficToggleState(isActive, isLoading = false) {
+  const button = getTrafficToggleButton();
+  if (!button) return;
+
+  button.disabled = isLoading;
+  button.setAttribute('aria-pressed', String(isActive));
+  button.classList.toggle('is-active', isActive);
+  button.classList.toggle('is-loading', isLoading);
+  button.textContent = isLoading
+    ? 'Loading...'
+    : isActive
+      ? 'Hide Traffic'
+      : 'Show Traffic';
+}
+
+function stopTrafficTracking(message = 'Air traffic removed.') {
+  if (trackingInterval) {
+    clearInterval(trackingInterval);
+    trackingInterval = null;
+  }
+
+  clearAircraftMarkers();
+  setTrafficToggleState(false);
+  setTrafficStatus(message, 'info');
 }
 
 function getTrafficSearchCenter() {
@@ -189,27 +224,44 @@ async function updateAircraft(center) {
     const data = await fetchTrafficData(searchCenter.lat, searchCenter.lon);
     const aircraftData = Array.isArray(data.ac) ? data.ac : [];
     addAircraftMarkers(aircraftData);
+    return true;
   } catch (error) {
     console.error(error);
     clearAircraftMarkers();
     setTrafficStatus(error.message, 'error');
+    return false;
   }
 }
 
 document.getElementById('startTrackingFlights').addEventListener('click', function () {
-  updateAircraft();
+  if (isTrafficLoading) return;
 
-  if (!trackingInterval) {
-    trackingInterval = setInterval(updateAircraft, TRAFFIC_REFRESH_MS);
-  }
-});
-
-document.getElementById('stopTrackingFlights').addEventListener('click', function () {
-  if (trackingInterval) {
-    clearInterval(trackingInterval);
-    trackingInterval = null;
+  if (isTrafficVisible()) {
+    stopTrafficTracking();
+    return;
   }
 
-  clearAircraftMarkers();
-  setTrafficStatus('Air traffic removed.', 'info');
+  isTrafficLoading = true;
+  setTrafficToggleState(false, true);
+
+  updateAircraft()
+    .then((loaded) => {
+      if (!loaded) {
+        setTrafficToggleState(false);
+        return;
+      }
+
+      if (!trackingInterval) {
+        trackingInterval = setInterval(updateAircraft, TRAFFIC_REFRESH_MS);
+      }
+      setTrafficToggleState(true);
+    })
+    .catch(() => {
+      setTrafficToggleState(false);
+    })
+    .finally(() => {
+      isTrafficLoading = false;
+    });
 });
+
+setTrafficToggleState(false);

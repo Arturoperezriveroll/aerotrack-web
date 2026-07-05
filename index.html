@@ -6,7 +6,7 @@
 <meta name="description" content="AeroTrack flight and route tracking web app.">
 <title>AeroTrack</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/mapa_style.css?v=20260705m">
+<link rel="stylesheet" href="./css/mapa_style.css?v=20260705n">
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
@@ -53,10 +53,9 @@
   </div>  <!-- aquí cierra mapContainer -->  
 
     <div id="cont3">
-      <button id="startTracking" class="traffic-btn">Record New Path</button>
-        <button id="stopTracking" class="traffic-btn">Stop Recording</button>
-        <button id="startTrackingFlights" class="traffic-btn">Display Air Traffic</button>
-        <button id="stopTrackingFlights" class="traffic-btn">Remove Air Traffic</button>
+      <button id="startTracking" class="traffic-btn">Record Path</button>
+        <button id="stopTracking" class="traffic-btn">Stop Rec</button>
+        <button id="startTrackingFlights" class="traffic-btn traffic-toggle" aria-pressed="false">Show Traffic</button>
     </div>
 
 <div class="mapboxDetails">
@@ -129,7 +128,7 @@
 <script src="./JS/mapaProject/display_route_line.js"></script>
 <script src="./JS/mapaProject/zoom_last_fix.js"></script>
 <script src="./JS/mapaProject/start_stop_track.js"></script>
-<script src="./JS/mapaProject/traffic_info.js?v=20260705k"></script>
+<script src="./JS/mapaProject/traffic_info.js?v=20260705l"></script>
 <script src="./JS/get_address_and_wx.js?v=20260705e">//obtener oisicion con la api de google y al mismo tiempo el wx del lugar</script>
 <script src="./JS/geojson/generadorRutas.js"></script>
 
@@ -147,38 +146,6 @@ function generateKMLContent() {
   `;
   return kmlContent;
 }
-
-// Add a click event listener to the "stop tracking" button
-document.getElementById('stopTrackingFlights').addEventListener('click', function () {
-  // Stop tracking logic
-  if (trackingInterval) {
-    clearInterval(trackingInterval);
-    trackingInterval = null;
-
-    // Remove all markers when stop tracking
-    for (let i = 0; i < aircraftMarkers.length; i++) {
-      aircraftMarkers[i].remove();
-    }
-    aircraftMarkers = [];
-
-    // Generate KML content
-    const kmlContent = generateKMLContent();
-
-    // Save the KML file
-    const blob = new Blob([kmlContent], { type: 'application/vnd.google-earth.kml+xml' });
-    const url = URL.createObjectURL(blob);
-
-    // Create a link to download the KML file
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'tracked_data.kml';
-    link.click();
-
-    // Clean up the URL object
-    URL.revokeObjectURL(url);
-  }
-});
-
 
 </script>
 

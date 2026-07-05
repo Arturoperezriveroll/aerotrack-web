@@ -459,7 +459,7 @@ h3 {
   }
 
   #cont3 {
-    grid-template-columns: repeat(2, minmax(130px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .mapboxDetails {
@@ -513,15 +513,15 @@ h3 {
   }
 
   #cont3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
     padding: 8px;
   }
 
   .traffic-btn {
-    min-height: 64px;
+    min-height: 52px;
     padding: 8px 10px;
-    font-size: clamp(18px, 4.8vw, 24px);
+    font-size: clamp(15px, 4.1vw, 19px);
     line-height: 1.18;
   }
 
@@ -561,12 +561,12 @@ h3 {
   }
 
   #cont3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .traffic-btn {
-    min-height: 58px;
-    font-size: clamp(16px, 4.7vw, 20px);
+    min-height: 46px;
+    font-size: clamp(13px, 3.9vw, 16px);
   }
 
   #md1 {
@@ -575,6 +575,102 @@ h3 {
 
   #md1 button {
     grid-column: 1 / -1;
+  }
+}
+
+/* Absolute final compact control lock */
+#cont3 {
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+}
+
+.traffic-toggle.is-active {
+  background: #b42318;
+}
+
+.traffic-toggle.is-active:hover,
+.traffic-toggle.is-active:focus-visible {
+  background: #8f1d14;
+}
+
+.traffic-toggle.is-loading {
+  cursor: wait;
+  opacity: 0.78;
+}
+
+@media (max-width: 760px) {
+  #cont3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    padding: 7px;
+  }
+
+  .traffic-btn {
+    min-height: 52px;
+    padding: 7px 8px;
+    font-size: clamp(15px, 4.1vw, 19px);
+    line-height: 1.12;
+  }
+}
+
+@media (max-width: 430px) {
+  #cont3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .traffic-btn {
+    min-height: 46px;
+    padding: 6px;
+    font-size: clamp(13px, 3.9vw, 16px);
+  }
+}
+
+/* Compact tracking controls */
+#cont3 {
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+}
+
+.traffic-toggle.is-active {
+  background: #b42318;
+}
+
+.traffic-toggle.is-active:hover,
+.traffic-toggle.is-active:focus-visible {
+  background: #8f1d14;
+}
+
+.traffic-toggle.is-loading {
+  cursor: wait;
+  opacity: 0.78;
+}
+
+@media (max-width: 760px) {
+  #cont3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    padding: 7px;
+  }
+
+  .traffic-btn {
+    min-height: 52px;
+    padding: 7px 8px;
+    font-size: clamp(15px, 4.1vw, 19px);
+    line-height: 1.12;
+  }
+}
+
+@media (max-width: 430px) {
+  #cont3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .traffic-btn {
+    min-height: 46px;
+    padding: 6px;
+    font-size: clamp(13px, 3.9vw, 16px);
   }
 }
 
@@ -637,17 +733,17 @@ h3 {
   }
 
   #cont3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
     padding: 8px;
     background: #eef3f7;
   }
 
   .traffic-btn {
-    min-height: 64px;
+    min-height: 52px;
     padding: 8px 10px;
     border-radius: 7px;
-    font-size: clamp(18px, 4.8vw, 24px);
+    font-size: clamp(15px, 4.1vw, 19px);
     line-height: 1.18;
     box-shadow: 0 2px 7px rgba(15, 23, 42, 0.18);
   }
@@ -712,7 +808,7 @@ h3 {
   }
 
   .aircraft-detail-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 7px;
   }
 }
@@ -737,12 +833,12 @@ h3 {
   }
 
   #cont3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .traffic-btn {
-    min-height: 58px;
-    font-size: clamp(16px, 4.7vw, 20px);
+    min-height: 46px;
+    font-size: clamp(13px, 3.9vw, 16px);
   }
 
   #md1 {
@@ -2080,7 +2176,7 @@ h3 {
   }
 
   #cont3 {
-    grid-template-columns: repeat(2, minmax(130px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .mapboxDetails {
@@ -2125,15 +2221,15 @@ h3 {
   }
 
   #cont3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
     padding: 8px;
   }
 
   .traffic-btn {
-    min-height: 64px;
+    min-height: 52px;
     padding: 8px 10px;
-    font-size: clamp(18px, 4.8vw, 24px);
+    font-size: clamp(15px, 4.1vw, 19px);
     line-height: 1.18;
   }
 
@@ -2173,12 +2269,12 @@ h3 {
   }
 
   #cont3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .traffic-btn {
-    min-height: 58px;
-    font-size: clamp(16px, 4.7vw, 20px);
+    min-height: 46px;
+    font-size: clamp(13px, 3.9vw, 16px);
   }
 
   #md1 {
