@@ -2596,3 +2596,58 @@ h3 {
     font-size: clamp(18px, 4.6vw, 23px);
   }
 }
+
+/* Final selected aircraft dense mode */
+@media (max-width: 760px) {
+  .mapboxDetails:has(#aircraftDetails) h3 {
+    padding: 4px 8px;
+    font-size: clamp(17px, 4.2vw, 21px);
+  }
+
+  #aircraftDetails {
+    padding: 4px 6px 5px;
+  }
+
+  .aircraft-detail-grid {
+    gap: 5px 6px;
+  }
+
+  .aircraft-detail-grid div {
+    min-height: 50px;
+    gap: 1px;
+    padding: 4px 6px;
+  }
+
+  .aircraft-detail-grid span {
+    font-size: clamp(9px, 2.4vw, 11px);
+    line-height: 1;
+  }
+
+  .aircraft-detail-grid strong {
+    font-size: clamp(18px, 4.6vw, 24px);
+    line-height: 1;
+  }
+}
+
+@media (max-width: 430px) {
+  .mapboxDetails:has(#aircraftDetails) h3 {
+    padding: 3px 8px;
+  }
+
+  #aircraftDetails {
+    padding: 3px 5px 4px;
+  }
+
+  .aircraft-detail-grid {
+    gap: 4px 5px;
+  }
+
+  .aircraft-detail-grid div {
+    min-height: 46px;
+    padding: 3px 5px;
+  }
+
+  .aircraft-detail-grid strong {
+    font-size: clamp(17px, 4.4vw, 22px);
+  }
+}
