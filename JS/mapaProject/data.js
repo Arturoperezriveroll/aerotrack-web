@@ -8587,6 +8587,14 @@
         "CME"
         ]},
         {
+        "V51": [
+        "TGZ",
+        "SAXAV",
+        "PQE",
+        "VIDBA",
+        "VSA"
+        ]},
+        {
         "UT1": [
         "MOV",
         "XUGAD",
