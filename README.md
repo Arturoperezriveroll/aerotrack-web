@@ -10,6 +10,8 @@ This project was separated from the `SISAL PUERTO` website so it can evolve as i
 - `css/mapa_style.css` contains the current UI styles.
 - `JS/mapaProject/` contains the main Mapbox, route, tracking, and traffic modules.
 - `JS/geojson/` contains aviation datasets used by the map and route tools.
+- `JS/mapaProject/route_engine.js` resolves typed routes, fixes, airways, and distance calculations.
+- `JS/mapaProject/data_validator.js` checks the navigation database at load time and reports issues in the browser console.
 
 ## Local Use
 
@@ -17,4 +19,6 @@ Open `index.html` from a local static server. Browser geolocation and the servic
 
 ## Notes
 
-The Mapbox access token is currently blank in `JS/mapaProject/add_map_and_get_pos-1.js`. Add a token before publishing if the configured Mapbox style requires one.
+- Runtime keys are loaded from `config.js` / `config.local.js`. Local-only secrets should stay out of Git.
+- GitHub Pages builds `config.js` from repository secrets during deploy.
+- Current near-term data cleanup: review duplicate fixes and airway references that point to missing fixes.
