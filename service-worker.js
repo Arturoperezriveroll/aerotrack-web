@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aerotrack-v10';
+const CACHE_NAME = 'aerotrack-v11';
 const APP_SHELL = [
   './',
   './index.html',

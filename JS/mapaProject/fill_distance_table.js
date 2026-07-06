@@ -73,7 +73,7 @@ function displayRouteDistancesAndMarkers() {
 
         return [waypoint.lng, waypoint.lat];
     });
-    return true;
+    return distanceRows;
 }
 
 const routeDistanceBtn = document.getElementById('drawRouteBtn');
