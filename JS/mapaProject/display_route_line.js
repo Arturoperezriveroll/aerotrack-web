@@ -47,11 +47,33 @@ function displayRouteLine() {
                 }
             }); 
         }
+        fitMapToRoute(polylinePoints);
         return true;
     } else {
         alert('Not enough points to draw a route.');
         return false;
     }
+}
+
+function fitMapToRoute(routePoints) {
+    if (!Array.isArray(routePoints) || routePoints.length < 2 || !mapboxMap?.fitBounds) {
+        return;
+    }
+
+    const bounds = routePoints.reduce((routeBounds, point) => {
+        return routeBounds.extend(point);
+    }, new mapboxgl.LngLatBounds(routePoints[0], routePoints[0]));
+    const isMobileLayout = window.matchMedia?.('(max-width: 760px)').matches;
+    const padding = isMobileLayout
+        ? { top: 48, right: 36, bottom: 48, left: 36 }
+        : { top: 90, right: 60, bottom: 90, left: 60 };
+
+    mapboxMap.resize();
+    mapboxMap.fitBounds(bounds, {
+        padding,
+        maxZoom: 9,
+        duration: 900
+    });
 }
 
 // Backward-compatible hook in case the legacy button exists.

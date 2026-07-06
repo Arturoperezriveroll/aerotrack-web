@@ -2958,3 +2958,86 @@ h3 {
     font-size: clamp(15px, 4.2vw, 18px) !important;
   }
 }
+
+/* Live Nav and Nav Log table polish */
+#tabDistances #tableContainer,
+#tabWaypoints {
+  padding: 10px;
+  background: #f8fafc;
+}
+
+#distanceTable,
+#fixTable {
+  width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden;
+  border: 1px solid #bfd0df;
+  border-radius: 8px;
+  border-collapse: separate !important;
+  border-spacing: 0;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+}
+
+#distanceTable th,
+#fixTable th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 9px 10px;
+  border: 0;
+  border-bottom: 1px solid #bfd0df;
+  background: #dceff3;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: clamp(12px, 2.1vw, 15px);
+  font-weight: 900;
+  line-height: 1.05;
+  text-align: left;
+  white-space: nowrap;
+}
+
+#distanceTable td,
+#fixTable td {
+  padding: 9px 10px;
+  border: 0;
+  border-bottom: 1px solid #e2e8f0;
+  color: #172033;
+  font-family: inherit;
+  font-size: clamp(13px, 2.3vw, 16px);
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: left;
+}
+
+#distanceTable tbody tr:nth-child(even) td,
+#fixTable tr:nth-child(odd):not(:first-child) td {
+  background: #f1f7fb;
+}
+
+#distanceTable tbody tr:last-child td,
+#fixTable tr:last-child td {
+  border-bottom: 0;
+}
+
+.pwaypoints {
+  margin: 0 0 8px !important;
+  color: var(--at-muted);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+@media (max-width: 760px) {
+  #tabDistances #tableContainer,
+  #tabWaypoints {
+    padding: 8px;
+  }
+
+  #distanceTable th,
+  #distanceTable td,
+  #fixTable th,
+  #fixTable td {
+    padding: 7px 8px;
+  }
+}
