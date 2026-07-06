@@ -1,28 +1,6 @@
-const CACHE_NAME = 'aerotrack-v20';
+const CACHE_NAME = 'aerotrack-v21';
 const APP_SHELL = [
-  './',
-  './index.html',
-  './css/mapa_style.css',
   './manifest.json',
-  './JS/display_airport_info.js',
-  './JS/mapaProject/data.js',
-  './JS/mapaProject/data_validator.js',
-  './JS/updatePolyline.js',
-  './JS/mapaProject/add_map_and_get_pos-1.js',
-  './JS/get_distance_haversine.js',
-  './JS/mapaProject/updateDistfromCurrent.js',
-  './JS/mapaProject/fill_distance_table.js',
-  './JS/mapaProject/display_route_line.js',
-  './JS/mapaProject/fpl_inputs.js',
-  './JS/mapaProject/build_route.js',
-  './JS/mapaProject/tab_navigation.js',
-  './JS/mapaProject/zoom_last_fix.js',
-  './JS/mapaProject/start_stop_track.js',
-  './JS/mapaProject/traffic_info.js',
-  './JS/get_address_and_wx.js',
-  './JS/mapaProject/route_engine.js',
-  './JS/geojson/generadorRutas.js',
-  './JS/geojson/mexicoAirports.js',
   './JS/png/icon-192.png',
   './JS/png/icon-512.png'
 ];
@@ -39,6 +17,19 @@ self.addEventListener('fetch', event => {
 
   if (requestUrl.pathname.endsWith('/config.js') || requestUrl.pathname.endsWith('/config.local.js')) {
     event.respondWith(fetch(event.request));
+    return;
+  }
+
+  const isPageOrCode =
+    event.request.mode === 'navigate' ||
+    requestUrl.pathname.endsWith('.html') ||
+    requestUrl.pathname.endsWith('.css') ||
+    requestUrl.pathname.endsWith('.js');
+
+  if (isPageOrCode) {
+    event.respondWith(
+      fetch(event.request, { cache: 'reload' }).catch(() => caches.match(event.request))
+    );
     return;
   }
 
