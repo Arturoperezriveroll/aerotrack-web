@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aerotrack-v7';
+const CACHE_NAME = 'aerotrack-v8';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const APP_SHELL = [
   './manifest.json',
   './JS/display_airport_info.js',
   './JS/mapaProject/data.js',
+  './JS/mapaProject/data_validator.js',
   './JS/updatePolyline.js',
   './JS/mapaProject/add_map_and_get_pos-1.js',
   './JS/get_distance_haversine.js',
