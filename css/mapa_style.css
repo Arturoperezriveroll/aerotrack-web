@@ -2709,3 +2709,106 @@ h3 {
     height: 38px !important;
   }
 }
+
+/* Final tabbed lower panel layout */
+.app-tabs {
+  width: 100%;
+  border-bottom: 1px solid var(--at-line);
+  background: var(--at-bg);
+}
+
+.tab-list {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  padding: 8px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--at-line);
+  background: #dbe3ea;
+  scrollbar-width: thin;
+}
+
+.tab-button {
+  flex: 1 0 120px;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #b9c7d2;
+  border-radius: 7px;
+  background: #ffffff;
+  color: var(--at-ink);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tab-button.is-active {
+  border-color: #1d4ed8;
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+.tab-button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.28);
+  outline-offset: 2px;
+}
+
+.tab-panel {
+  width: 100%;
+  background: var(--at-panel);
+}
+
+.tab-panel[hidden] {
+  display: none !important;
+}
+
+.tab-panel .mapboxDetails {
+  grid-template-columns: 1fr;
+  border-bottom: 0;
+}
+
+.tab-panel #md1,
+.tab-panel #md2 {
+  width: 100%;
+  border-right: 0;
+}
+
+.tab-panel #md2 {
+  border-top: 0;
+}
+
+.tab-panel #lugar,
+.tab-panel .pwaypoints,
+.tab-panel #fixTable {
+  margin: 8px;
+}
+
+.tab-panel #fixTable {
+  width: calc(100% - 16px);
+}
+
+@media (max-width: 760px) {
+  .tab-list {
+    gap: 5px;
+    padding: 6px;
+  }
+
+  .tab-button {
+    flex-basis: 92px;
+    min-height: 36px;
+    padding: 6px 8px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 430px) {
+  .tab-button {
+    flex: 0 0 auto;
+    min-width: 76px;
+    min-height: 34px;
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+}

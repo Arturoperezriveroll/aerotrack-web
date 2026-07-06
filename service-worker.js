@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aerotrack-v11';
+const CACHE_NAME = 'aerotrack-v12';
 const APP_SHELL = [
   './',
   './index.html',
@@ -14,6 +14,7 @@ const APP_SHELL = [
   './JS/mapaProject/fill_distance_table.js',
   './JS/mapaProject/display_route_line.js',
   './JS/mapaProject/build_route.js',
+  './JS/mapaProject/tab_navigation.js',
   './JS/mapaProject/zoom_last_fix.js',
   './JS/mapaProject/start_stop_track.js',
   './JS/mapaProject/traffic_info.js',

@@ -6,7 +6,7 @@
 <meta name="description" content="AeroTrack flight and route tracking web app.">
 <title>AeroTrack</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/mapa_style.css?v=20260706d">
+<link rel="stylesheet" href="./css/mapa_style.css?v=20260706e">
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
@@ -55,67 +55,85 @@
         <button id="startTrackingFlights" class="traffic-btn traffic-toggle" aria-pressed="false">Show Traffic</button>
     </div>
 
-<div class="mapboxDetails">
-        <h3>Selected Flight Info </h3>
-          <div id="aircraftDetails" class="details-content">
-            <p>Select flight</p>
-          </div>
-</div>
+<div class="app-tabs" id="appTabs">
+  <div class="tab-list" role="tablist" aria-label="AeroTrack sections">
+    <button class="tab-button is-active" id="tabBtnFpl" type="button" role="tab" aria-selected="true" aria-controls="tabFpl" data-tab-target="tabFpl">FPL</button>
+    <button class="tab-button" id="tabBtnDistances" type="button" role="tab" aria-selected="false" aria-controls="tabDistances" data-tab-target="tabDistances">Distances</button>
+    <button class="tab-button" id="tabBtnAircraft" type="button" role="tab" aria-selected="false" aria-controls="tabAircraft" data-tab-target="tabAircraft">Flight</button>
+    <button class="tab-button" id="tabBtnWaypoints" type="button" role="tab" aria-selected="false" aria-controls="tabWaypoints" data-tab-target="tabWaypoints">WP</button>
+  </div>
 
-<div class="mapboxDetails">
-          <div id="md1">
-            <h3>FPL data</h3>
-            <label>DEP</label>
-            <input type="text" id="depAd" placeholder="DEP AD">
-            <button onclick="displayAirportInfo()">Enter</button>
-            <label>DEST</label>
-            <input type="text" id="destAd" placeholder="Dest AD">
-            <button onclick="displayAirportInfo()">Enter</button>
-            <label>ETD</label>
-            <input type="text" id="etd" placeholder="ETD">
-            <input type="text" id="fixes" placeholder="Route">
-            <div id="routeMessages" class="route-messages" aria-live="polite"></div>
-            <div id="routeSummary" class="route-summary" aria-live="polite"></div>
-            <button id="buildRouteBtn" type="button">Build Route</button>
-            <button id="zoomToLastFix">Zoom Dest AD</button>
-            <h2>DEST AD info</h2>
+  <section class="tab-panel is-active" id="tabFpl" role="tabpanel" aria-labelledby="tabBtnFpl">
+    <div class="mapboxDetails">
+      <div id="md1">
+        <h3>FPL data</h3>
+        <label>DEP</label>
+        <input type="text" id="depAd" placeholder="DEP AD">
+        <button onclick="displayAirportInfo()">Enter</button>
+        <label>DEST</label>
+        <input type="text" id="destAd" placeholder="Dest AD">
+        <button onclick="displayAirportInfo()">Enter</button>
+        <label>ETD</label>
+        <input type="text" id="etd" placeholder="ETD">
+        <input type="text" id="fixes" placeholder="Route">
+        <div id="routeMessages" class="route-messages" aria-live="polite"></div>
+        <div id="routeSummary" class="route-summary" aria-live="polite"></div>
+        <button id="buildRouteBtn" type="button">Build Route</button>
+        <button id="zoomToLastFix">Zoom Dest AD</button>
+        <h2>DEST AD info</h2>
 
-          <div id="airportInfo">
-          </div>
-          </div>
+        <div id="airportInfo">
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div id="md2">
-            <h3>Distances data</h3>
-            <div id="tableContainer">
-            <table id="distanceTable">
-              <thead class="thead-light">
-                <tr>
-                  <th>WP</th>
-                  <th>D- FPL (NM)</th>
-                  <th>Ttl- D (NM)</th>
-                  <th>Dct (NM)</th>
-                </tr>
-              </thead>
-              <tbody>
-              <!-- Table rows will be added here dynamically -->
-              </tbody>
-              </table>
+  <section class="tab-panel" id="tabDistances" role="tabpanel" aria-labelledby="tabBtnDistances" hidden>
+    <div class="mapboxDetails">
+      <div id="md2">
+        <h3>Distances data</h3>
+        <div id="tableContainer">
+          <table id="distanceTable">
+            <thead class="thead-light">
+              <tr>
+                <th>WP</th>
+                <th>D- FPL (NM)</th>
+                <th>Ttl- D (NM)</th>
+                <th>Dct (NM)</th>
+              </tr>
+            </thead>
+            <tbody>
+            <!-- Table rows will be added here dynamically -->
+            </tbody>
+          </table>
+        </div><!--finaliza div de table-->
+      </div>
+    </div>
+  </section>
 
+  <section class="tab-panel" id="tabAircraft" role="tabpanel" aria-labelledby="tabBtnAircraft" hidden>
+    <div class="mapboxDetails">
+      <h3>Selected Flight Info </h3>
+      <div id="aircraftDetails" class="details-content">
+        <p>Select flight</p>
+      </div>
+    </div>
+  </section>
 
-            </div><!--finaliza div de table-->
-          </div>
-</div>
-<div id="lugar">
-</div>
-<p class="pwaypoints">Waypoints</p>
-<table id="fixTable">
-        <tr>
+  <section class="tab-panel" id="tabWaypoints" role="tabpanel" aria-labelledby="tabBtnWaypoints" hidden>
+    <div id="lugar">
+    </div>
+    <p class="pwaypoints">Waypoints</p>
+    <table id="fixTable">
+      <tr>
         <th>WP</th>
         <th>Lat</th>
         <th>Long</th>
-        </tr>
-        <!-- Rows will be added here -->
-</table>
+      </tr>
+      <!-- Rows will be added here -->
+    </table>
+  </section>
+</div>
 
 <script src="./JS/display_airport_info.js"></script>
 <script src="./JS/mapaProject/data.js?v=20260706e"></script>
@@ -133,6 +151,7 @@
 <script src="./JS/get_address_and_wx.js?v=20260705e">//obtener oisicion con la api de google y al mismo tiempo el wx del lugar</script>
 <script src="./JS/geojson/generadorRutas.js?v=20260706f"></script>
 <script src="./JS/mapaProject/build_route.js?v=20260706g"></script>
+<script src="./JS/mapaProject/tab_navigation.js?v=20260706a"></script>
 
 <script>
 // Function to generate KML content from tracked data
