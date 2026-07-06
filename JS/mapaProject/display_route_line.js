@@ -1,6 +1,4 @@
-//empieza f para obtener coordenadas de los puntos de la ruta y plotear la linea verde.
-//f para tomar datos de la tablafix, y plotear la trayectoria en verde
-document.getElementById('drawRouteBtn').addEventListener('click', function() {
+function displayRouteLine() {
     polylinePoints = []; // Reset the array
 
     const table = document.getElementById('fixTable');
@@ -49,7 +47,15 @@ document.getElementById('drawRouteBtn').addEventListener('click', function() {
                 }
             }); 
         }
+        return true;
     } else {
         alert('Not enough points to draw a route.');
+        return false;
     }
-});
+}
+
+// Backward-compatible hook in case the legacy button exists.
+const drawRouteLineBtn = document.getElementById('drawRouteBtn');
+if (drawRouteLineBtn) {
+    drawRouteLineBtn.addEventListener('click', displayRouteLine);
+}

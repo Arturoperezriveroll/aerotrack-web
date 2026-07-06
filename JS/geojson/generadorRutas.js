@@ -22,6 +22,8 @@ function displayLatLong() {
       messageBox.textContent = route.messages.join(' | ');
     }
   }
+
+  return route;
 }
 
 function getSegmentOfAirway(airwayName, startFix, endFix) {

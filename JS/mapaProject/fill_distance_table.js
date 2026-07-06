@@ -22,20 +22,22 @@ function getRouteWaypointsFromFixTable() {
     return waypoints;
 }
 
-document.getElementById('drawRouteBtn').addEventListener('click', function () {
-    // Ensure geolocation has been set
-    if (!currentLocation) {
-        console.error("Current location is not set. Please wait for geolocation.");
-        alert("Please wait for geolocation to set your current location.");
-        return;
-    }
+let routeWaypointMarkers = [];
 
+function clearRouteWaypointMarkers() {
+    routeWaypointMarkers.forEach((marker) => marker.remove());
+    routeWaypointMarkers = [];
+}
+
+function displayRouteDistancesAndMarkers() {
     const tbody = document.getElementById('distanceTable').getElementsByTagName('tbody')[0];
     const waypoints = getRouteWaypointsFromFixTable();
     const routeCoordinates = waypoints.map((waypoint) => [waypoint.lng, waypoint.lat]);
-    const distanceRows = AeroTrackRouteEngine.computeRouteDistances(waypoints, currentLocation);
+    const currentPosition = typeof currentLocation === 'undefined' ? null : currentLocation;
+    const distanceRows = AeroTrackRouteEngine.computeRouteDistances(waypoints, currentPosition);
 
     tbody.innerHTML = '';
+    clearRouteWaypointMarkers();
 
     distanceRows.forEach((waypoint) => {
         anadirFila(
@@ -62,15 +64,22 @@ document.getElementById('drawRouteBtn').addEventListener('click', function () {
         // Create a popup
         let popupHtml = `<div class='my-popup'>${waypoint.name}</div>`;
 
-        new mapboxgl.Marker(el1, { anchor: 'center' }) // Set the anchor to 'center'
+        const marker = new mapboxgl.Marker(el1, { anchor: 'center' }) // Set the anchor to 'center'
             .setLngLat([waypoint.lng, waypoint.lat])
             .setPopup(new mapboxgl.Popup().setHTML(popupHtml))
             .addTo(mapboxMap)
-            .getPopup().addTo(mapboxMap); // This line will open the popup automatically
+        marker.getPopup().addTo(mapboxMap); // This line will open the popup automatically
+        routeWaypointMarkers.push(marker);
 
         return [waypoint.lng, waypoint.lat];
     });
-});
+    return true;
+}
+
+const routeDistanceBtn = document.getElementById('drawRouteBtn');
+if (routeDistanceBtn) {
+    routeDistanceBtn.addEventListener('click', displayRouteDistancesAndMarkers);
+}
 
 
 // Flag to indicate if the table is populated
