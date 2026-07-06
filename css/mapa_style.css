@@ -3041,3 +3041,18 @@ h3 {
     padding: 7px 8px;
   }
 }
+
+/* Narrow desktop correction: a resized desktop browser should not behave like a phone. */
+@media (min-width: 521px) and (max-width: 760px) and (hover: hover) and (pointer: fine) {
+  #mapContainer {
+    position: relative;
+    top: auto;
+    z-index: auto;
+    min-height: 440px;
+    height: min(68vh, 720px);
+  }
+
+  .mapboxgl-ctrl-top-right .mapboxgl-ctrl-group:has(.mapboxgl-ctrl-zoom-in) {
+    display: block !important;
+  }
+}
