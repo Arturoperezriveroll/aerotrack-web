@@ -1,93 +1,38 @@
-// f displayLatLong, para tomar ruta del textbox y tabular la ruta en fixTable, la tabla inferior, de donde posteriormente se toman de nuevo los datos por otras funciones. 
+// Reads the route input, resolves fixes/airways, and fills fixTable.
+function displayLatLong() {
+  const routeText = document.getElementById('fixes').value;
+  const table = document.getElementById('fixTable');
+  table.innerHTML = '';
 
+  const route = AeroTrackRouteEngine.parseRouteInput(routeText, fixesData, airways);
+  console.log('Route input:', routeText);
+  console.log('Resolved route:', route);
 
-    
-    function displayLatLong() {
-    const input = document.getElementById('fixes').value.split(' ');
-    const table = document.getElementById('fixTable');
-    table.innerHTML = ''; // Clear the table content
-    console.log('Input:', input);
+  route.fixes.forEach((fix) => {
+    addRowToTable(fix, table);
+  });
 
-    let previousFix = null;
-    let currentAirway = null;
-    let isFirstFixInAirway = true;
-
-    input.forEach(item => {
-        const fix = fixesData.find(f => f.nombre === item.trim().toUpperCase());
-        console.log('Current Item:', item, 'Fix:', fix);
-
-        if (fix) {
-            if (currentAirway) {
-                const segment = getSegmentOfAirway(currentAirway, previousFix, fix.nombre);
-                console.log('Airway Segment for', currentAirway, ':', segment);
-
-                segment.forEach(fixName => {
-                    const segmentFix = fixesData.find(f => f.nombre === fixName);
-                    if (segmentFix && !(previousFix === fixName && isFirstFixInAirway)) {
-                        addRowToTable(segmentFix, table);
-                    }
-                });
-                isFirstFixInAirway = false;
-                currentAirway = null;
-            }
-
-            if (!(previousFix === fix.nombre && isFirstFixInAirway)) {
-                addRowToTable(fix, table);
-            }
-            previousFix = fix.nombre;
-        } else {
-            currentAirway = item.trim().toUpperCase();
-            isFirstFixInAirway = true;
-        }
-    });
-
-    // Handle the case where the last item is an airway without a subsequent fix
-    if (currentAirway && previousFix) {
-        console.log("Final Segment: Processing airway without a subsequent fix:", currentAirway, "from", previousFix);
-        const segment = getSegmentOfAirway(currentAirway, previousFix, null);
-        console.log('Final Segment:', segment);
-
-        segment.forEach(fixName => {
-            const segmentFix = fixesData.find(f => f.nombre === fixName);
-            if (segmentFix) {
-                addRowToTable(segmentFix, table);
-            }
-        });
-    }
+  if (route.messages.length > 0) {
+    console.warn('Route messages:', route.messages);
+  }
 }
 
 function getSegmentOfAirway(airwayName, startFix, endFix) {
-    const airwayObject = airways.find(a => Object.keys(a)[0] === airwayName);
-    if (!airwayObject) return [];
-
-    const airway = Object.values(airwayObject)[0];
-    let startIndex = airway.indexOf(startFix);
-    let endIndex = endFix ? airway.indexOf(endFix) : -1;
-
-    if (startIndex === -1) return [];
-
-    if (endIndex === -1) {
-        // If no end fix, return the remaining segment to the end of the airway
-        return airway.slice(startIndex + 1);
-    }
-
-    // Handle case where the first fix is in reverse order
-    if (startIndex > endIndex) {
-        return airway.slice(endIndex + 1, startIndex + 1).reverse();
-    } else {
-        return airway.slice(startIndex + 1, endIndex);
-    }
+  return AeroTrackRouteEngine.getSegmentOfAirway(airwayName, startFix, endFix, airways);
 }
-    
-    // function para añadir los nombres y coordenadas de los fijos a la tabla al hacer click en drawRouteButton
-    function addRowToTable(fix, table) {
-        const row = `<tr>
-            <td>${fix.nombre}</td>
-            <td>${fix.coordenadas.latitud}</td>
-            <td>${fix.coordenadas.longitud}</td>
-        </tr>`;
-        table.innerHTML += row;
-    }
 
- 
-    
+function addRowToTable(fix, table) {
+  const row = document.createElement('tr');
+  const nameCell = document.createElement('td');
+  const latCell = document.createElement('td');
+  const lngCell = document.createElement('td');
+
+  nameCell.textContent = AeroTrackRouteEngine.normalizeToken(fix.nombre);
+  latCell.textContent = fix.coordenadas.latitud;
+  lngCell.textContent = fix.coordenadas.longitud;
+
+  row.appendChild(nameCell);
+  row.appendChild(latCell);
+  row.appendChild(lngCell);
+  table.appendChild(row);
+}

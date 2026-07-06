@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aerotrack-v3';
+const CACHE_NAME = 'aerotrack-v4';
 const APP_SHELL = [
   './',
   './index.html',
@@ -16,6 +16,7 @@ const APP_SHELL = [
   './JS/mapaProject/start_stop_track.js',
   './JS/mapaProject/traffic_info.js',
   './JS/get_address_and_wx.js',
+  './JS/mapaProject/route_engine.js',
   './JS/geojson/generadorRutas.js',
   './JS/geojson/mexicoAirports.js',
   './JS/png/icon-192.png',
@@ -26,6 +27,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
   );
+  self.skipWaiting();
 });
 
 self.addEventListener('fetch', event => {
@@ -57,5 +59,6 @@ self.addEventListener('activate', (event) => {
       }))
     )
   );
+  self.clients.claim();
 });
 
