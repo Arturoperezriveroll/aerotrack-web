@@ -6,7 +6,7 @@
 <meta name="description" content="AeroTrack flight and route tracking web app.">
 <title>AeroTrack</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/mapa_style.css?v=20260706f">
+<link rel="stylesheet" href="./css/mapa_style.css?v=20260706g">
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
@@ -69,16 +69,14 @@
         <h3>FPL data</h3>
         <label>DEP</label>
         <input type="text" id="depAd" placeholder="DEP AD">
-        <button onclick="displayAirportInfo()">Enter</button>
         <label>DEST</label>
         <input type="text" id="destAd" placeholder="Dest AD">
-        <button onclick="displayAirportInfo()">Enter</button>
         <label>ETD</label>
         <input type="text" id="etd" placeholder="ETD">
         <input type="text" id="fixes" placeholder="Route">
         <div id="routeMessages" class="route-messages" aria-live="polite"></div>
         <div id="routeSummary" class="route-summary" aria-live="polite"></div>
-        <button id="buildRouteBtn" type="button">Build Route</button>
+        <button id="buildRouteBtn" type="button">Process FPL</button>
         <button id="zoomToLastFix">Zoom Dest AD</button>
         <h2>DEST AD info</h2>
 
@@ -150,7 +148,7 @@
 <script src="./JS/mapaProject/traffic_info.js?v=20260705m"></script>
 <script src="./JS/get_address_and_wx.js?v=20260705e">//obtener oisicion con la api de google y al mismo tiempo el wx del lugar</script>
 <script src="./JS/geojson/generadorRutas.js?v=20260706f"></script>
-<script src="./JS/mapaProject/build_route.js?v=20260706g"></script>
+<script src="./JS/mapaProject/build_route.js?v=20260706h"></script>
 <script src="./JS/mapaProject/tab_navigation.js?v=20260706b"></script>
 
 <script>

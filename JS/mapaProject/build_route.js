@@ -1,4 +1,13 @@
 function buildRoute() {
+    if (document.getElementById('destAd')?.value.trim()) {
+        displayAirportInfo();
+    }
+
+    if (!document.getElementById('fixes')?.value.trim()) {
+        updateRouteSummary(null, []);
+        return;
+    }
+
     const route = displayLatLong();
     displayRouteLine();
     const distanceRows = displayRouteDistancesAndMarkers();
@@ -20,7 +29,9 @@ function updateRouteSummary(route, distanceRows) {
         ? `${lastDistanceRow.totalDistanceNm.toFixed(1)} NM`
         : '0.0 NM';
 
-    summary.textContent = `${waypointCount} WP | ${totalDistanceNm}`;
+    summary.textContent = route
+        ? `${waypointCount} WP | ${totalDistanceNm}`
+        : 'FPL data loaded | Route pending';
 
     if (route?.messages?.length) {
         summary.textContent += ` | ${route.messages.length} aviso(s)`;
