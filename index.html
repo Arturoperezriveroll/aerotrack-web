@@ -6,7 +6,7 @@
 <meta name="description" content="AeroTrack flight and route tracking web app.">
 <title>AeroTrack</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/mapa_style.css?v=20260706g">
+<link rel="stylesheet" href="./css/mapa_style.css?v=20260706h">
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
@@ -67,13 +67,22 @@
     <div class="mapboxDetails">
       <div id="md1">
         <h3>FPL data</h3>
-        <label>DEP</label>
-        <input type="text" id="depAd" placeholder="DEP AD">
-        <label>DEST</label>
-        <input type="text" id="destAd" placeholder="Dest AD">
-        <label>ETD</label>
-        <input type="text" id="etd" placeholder="ETD">
-        <input type="text" id="fixes" placeholder="Route">
+        <div class="fpl-field">
+          <label for="depAd">DEP</label>
+          <input type="text" id="depAd" placeholder="DEP AD">
+        </div>
+        <div class="fpl-field">
+          <label for="destAd">DEST</label>
+          <input type="text" id="destAd" placeholder="DEST AD">
+        </div>
+        <div class="fpl-field">
+          <label for="etd">ETD</label>
+          <input type="text" id="etd" placeholder="ETD">
+        </div>
+        <div class="fpl-field fpl-route-field">
+          <label for="fixes">Route</label>
+          <input type="text" id="fixes" placeholder="Route">
+        </div>
         <div id="routeMessages" class="route-messages" aria-live="polite"></div>
         <div id="routeSummary" class="route-summary" aria-live="polite"></div>
         <button id="buildRouteBtn" type="button">Process FPL</button>

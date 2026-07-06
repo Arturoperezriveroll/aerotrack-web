@@ -2857,3 +2857,95 @@ h3 {
     grid-column: auto;
   }
 }
+
+/* FPL form grouped field polish */
+#md1 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+#md1 .fpl-field {
+  display: grid;
+  gap: 5px;
+  grid-column: span 2;
+  align-content: start;
+}
+
+#md1 .fpl-route-field,
+#routeMessages,
+#routeSummary,
+#md1 h2,
+#airportInfo {
+  grid-column: 1 / -1;
+}
+
+#md1 .fpl-field label {
+  margin: 0;
+  color: var(--at-muted);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+#md1 .fpl-field input[type="text"] {
+  width: 100%;
+  min-height: 46px;
+  padding: 8px 12px;
+  color: #1f2937;
+  font-family: inherit;
+  font-size: clamp(19px, 2.2vw, 25px) !important;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+#md1 .fpl-route-field input[type="text"] {
+  font-size: clamp(18px, 2vw, 24px) !important;
+}
+
+#md1 #buildRouteBtn,
+#md1 #zoomToLastFix {
+  grid-column: span 3;
+  min-height: 46px;
+}
+
+@media (max-width: 760px) {
+  #md1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  #md1 .fpl-field {
+    grid-column: span 1;
+  }
+
+  #md1 .fpl-route-field,
+  #routeMessages,
+  #routeSummary,
+  #md1 h2,
+  #airportInfo {
+    grid-column: 1 / -1;
+  }
+
+  #md1 .fpl-field input[type="text"] {
+    min-height: 42px;
+    font-size: clamp(17px, 4.8vw, 22px) !important;
+  }
+
+  #md1 #buildRouteBtn,
+  #md1 #zoomToLastFix {
+    grid-column: span 1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 430px) {
+  #md1 {
+    grid-template-columns: 1fr;
+  }
+
+  #md1 .fpl-field,
+  #md1 #buildRouteBtn,
+  #md1 #zoomToLastFix {
+    grid-column: 1 / -1;
+  }
+}
