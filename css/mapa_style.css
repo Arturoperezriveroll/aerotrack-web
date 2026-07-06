@@ -2651,3 +2651,22 @@ h3 {
     font-size: clamp(17px, 4.4vw, 22px);
   }
 }
+
+/* Final mobile map control declutter */
+@media (max-width: 760px) {
+  .mapboxgl-ctrl-top-right .mapboxgl-ctrl-group:has(.mapboxgl-ctrl-zoom-in) {
+    display: none;
+  }
+
+  .mapboxgl-ctrl-top-right .mapboxgl-ctrl-geolocate {
+    width: 42px !important;
+    height: 42px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .mapboxgl-ctrl-top-right .mapboxgl-ctrl-geolocate {
+    width: 38px !important;
+    height: 38px !important;
+  }
+}
