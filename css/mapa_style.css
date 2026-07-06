@@ -1551,6 +1551,22 @@ font-weight: bold;
     width: 7ch;
 }
 
+.route-messages {
+    min-height: 1.6rem;
+    margin: 6px 0 10px;
+    padding: 6px 10px;
+    border-left: 4px solid #d97706;
+    background: #fff7ed;
+    color: #7c2d12;
+    font-family: Verdana, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.route-messages:empty {
+    display: none;
+}
+
 
 #distanceTable {
     width: 100%;

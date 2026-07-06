@@ -6,7 +6,7 @@
 <meta name="description" content="AeroTrack flight and route tracking web app.">
 <title>AeroTrack</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/mapa_style.css?v=20260705t">
+<link rel="stylesheet" href="./css/mapa_style.css?v=20260706c">
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
@@ -74,6 +74,7 @@
             <label>ETD</label>
             <input type="text" id="etd" placeholder="ETD">
             <input type="text" id="fixes" placeholder="Route">
+            <div id="routeMessages" class="route-messages" aria-live="polite"></div>
             <button onclick="displayLatLong()">displayLatLong</button>
             <button id="drawRouteBtn">Display on map</button>
             <button id="zoomToLastFix">Zoom Dest AD</button>
@@ -118,7 +119,7 @@
 
 <script src="./JS/display_airport_info.js"></script>
 <script src="./JS/mapaProject/data.js"></script>
-<script src="./JS/mapaProject/route_engine.js?v=20260706b"></script>
+<script src="./JS/mapaProject/route_engine.js?v=20260706c"></script>
 <script src="./JS/updatePolyline.js"></script>
 <script src="./JS/mapaProject/add_map_and_get_pos-1.js?v=20260705p">//f invocadas updatePolyline(), writePos(), updateDistanceFromCurrent()</script>
 <script src="./JS/get_distance_haversine.js"></script>
@@ -129,7 +130,7 @@
 <script src="./JS/mapaProject/start_stop_track.js?v=20260705p"></script>
 <script src="./JS/mapaProject/traffic_info.js?v=20260705m"></script>
 <script src="./JS/get_address_and_wx.js?v=20260705e">//obtener oisicion con la api de google y al mismo tiempo el wx del lugar</script>
-<script src="./JS/geojson/generadorRutas.js?v=20260706a"></script>
+<script src="./JS/geojson/generadorRutas.js?v=20260706c"></script>
 
 <script>
 // Function to generate KML content from tracked data

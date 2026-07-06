@@ -2,7 +2,11 @@
 function displayLatLong() {
   const routeText = document.getElementById('fixes').value;
   const table = document.getElementById('fixTable');
+  const messageBox = document.getElementById('routeMessages');
   table.innerHTML = '';
+  if (messageBox) {
+    messageBox.textContent = '';
+  }
 
   const route = AeroTrackRouteEngine.parseRouteInput(routeText, fixesData, airways);
   console.log('Route input:', routeText);
@@ -14,6 +18,9 @@ function displayLatLong() {
 
   if (route.messages.length > 0) {
     console.warn('Route messages:', route.messages);
+    if (messageBox) {
+      messageBox.textContent = route.messages.join(' | ');
+    }
   }
 }
 
