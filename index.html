@@ -6,7 +6,7 @@
 <meta name="description" content="AeroTrack flight and route tracking web app.">
 <title>AeroTrack</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/mapa_style.css?v=20260706h">
+<link rel="stylesheet" href="./css/mapa_style.css?v=20260706i">
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
@@ -69,19 +69,19 @@
         <h3>FPL data</h3>
         <div class="fpl-field">
           <label for="depAd">DEP</label>
-          <input type="text" id="depAd" placeholder="DEP AD">
+          <input type="text" id="depAd" placeholder="DEP" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false">
         </div>
         <div class="fpl-field">
           <label for="destAd">DEST</label>
-          <input type="text" id="destAd" placeholder="DEST AD">
+          <input type="text" id="destAd" placeholder="DEST" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false">
         </div>
         <div class="fpl-field">
           <label for="etd">ETD</label>
-          <input type="text" id="etd" placeholder="ETD">
+          <input type="text" id="etd" placeholder="ETD" maxlength="4" inputmode="numeric" autocomplete="off" spellcheck="false">
         </div>
         <div class="fpl-field fpl-route-field">
           <label for="fixes">Route</label>
-          <input type="text" id="fixes" placeholder="Route">
+          <input type="text" id="fixes" placeholder="Route" autocomplete="off" autocapitalize="characters" spellcheck="false">
         </div>
         <div id="routeMessages" class="route-messages" aria-live="polite"></div>
         <div id="routeSummary" class="route-summary" aria-live="polite"></div>
@@ -157,6 +157,7 @@
 <script src="./JS/mapaProject/traffic_info.js?v=20260705m"></script>
 <script src="./JS/get_address_and_wx.js?v=20260705e">//obtener oisicion con la api de google y al mismo tiempo el wx del lugar</script>
 <script src="./JS/geojson/generadorRutas.js?v=20260706f"></script>
+<script src="./JS/mapaProject/fpl_inputs.js?v=20260706a"></script>
 <script src="./JS/mapaProject/build_route.js?v=20260706h"></script>
 <script src="./JS/mapaProject/tab_navigation.js?v=20260706b"></script>
 
