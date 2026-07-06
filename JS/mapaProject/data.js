@@ -70,7 +70,7 @@
     }
     },
     {
-    "nombre": "ALESA ",
+    "nombre": "ALESA",
     "coordenadas": {
     "latitud": "17.41",
     "longitud": "-96.23"
