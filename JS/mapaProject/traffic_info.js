@@ -38,8 +38,8 @@ function setTrafficToggleState(isActive, isLoading = false) {
   button.textContent = isLoading
     ? 'Loading...'
     : isActive
-      ? 'Hide Traffic'
-      : 'Show Traffic';
+      ? 'Hide Web Traffic'
+      : 'Show Web Traffic';
 }
 
 function stopTrafficTracking(message = 'Air traffic removed.') {

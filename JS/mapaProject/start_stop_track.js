@@ -136,7 +136,7 @@ function updateTrackingButton() {
   }
 
   const isRecording = watchId !== null;
-  trackingButton.textContent = isRecording ? 'Stop Recording' : 'Record Path';
+  trackingButton.textContent = isRecording ? 'Stop Track' : 'Track Path';
   trackingButton.setAttribute('aria-pressed', String(isRecording));
   trackingButton.classList.toggle('is-active', isRecording);
 }
