@@ -1,6 +1,27 @@
-// let routeCoordinates = []; // Declare this outside of your event listeners
-// routeCoordinates, waypoints, totalDistance, previousWP, cells, name, lat,long, distanceFromCurrent
-// anadirFila
+function getRouteWaypointsFromFixTable() {
+    const table = document.getElementById('fixTable');
+    const rows = table.getElementsByTagName('tr');
+    const waypoints = [];
+
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+
+        if (cells.length < 3) {
+            continue;
+        }
+
+        const name = cells[0].innerText;
+        const lat = parseFloat(cells[1].innerText);
+        const lng = parseFloat(cells[2].innerText);
+
+        if (!isNaN(lat) && !isNaN(lng)) {
+            waypoints.push({ name, lat, lng });
+        }
+    }
+
+    return waypoints;
+}
+
 document.getElementById('drawRouteBtn').addEventListener('click', function () {
     // Ensure geolocation has been set
     if (!currentLocation) {
@@ -9,46 +30,26 @@ document.getElementById('drawRouteBtn').addEventListener('click', function () {
         return;
     }
 
-    const table = document.getElementById('fixTable');
-    const rows = table.getElementsByTagName('tr');
-    const routeCoordinates = [];
-    const waypoints = []; // Store waypoints including name, lat, and lng
-    let totalDistance = 0;
-    let distance = 0; // Declare distance here for the entire loop
-    let previousWaypoint;
     const tbody = document.getElementById('distanceTable').getElementsByTagName('tbody')[0];
+    const waypoints = getRouteWaypointsFromFixTable();
+    const routeCoordinates = waypoints.map((waypoint) => [waypoint.lng, waypoint.lat]);
+    const distanceRows = AeroTrackRouteEngine.computeRouteDistances(waypoints, currentLocation);
+
     tbody.innerHTML = '';
 
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName('td');
-        const name = cells[0].innerText;
-        const lat = parseFloat(cells[1].innerText);
-        const lng = parseFloat(cells[2].innerText);
+    distanceRows.forEach((waypoint) => {
+        anadirFila(
+            waypoint.name,
+            waypoint.legDistanceNm,
+            tbody,
+            waypoint.totalDistanceNm,
+            waypoint.distanceFromCurrentNm
+        );
+    });
 
-        if (!isNaN(lat) && !isNaN(lng)) {
-            const waypoint = { name, lat, lng };
-            routeCoordinates.push([lng, lat]);
-            waypoints.push(waypoint);
-
-            if (previousWaypoint) {
-                // Update the distance variable instead of redeclaring it
-                distance = haversineDistance(previousWaypoint, waypoint, true); // true for miles
-                console.log(`Distance from ${previousWaypoint.name} to ${name}: ${distance.toFixed(1)} miles`);
-                totalDistance += distance;
-            }
-
-            // Calculate distance from the current location
-            const distanceFromCurrent = haversineDistance(currentLocation, { lat, lng }, false); // false for kilometers
-            console.log(`Distance from Current Location to ${name}: ${distanceFromCurrent.toFixed(2)} km`);
-
-            // Call anadirFila with the new distanceFromCurrent parameter
-            anadirFila(waypoint.name, distance, tbody, totalDistance, distanceFromCurrent);
-            previousWaypoint = waypoint;
-        }
-    }
-
+    const lastDistanceRow = distanceRows[distanceRows.length - 1];
     console.log("All route coordinates:", routeCoordinates);
-    console.log(`Total distance: ${totalDistance.toFixed(2)} miles`);
+    console.log(`Total distance: ${lastDistanceRow ? lastDistanceRow.totalDistanceNm.toFixed(2) : '0.00'} NM`);
 
     // SE ELABORA EL MARKER PARA CADA FIJO
     // Add markers and popups for each waypoint
@@ -77,7 +78,7 @@ let tableIsPopulated = false;
 
 // Modified anadirFila to ensure enough cells
 //anadir fila se ejecuta al click en drawRouteButton. 
-function anadirFila(name, distance, tableBody, totalDistance, distanceFromCurrent) {
+function anadirFila(name, distance, tableBody, totalDistance, distanceFromCurrentNm) {
     const row = document.createElement('tr');
     const nameCell = document.createElement('td');
     nameCell.innerText = name;
@@ -86,7 +87,7 @@ function anadirFila(name, distance, tableBody, totalDistance, distanceFromCurren
     const totalDistanceCell = document.createElement('td');
     totalDistanceCell.innerText = totalDistance.toFixed(1);
     const distanceFromCurrentCell = document.createElement('td');
-    distanceFromCurrentCell.innerText = (distanceFromCurrent * 0.539957).toFixed(1);
+    distanceFromCurrentCell.innerText = distanceFromCurrentNm === null ? '' : distanceFromCurrentNm.toFixed(1);
 
     row.appendChild(nameCell);
     row.appendChild(distanceCell);

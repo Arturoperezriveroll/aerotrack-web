@@ -1,6 +1,77 @@
 (function () {
+  const EARTH_RADIUS_KM = 6371;
+  const KM_TO_NM = 0.539957;
+
   function normalizeToken(value) {
     return String(value || '').trim().toUpperCase();
+  }
+
+  function toNumber(value) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  function toRadians(degrees) {
+    return degrees * (Math.PI / 180);
+  }
+
+  function normalizeCoordinates(point) {
+    const lat = toNumber(point?.lat);
+    const lng = toNumber(point?.lng);
+
+    if (lat === null || lng === null) {
+      return null;
+    }
+
+    return { lat, lng };
+  }
+
+  function calculateDistanceKm(pointA, pointB) {
+    const start = normalizeCoordinates(pointA);
+    const end = normalizeCoordinates(pointB);
+
+    if (!start || !end) {
+      return null;
+    }
+
+    const dLat = toRadians(end.lat - start.lat);
+    const dLng = toRadians(end.lng - start.lng);
+    const lat1 = toRadians(start.lat);
+    const lat2 = toRadians(end.lat);
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return EARTH_RADIUS_KM * c;
+  }
+
+  function calculateDistanceNm(pointA, pointB) {
+    const distanceKm = calculateDistanceKm(pointA, pointB);
+    return distanceKm === null ? null : distanceKm * KM_TO_NM;
+  }
+
+  function computeRouteDistances(waypoints, currentLocation) {
+    let totalDistanceNm = 0;
+
+    return (waypoints || []).map((waypoint, index, routeWaypoints) => {
+      const previousWaypoint = routeWaypoints[index - 1];
+      const legDistanceNm = previousWaypoint
+        ? calculateDistanceNm(previousWaypoint, waypoint) || 0
+        : 0;
+      const distanceFromCurrentNm = currentLocation
+        ? calculateDistanceNm(currentLocation, waypoint)
+        : null;
+
+      totalDistanceNm += legDistanceNm;
+
+      return {
+        ...waypoint,
+        legDistanceNm,
+        totalDistanceNm,
+        distanceFromCurrentNm
+      };
+    });
   }
 
   function buildFixIndex(fixes) {
@@ -129,6 +200,9 @@
   window.AeroTrackRouteEngine = {
     buildAirwayIndex,
     buildFixIndex,
+    calculateDistanceKm,
+    calculateDistanceNm,
+    computeRouteDistances,
     getAirwaySegmentFromList,
     getSegmentOfAirway,
     normalizeToken,

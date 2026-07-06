@@ -10,6 +10,10 @@ function updateDistanceFromCurrent(currentLocation) { // el parametro global cur
     for (let i = 0; i < fixRows.length; i++) {
         const fixCells = fixRows[i].getElementsByTagName('td');
 
+        if (fixCells.length < 3 || !distanceRows[i]) {
+            continue;
+        }
+
         // Get the name, latitude, and longitude from fixTable
         const name = fixCells[0].innerText;
         const lat = parseFloat(fixCells[1].innerText);
@@ -20,14 +24,14 @@ function updateDistanceFromCurrent(currentLocation) { // el parametro global cur
             const waypoint = { lat, lng };
 
             // Calculate distance from the current location
-            const distanceFromCurrent = haversineDistance(currentLocation, waypoint) * 0.539957; // Convert to NM
+            const distanceFromCurrent = AeroTrackRouteEngine.calculateDistanceNm(currentLocation, waypoint);
 
             // Update the corresponding row in distanceTable
             const distanceRow = distanceRows[i];
             const distanceCells = distanceRow.getElementsByTagName('td');
 
             // Update the fourth cell with the calculated distance
-            if (distanceCells.length >= 4) {
+            if (distanceCells.length >= 4 && distanceFromCurrent !== null) {
                 console.log(`Setting distance: ${distanceFromCurrent.toFixed(1)}`);
                 distanceCells[3].innerText = distanceFromCurrent.toFixed(1);
             }
