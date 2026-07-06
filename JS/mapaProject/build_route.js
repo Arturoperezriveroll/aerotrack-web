@@ -12,7 +12,7 @@ function updateRouteSummary(route, distanceRows) {
         return;
     }
 
-    const fixesCount = route?.fixes?.length || 0;
+    const waypointCount = route?.fixes?.length || 0;
     const lastDistanceRow = Array.isArray(distanceRows)
         ? distanceRows[distanceRows.length - 1]
         : null;
@@ -20,7 +20,7 @@ function updateRouteSummary(route, distanceRows) {
         ? `${lastDistanceRow.totalDistanceNm.toFixed(1)} NM`
         : '0.0 NM';
 
-    summary.textContent = `${fixesCount} fixes | ${totalDistanceNm}`;
+    summary.textContent = `${waypointCount} WP | ${totalDistanceNm}`;
 
     if (route?.messages?.length) {
         summary.textContent += ` | ${route.messages.length} aviso(s)`;
