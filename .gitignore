@@ -4,3 +4,4 @@ Thumbs.db
 .agents/
 config.local.js
 *.log
+navcalc-c/build/
