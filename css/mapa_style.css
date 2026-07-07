@@ -3044,6 +3044,31 @@ h3 {
 
 /* Narrow desktop correction: a resized desktop browser should not behave like a phone. */
 @media (min-width: 521px) and (max-width: 760px) and (hover: hover) and (pointer: fine) {
+  #cont21 {
+    grid-template-columns: repeat(3, minmax(118px, 1fr)) minmax(180px, 1.3fr);
+    min-height: 88px;
+  }
+
+  #posInfo.posInfo {
+    display: flex;
+    grid-column: auto;
+    min-height: 88px;
+    height: 100%;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .infoBox p:first-child {
+    padding-top: 8px;
+    font-size: clamp(18px, 2vw, 26px) !important;
+  }
+
+  .infoBox p.numbers,
+  .infoBox .numbers {
+    padding: 10px 6px 12px;
+    font-size: clamp(30px, 4vw, 44px) !important;
+  }
+
   #mapContainer {
     position: relative;
     top: auto;
