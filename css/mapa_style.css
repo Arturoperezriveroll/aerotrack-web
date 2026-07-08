@@ -3081,3 +3081,175 @@ h3 {
     display: block !important;
   }
 }
+
+/* Traffic conflict detection */
+.traffic-conflict-panel {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #f59e0b;
+  border-radius: var(--at-radius);
+  background: #fffbeb;
+  color: #92400e;
+}
+
+.traffic-conflict-panel > strong {
+  color: #7c2d12;
+  font-size: 15px;
+  line-height: 1.15;
+}
+
+.traffic-conflict-panel-clear {
+  border-color: #86efac;
+  background: #ecfdf3;
+  color: #14532d;
+}
+
+.traffic-conflict-panel-clear > strong {
+  color: #14532d;
+}
+
+.traffic-conflict-panel-solved {
+  border-color: #38bdf8;
+  background: #eff6ff;
+  color: #075985;
+}
+
+.traffic-conflict-panel-solved > strong {
+  color: #0c4a6e;
+}
+
+.traffic-conflict-panel-solved > span {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.traffic-conflict-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.traffic-conflict-list li {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid #fed7aa;
+  border-radius: 6px;
+  background: #fff7ed;
+}
+
+.traffic-conflict-list strong {
+  color: #7c2d12;
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.traffic-conflict-list span {
+  color: #9a3412;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.traffic-criteria-panel {
+  width: 100%;
+  margin-top: 8px;
+  padding: 7px 9px;
+  border: 1px solid var(--at-line);
+  border-radius: 6px;
+  background: #f8fafc;
+  color: var(--at-muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.traffic-meta-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.traffic-meta-panel span {
+  padding: 7px 9px;
+  border: 1px solid var(--at-line);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--at-muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.aircraft-marker-conflict {
+  border-color: #7f1d1d;
+  background: #ef4444;
+}
+
+.aircraft-marker-conflict svg {
+  fill: #ffffff;
+}
+
+.aircraft-popup-warning {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid #fecaca;
+  color: #991b1b;
+  font-weight: 800;
+}
+
+.traffic-test-toggle.is-active {
+  background: #92400e;
+  color: #ffffff;
+}
+
+.aircraft-marker {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-width: 2px;
+}
+
+.aircraft-marker svg {
+  width: 17px;
+  height: 17px;
+}
+
+.aircraft-test-label {
+  position: absolute;
+  left: 50%;
+  top: -20px;
+  transform: translateX(-50%);
+  padding: 2px 5px;
+  border: 1px solid #7f1d1d;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #7f1d1d;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.18);
+}
+
+#cont3 {
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+}
+
+@media (max-width: 430px) {
+  #cont3 {
+    grid-template-columns: 1fr;
+  }
+
+  .traffic-meta-panel {
+    grid-template-columns: 1fr;
+  }
+}

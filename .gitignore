@@ -4,4 +4,6 @@ Thumbs.db
 .agents/
 config.local.js
 *.log
+__pycache__/
+*.pyc
 navcalc-c/build/
