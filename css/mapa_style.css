@@ -3253,3 +3253,23 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+/* Keep the three top action buttons inline on phones to preserve map space. */
+#cont3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 430px) {
+  #cont3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    padding: 5px;
+  }
+
+  .traffic-btn {
+    min-height: 40px;
+    padding: 5px 5px;
+    font-size: clamp(11px, 3.2vw, 14px);
+    line-height: 1.05;
+  }
+}

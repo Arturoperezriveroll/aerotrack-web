@@ -16,6 +16,7 @@ const TEST_TRAFFIC_REFRESH_MS = 10000;
 const TEST_TRAFFIC_INITIAL_DISTANCE_NM = 35;
 const TEST_TRAFFIC_RESOLUTION_SEC = 60;
 const TEST_TRAFFIC_RESOLUTION_ALTITUDE_FT = 33000;
+const TEST_TRAFFIC_CENTER = { lat: 15.0, lon: -99.0 };
 const EARTH_RADIUS_NM = 3440.0695;
 const TRAFFIC_CONFLICT_SOURCE_ID = 'traffic-conflict-projections';
 const TRAFFIC_CONFLICT_LAYER_ID = 'traffic-conflict-projections-line';
@@ -220,6 +221,11 @@ function getMidpoint(pointA, pointB) {
   };
 }
 
+function formatUtcTimeFromNow(offsetSec) {
+  const date = new Date(Date.now() + offsetSec * 1000);
+  return `${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}:${String(date.getUTCSeconds()).padStart(2, '0')}Z`;
+}
+
 function getConflictProjectionFeatures(conflicts) {
   const features = [];
 
@@ -255,11 +261,7 @@ function getConflictPointFeatures(conflicts) {
   return conflicts
     .filter(conflict => Number.isFinite(conflict.convergenceLat) && Number.isFinite(conflict.convergenceLon))
     .map((conflict, index) => {
-      const conflictTime = new Date(Date.now() + conflict.timeSec * 1000).toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      });
+      const conflictTime = formatUtcTimeFromNow(conflict.timeSec);
 
       return {
         type: 'Feature',
@@ -511,11 +513,7 @@ function getConflictListHtml(conflicts, trafficStatus = null) {
   const items = conflicts.slice(0, 6).map(conflict => {
     const aircraftA = escapeHtml(getAircraftName(conflict.aircraftA));
     const aircraftB = escapeHtml(getAircraftName(conflict.aircraftB));
-    const conflictTime = new Date(Date.now() + conflict.timeSec * 1000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
+    const conflictTime = formatUtcTimeFromNow(conflict.timeSec);
     const convergencePoint = Number.isFinite(conflict.convergenceLat) && Number.isFinite(conflict.convergenceLon)
       ? `${conflict.convergenceLat.toFixed(3)}, ${conflict.convergenceLon.toFixed(3)}`
       : 'N/A';
@@ -701,7 +699,7 @@ function addAircraftMarkers(aircraftData, refreshMs = TRAFFIC_REFRESH_MS, traffi
 }
 
 function createTestConflictTraffic(elapsedSec = 0) {
-  const center = getTrafficSearchCenter();
+  const center = TEST_TRAFFIC_CENTER;
   const southwestPoint = projectPoint({ lat: center.lat, lon: center.lon }, 225, TEST_TRAFFIC_INITIAL_DISTANCE_NM);
   const northwestPoint = projectPoint({ lat: center.lat, lon: center.lon }, 315, TEST_TRAFFIC_INITIAL_DISTANCE_NM);
   const northPoint = projectPoint({ lat: center.lat, lon: center.lon }, 0, 10);
