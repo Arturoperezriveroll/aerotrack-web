@@ -5,7 +5,7 @@ let testTrafficElapsedSec = 0;
 let selectedAircraft = null;
 let isTrafficLoading = false;
 
-const TRAFFIC_REFRESH_MS = 30000;
+const TRAFFIC_REFRESH_MS = 15000;
 const TRAFFIC_RADIUS_NM = 300;
 const TRAFFIC_API_HOST = 'adsbexchange-com1.p.rapidapi.com';
 const TRAFFIC_CONFLICT_HORIZONTAL_NM = 5;
