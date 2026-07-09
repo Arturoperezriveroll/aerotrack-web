@@ -1,4 +1,5 @@
 let aircraftMarkers = [];
+let aircraftLabelMarkers = [];
 let trackingInterval = null;
 let testTrafficInterval = null;
 let testTrafficElapsedSec = 0;
@@ -16,10 +17,12 @@ const TEST_TRAFFIC_REFRESH_MS = 10000;
 const TEST_TRAFFIC_INITIAL_DISTANCE_NM = 35;
 const TEST_TRAFFIC_RESOLUTION_SEC = 60;
 const TEST_TRAFFIC_RESOLUTION_ALTITUDE_FT = 33000;
-const TEST_TRAFFIC_CENTER = { lat: 15.0, lon: -99.0 };
+const TEST_TRAFFIC_CENTER = { lat: 15.0, lon: -97.275 };
 const EARTH_RADIUS_NM = 3440.0695;
 const TRAFFIC_CONFLICT_SOURCE_ID = 'traffic-conflict-projections';
-const TRAFFIC_CONFLICT_LAYER_ID = 'traffic-conflict-projections-line';
+const TRAFFIC_CONFLICT_LAYER_ID = 'traffic-conflict-safe-line';
+const TRAFFIC_CONFLICT_LOSS_LAYER_ID = 'traffic-conflict-loss-line';
+const TRAFFIC_CONFLICT_SEPARATION_LAYER_ID = 'traffic-conflict-separation-line';
 const TRAFFIC_CONFLICT_POINT_SOURCE_ID = 'traffic-conflict-points';
 const TRAFFIC_CONFLICT_POINT_LAYER_ID = 'traffic-conflict-points-circle';
 const TRAFFIC_CONFLICT_LABEL_LAYER_ID = 'traffic-conflict-points-label';
@@ -33,7 +36,9 @@ function setTrafficStatus(message, type = 'info') {
 
 function clearAircraftMarkers() {
   aircraftMarkers.forEach(marker => marker.remove());
+  aircraftLabelMarkers.forEach(marker => marker.remove());
   aircraftMarkers = [];
+  aircraftLabelMarkers = [];
   clearTrafficConflictLines();
 }
 
@@ -176,22 +181,41 @@ function getAircraftName(aircraft) {
   return cleanText(aircraft.flight) || cleanText(aircraft.hex) || 'Aircraft';
 }
 
+function isAircraftOnGround(aircraft) {
+  if (aircraft.on_ground === true) return true;
+
+  return [aircraft.alt_baro, aircraft.alt_geom, aircraft.airground]
+    .some(value => {
+      if (typeof value !== 'string') return false;
+      const normalized = value.trim().toLowerCase().replace(/[\s_-]/g, '');
+      return normalized === 'ground' || normalized === 'gnd' || normalized === 'onground';
+    });
+}
+
 function getAircraftAltitudeFt(aircraft) {
   if (Number.isFinite(aircraft.alt_baro)) return aircraft.alt_baro;
   if (Number.isFinite(aircraft.alt_geom)) return aircraft.alt_geom;
   return null;
 }
 
-function getTrafficState(aircraft) {
+function getAircraftNominalAltitudeFt(aircraft) {
   const altitudeFt = getAircraftAltitudeFt(aircraft);
+  return Number.isFinite(altitudeFt)
+    ? Math.round(altitudeFt / 100) * 100
+    : null;
+}
 
-  if (!Number.isFinite(aircraft.lat) ||
+function getTrafficState(aircraft) {
+  const altitudeFt = getAircraftNominalAltitudeFt(aircraft);
+  const groundSpeedKt = Number(aircraft.gs);
+
+  if (isAircraftOnGround(aircraft) ||
+      !Number.isFinite(aircraft.lat) ||
       !Number.isFinite(aircraft.lon) ||
       !Number.isFinite(altitudeFt) ||
-      !Number.isFinite(aircraft.gs) ||
+      !Number.isFinite(groundSpeedKt) ||
       !Number.isFinite(aircraft.track) ||
-      aircraft.gs <= 0 ||
-      aircraft.alt_baro === 'ground') {
+      groundSpeedKt <= 0) {
     return null;
   }
 
@@ -200,7 +224,7 @@ function getTrafficState(aircraft) {
     lat: aircraft.lat,
     lon: aircraft.lon,
     altitudeFt,
-    groundSpeedKt: aircraft.gs,
+    groundSpeedKt,
     trackDeg: aircraft.track
   };
 }
@@ -235,47 +259,137 @@ function getConflictProjectionFeatures(conflicts) {
       if (!state) return;
 
       const projectionTimeSec = TRAFFIC_CONFLICT_LOOKAHEAD_SEC;
+      const lossStartSec = Math.max(0, Math.min(conflict.lossStartSec, projectionTimeSec));
+      const lossEndSec = Math.max(lossStartSec, Math.min(conflict.lossEndSec, projectionTimeSec));
+      const lossStartPoint = projectTrafficState(state, lossStartSec);
+      const lossEndPoint = projectTrafficState(state, lossEndSec);
       const projectedPoint = projectTrafficState(state, projectionTimeSec);
 
+      if (lossStartSec > 0) {
+        features.push({
+          type: 'Feature',
+          properties: {
+            featureType: 'trajectory-safe',
+            conflictIndex: index,
+            callsign: getAircraftName(aircraft)
+          },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [state.lon, state.lat],
+              [lossStartPoint.lon, lossStartPoint.lat]
+            ]
+          }
+        });
+      }
+
+      if (lossEndSec > lossStartSec) {
+        features.push({
+          type: 'Feature',
+          properties: {
+            featureType: 'trajectory-conflict',
+            conflictIndex: index,
+            callsign: getAircraftName(aircraft)
+          },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [lossStartPoint.lon, lossStartPoint.lat],
+              [lossEndPoint.lon, lossEndPoint.lat]
+            ]
+          }
+        });
+      }
+
+      if (lossEndSec < projectionTimeSec) {
+        features.push({
+          type: 'Feature',
+          properties: {
+            featureType: 'trajectory-safe',
+            conflictIndex: index,
+            callsign: getAircraftName(aircraft)
+          },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [lossEndPoint.lon, lossEndPoint.lat],
+              [projectedPoint.lon, projectedPoint.lat]
+            ]
+          }
+        });
+      }
+    });
+
+    if (Number.isFinite(conflict.cpaLatA) &&
+        Number.isFinite(conflict.cpaLonA) &&
+        Number.isFinite(conflict.cpaLatB) &&
+        Number.isFinite(conflict.cpaLonB)) {
       features.push({
         type: 'Feature',
         properties: {
-          conflictIndex: index,
-          callsign: getAircraftName(aircraft)
+          featureType: 'separation',
+          conflictIndex: index
         },
         geometry: {
           type: 'LineString',
           coordinates: [
-            [state.lon, state.lat],
-            [projectedPoint.lon, projectedPoint.lat]
+            [conflict.cpaLonA, conflict.cpaLatA],
+            [conflict.cpaLonB, conflict.cpaLatB]
           ]
         }
       });
-    });
+    }
   });
 
   return features;
 }
 
 function getConflictPointFeatures(conflicts) {
-  return conflicts
-    .filter(conflict => Number.isFinite(conflict.convergenceLat) && Number.isFinite(conflict.convergenceLon))
-    .map((conflict, index) => {
-      const conflictTime = formatUtcTimeFromNow(conflict.timeSec);
+  const features = [];
 
-      return {
+  conflicts.forEach((conflict, index) => {
+    if (!Number.isFinite(conflict.convergenceLat) ||
+        !Number.isFinite(conflict.convergenceLon) ||
+        !Number.isFinite(conflict.cpaLatA) ||
+        !Number.isFinite(conflict.cpaLonA) ||
+        !Number.isFinite(conflict.cpaLatB) ||
+        !Number.isFinite(conflict.cpaLonB)) {
+      return;
+    }
+
+    [
+      { lat: conflict.cpaLatA, lon: conflict.cpaLonA },
+      { lat: conflict.cpaLatB, lon: conflict.cpaLonB }
+    ].forEach(point => {
+      features.push({
         type: 'Feature',
         properties: {
-          conflictIndex: index,
-          label: `CPA ${conflictTime}`,
-          detail: `${Math.round(conflict.timeSec)}s`
+          featureType: 'position',
+          conflictIndex: index
         },
         geometry: {
           type: 'Point',
-          coordinates: [conflict.convergenceLon, conflict.convergenceLat]
+          coordinates: [point.lon, point.lat]
         }
-      };
+      });
     });
+
+    features.push({
+      type: 'Feature',
+      properties: {
+        featureType: 'label',
+        conflictIndex: index,
+        label: `CPA ${formatUtcTimeFromNow(conflict.timeSec)} / ${conflict.horizontalSepNm.toFixed(1)} NM`,
+        detail: `${Math.round(conflict.timeSec)}s`
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [conflict.convergenceLon, conflict.convergenceLat]
+      }
+    });
+  });
+
+  return features;
 }
 
 function getEmptyFeatureCollection() {
@@ -341,11 +455,41 @@ function updateTrafficConflictLines(conflicts, retryCount = 0) {
         id: TRAFFIC_CONFLICT_LAYER_ID,
         type: 'line',
         source: TRAFFIC_CONFLICT_SOURCE_ID,
+        filter: ['==', ['get', 'featureType'], 'trajectory-safe'],
         paint: {
-          'line-color': '#dc2626',
+          'line-color': '#f59e0b',
           'line-width': 3,
           'line-opacity': 0.9,
           'line-dasharray': [1.5, 1]
+        }
+      });
+    }
+
+    if (!mapboxMap.getLayer(TRAFFIC_CONFLICT_LOSS_LAYER_ID)) {
+      mapboxMap.addLayer({
+        id: TRAFFIC_CONFLICT_LOSS_LAYER_ID,
+        type: 'line',
+        source: TRAFFIC_CONFLICT_SOURCE_ID,
+        filter: ['==', ['get', 'featureType'], 'trajectory-conflict'],
+        paint: {
+          'line-color': '#dc2626',
+          'line-width': 4,
+          'line-opacity': 1,
+          'line-dasharray': [1.5, 1]
+        }
+      });
+    }
+
+    if (!mapboxMap.getLayer(TRAFFIC_CONFLICT_SEPARATION_LAYER_ID)) {
+      mapboxMap.addLayer({
+        id: TRAFFIC_CONFLICT_SEPARATION_LAYER_ID,
+        type: 'line',
+        source: TRAFFIC_CONFLICT_SOURCE_ID,
+        filter: ['==', ['get', 'featureType'], 'separation'],
+        paint: {
+          'line-color': '#facc15',
+          'line-width': 3,
+          'line-opacity': 1
         }
       });
     }
@@ -355,11 +499,12 @@ function updateTrafficConflictLines(conflicts, retryCount = 0) {
         id: TRAFFIC_CONFLICT_POINT_LAYER_ID,
         type: 'circle',
         source: TRAFFIC_CONFLICT_POINT_SOURCE_ID,
+        filter: ['==', ['get', 'featureType'], 'position'],
         paint: {
-          'circle-radius': 7,
-          'circle-color': '#dc2626',
+          'circle-radius': 6,
+          'circle-color': '#facc15',
           'circle-stroke-color': '#ffffff',
-          'circle-stroke-width': 3
+          'circle-stroke-width': 2
         }
       });
     }
@@ -369,6 +514,7 @@ function updateTrafficConflictLines(conflicts, retryCount = 0) {
         id: TRAFFIC_CONFLICT_LABEL_LAYER_ID,
         type: 'symbol',
         source: TRAFFIC_CONFLICT_POINT_SOURCE_ID,
+        filter: ['==', ['get', 'featureType'], 'label'],
         layout: {
           'text-field': ['get', 'label'],
           'text-size': 13,
@@ -394,39 +540,46 @@ function updateTrafficConflictLines(conflicts, retryCount = 0) {
   }
 }
 
+function refineSeparationCrossing(stateA, stateB, startSec, endSec, enteringConflict) {
+  let lowSec = startSec;
+  let highSec = endSec;
+
+  for (let iteration = 0; iteration < 12; iteration += 1) {
+    const midSec = (lowSec + highSec) / 2;
+    const separationNm = distanceNm(
+      projectTrafficState(stateA, midSec),
+      projectTrafficState(stateB, midSec)
+    );
+    const isConflict = separationNm < TRAFFIC_CONFLICT_HORIZONTAL_NM;
+
+    if (enteringConflict ? isConflict : !isConflict) {
+      highSec = midSec;
+    } else {
+      lowSec = midSec;
+    }
+  }
+
+  return (lowSec + highSec) / 2;
+}
+
 function findPairConflict(stateA, stateB) {
   const verticalSepFt = Math.abs(stateA.altitudeFt - stateB.altitudeFt);
   if (verticalSepFt >= TRAFFIC_CONFLICT_VERTICAL_FT) return null;
 
   const currentSepNm = distanceNm(stateA, stateB);
-  if (currentSepNm < TRAFFIC_CONFLICT_HORIZONTAL_NM) {
-    const convergencePoint = getMidpoint(stateA, stateB);
-
-    return {
-      aircraftA: stateA.aircraft,
-      aircraftB: stateB.aircraft,
-      timeSec: 0,
-      horizontalSepNm: currentSepNm,
-      verticalSepFt,
-      convergenceLat: convergencePoint.lat,
-      convergenceLon: convergencePoint.lon
-    };
-  }
-
-  const nextPointA = projectTrafficState(stateA, TRAFFIC_CONFLICT_STEP_SEC);
-  const nextPointB = projectTrafficState(stateB, TRAFFIC_CONFLICT_STEP_SEC);
-  const nextSepNm = distanceNm(nextPointA, nextPointB);
-  if (nextSepNm >= currentSepNm) return null;
-
   let minSepNm = currentSepNm;
   let minTimeSec = 0;
   let minPointA = stateA;
   let minPointB = stateB;
+  let wasInConflict = currentSepNm < TRAFFIC_CONFLICT_HORIZONTAL_NM;
+  let lossStartSec = wasInConflict ? 0 : null;
+  let lossEndSec = null;
 
   for (let timeSec = TRAFFIC_CONFLICT_STEP_SEC; timeSec <= TRAFFIC_CONFLICT_LOOKAHEAD_SEC; timeSec += TRAFFIC_CONFLICT_STEP_SEC) {
     const projectedA = projectTrafficState(stateA, timeSec);
     const projectedB = projectTrafficState(stateB, timeSec);
     const horizontalSepNm = distanceNm(projectedA, projectedB);
+    const isInConflict = horizontalSepNm < TRAFFIC_CONFLICT_HORIZONTAL_NM;
 
     if (horizontalSepNm < minSepNm) {
       minSepNm = horizontalSepNm;
@@ -434,9 +587,30 @@ function findPairConflict(stateA, stateB) {
       minPointA = projectedA;
       minPointB = projectedB;
     }
+
+    if (!wasInConflict && isInConflict && lossStartSec === null) {
+      lossStartSec = refineSeparationCrossing(
+        stateA,
+        stateB,
+        timeSec - TRAFFIC_CONFLICT_STEP_SEC,
+        timeSec,
+        true
+      );
+    } else if (wasInConflict && !isInConflict && lossEndSec === null) {
+      lossEndSec = refineSeparationCrossing(
+        stateA,
+        stateB,
+        timeSec - TRAFFIC_CONFLICT_STEP_SEC,
+        timeSec,
+        false
+      );
+    }
+
+    wasInConflict = isInConflict;
   }
 
-  if (minSepNm >= TRAFFIC_CONFLICT_HORIZONTAL_NM) return null;
+  if (lossStartSec === null || minSepNm >= TRAFFIC_CONFLICT_HORIZONTAL_NM) return null;
+  if (lossEndSec === null) lossEndSec = TRAFFIC_CONFLICT_LOOKAHEAD_SEC;
   const convergencePoint = getMidpoint(minPointA, minPointB);
 
   return {
@@ -445,6 +619,12 @@ function findPairConflict(stateA, stateB) {
     timeSec: minTimeSec,
     horizontalSepNm: minSepNm,
     verticalSepFt,
+    lossStartSec,
+    lossEndSec,
+    cpaLatA: minPointA.lat,
+    cpaLonA: minPointA.lon,
+    cpaLatB: minPointB.lat,
+    cpaLonB: minPointB.lon,
     convergenceLat: convergencePoint.lat,
     convergenceLon: convergencePoint.lon
   };
@@ -548,10 +728,10 @@ function getTrafficMetaHtml(aircraftCount, refreshMs = TRAFFIC_REFRESH_MS) {
 
 function getAircraftLabel(aircraft) {
   const flight = getAircraftName(aircraft);
-  const altitude = aircraft.alt_baro === 'ground'
+  const altitude = isAircraftOnGround(aircraft)
     ? 'GND'
     : aircraft.alt_baro
-      ? `F${String(Math.floor(aircraft.alt_baro / 100)).padStart(3, '0')}`
+      ? `F${String(Math.round(aircraft.alt_baro / 100)).padStart(3, '0')}`
       : '';
   const speed = aircraft.gs ? `N${Math.floor(aircraft.gs)}` : '';
 
@@ -566,10 +746,10 @@ function getAircraftPopupHtml(aircraft) {
   const flight = getAircraftName(aircraft);
   const type = cleanText(aircraft.t);
   const distance = Number.isFinite(aircraft.dst) ? `${Math.floor(aircraft.dst)} NM` : '';
-  const altitude = aircraft.alt_baro === 'ground'
+  const altitude = isAircraftOnGround(aircraft)
     ? 'GND'
     : aircraft.alt_baro
-      ? `F${String(Math.floor(aircraft.alt_baro / 100)).padStart(3, '0')}`
+      ? `F${String(Math.round(aircraft.alt_baro / 100)).padStart(3, '0')}`
       : '';
   const speed = aircraft.gs ? `${Math.floor(aircraft.gs)} kt` : '';
   const heading = Number.isFinite(aircraft.track)
@@ -603,10 +783,10 @@ function updateAircraftDetails(aircraft) {
   const squawk = cleanText(aircraft.squawk);
   const hex = cleanText(aircraft.hex);
   const altGeom = hasValue(aircraft.alt_geom) ? aircraft.alt_geom : '';
-  const altitude = aircraft.alt_baro === 'ground'
+  const altitude = isAircraftOnGround(aircraft)
     ? 'GND'
     : aircraft.alt_baro
-      ? `F${String(Math.floor(aircraft.alt_baro / 100)).padStart(3, '0')}`
+      ? `F${String(Math.round(aircraft.alt_baro / 100)).padStart(3, '0')}`
       : '';
 
   aircraftDetailsDiv.innerHTML = `
@@ -638,17 +818,14 @@ function addAircraftMarkers(aircraftData, refreshMs = TRAFFIC_REFRESH_MS, traffi
       markerElement.className = 'aircraft-marker';
       markerElement.classList.toggle('aircraft-marker-conflict', aircraft._trafficConflicts.length > 0);
       markerElement.classList.toggle('aircraft-marker-test', isTestAircraft(aircraft));
+      markerElement.classList.toggle('aircraft-marker-ground', isAircraftOnGround(aircraft));
       markerElement.setAttribute('role', 'button');
       markerElement.setAttribute('tabindex', '0');
       markerElement.setAttribute('aria-label', getAircraftLabel(aircraft));
-      const testLabel = isTestAircraft(aircraft)
-        ? `<span class="aircraft-test-label">${escapeHtml(getAircraftName(aircraft))}</span>`
-        : '';
       markerElement.innerHTML = `
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M12 2a2 2 0 0 0-2 2v5L2 14v2l8-2.5V19l-2 1.5V22l4-1 4 1v-1.5L14 19v-5.5l8 2.5v-2l-8-5V4a2 2 0 0 0-2-2Z"/>
         </svg>
-        ${testLabel}
       `;
 
       const popup = new mapboxgl.Popup({
@@ -665,6 +842,23 @@ function addAircraftMarkers(aircraftData, refreshMs = TRAFFIC_REFRESH_MS, traffi
         .setPopup(popup)
         .setRotation(Number.isFinite(aircraft.track) ? aircraft.track : 0)
         .addTo(mapboxMap);
+
+      if (isTestAircraft(aircraft)) {
+        const labelElement = document.createElement('span');
+        labelElement.className = 'aircraft-test-label';
+        labelElement.textContent = getAircraftName(aircraft);
+
+        const labelMarker = new mapboxgl.Marker(labelElement, {
+          anchor: 'bottom',
+          offset: [0, -15],
+          pitchAlignment: 'viewport',
+          rotationAlignment: 'viewport'
+        })
+          .setLngLat([aircraft.lon, aircraft.lat])
+          .addTo(mapboxMap);
+
+        aircraftLabelMarkers.push(labelMarker);
+      }
 
       let lastMarkerActivation = 0;
       const activateMarker = (event) => {
@@ -703,12 +897,14 @@ function createTestConflictTraffic(elapsedSec = 0) {
   const southwestPoint = projectPoint({ lat: center.lat, lon: center.lon }, 225, TEST_TRAFFIC_INITIAL_DISTANCE_NM);
   const northwestPoint = projectPoint({ lat: center.lat, lon: center.lon }, 315, TEST_TRAFFIC_INITIAL_DISTANCE_NM);
   const northPoint = projectPoint({ lat: center.lat, lon: center.lon }, 0, 10);
-  const testSpeedKt = 420;
-  const distanceFlownNm = testSpeedKt * elapsedSec / 3600;
-  const test01Point = projectPoint(southwestPoint, 45, distanceFlownNm);
+  const test01SpeedKt = 420;
+  const test02SpeedKt = 450;
+  const test01DistanceFlownNm = test01SpeedKt * elapsedSec / 3600;
+  const test02DistanceFlownNm = test02SpeedKt * elapsedSec / 3600;
+  const test01Point = projectPoint(southwestPoint, 45, test01DistanceFlownNm);
   const test02InitialTrack = 135;
   const test02ManeuverActive = elapsedSec >= TEST_TRAFFIC_RESOLUTION_SEC;
-  const test02Point = projectPoint(northwestPoint, test02InitialTrack, distanceFlownNm);
+  const test02Point = projectPoint(northwestPoint, test02InitialTrack, test02DistanceFlownNm);
   const test02AltitudeFt = test02ManeuverActive
     ? TEST_TRAFFIC_RESOLUTION_ALTITUDE_FT
     : 35000;
@@ -722,7 +918,7 @@ function createTestConflictTraffic(elapsedSec = 0) {
       lon: test01Point.lon,
       alt_baro: 35000,
       alt_geom: 35000,
-      gs: 420,
+      gs: test01SpeedKt,
       track: 45
     },
     {
@@ -733,7 +929,7 @@ function createTestConflictTraffic(elapsedSec = 0) {
       lon: test02Point.lon,
       alt_baro: test02AltitudeFt,
       alt_geom: test02AltitudeFt,
-      gs: testSpeedKt,
+      gs: test02SpeedKt,
       track: test02InitialTrack
     },
     {
@@ -759,6 +955,19 @@ function getTestTrafficStatus(elapsedSec) {
   };
 }
 
+function centerMapOnTestTraffic() {
+  if (typeof mapboxMap === 'undefined' || !mapboxMap?.flyTo) return;
+
+  mapboxMap.resize();
+  mapboxMap.flyTo({
+    center: [TEST_TRAFFIC_CENTER.lon, TEST_TRAFFIC_CENTER.lat],
+    zoom: 7.5,
+    bearing: 0,
+    pitch: 0,
+    duration: 900
+  });
+}
+
 function loadTestTrafficConflict() {
   if (trackingInterval) {
     clearInterval(trackingInterval);
@@ -777,6 +986,7 @@ function loadTestTrafficConflict() {
     TEST_TRAFFIC_REFRESH_MS,
     getTestTrafficStatus(testTrafficElapsedSec)
   );
+  centerMapOnTestTraffic();
 
   testTrafficInterval = setInterval(() => {
     testTrafficElapsedSec += TEST_TRAFFIC_REFRESH_MS / 1000;
