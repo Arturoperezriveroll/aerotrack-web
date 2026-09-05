@@ -1,0 +1,12 @@
+.git
+.github
+.agents
+.vscode
+.env
+.env.*
+!.env.example
+config.local.js
+navcalc-c/build
+__pycache__
+*.pyc
+*.log

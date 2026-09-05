@@ -1,0 +1,5 @@
+window.AEROTRACK_CONFIG = {
+  mapboxAccessToken: "${MAPBOX_ACCESS_TOKEN}",
+  mapboxStyle: "${MAPBOX_STYLE}",
+  adsbRapidApiKey: "${ADSB_RAPIDAPI_KEY}"
+};
