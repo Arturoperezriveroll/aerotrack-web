@@ -2876,6 +2876,7 @@ h3 {
 }
 
 #routeMessages,
+#routeSuggestion,
 #routeSummary,
 #md1 h2,
 #airportInfo {
@@ -2907,9 +2908,25 @@ h3 {
 }
 
 #md1 #buildRouteBtn,
+#md1 #suggestRouteBtn,
 #md1 #zoomToLastFix {
-  grid-column: span 3;
+  grid-column: span 2;
   min-height: 46px;
+}
+
+.route-suggestion {
+  min-height: 1.25em;
+  color: #0f766e;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.route-suggestion:empty {
+  display: none;
+}
+
+.route-suggestion.has-error {
+  color: #b91c1c;
 }
 
 @media (max-width: 760px) {
@@ -2924,6 +2941,7 @@ h3 {
 
   #md1 .fpl-route-field,
   #routeMessages,
+  #routeSuggestion,
   #routeSummary,
   #md1 h2,
   #airportInfo {
@@ -2936,6 +2954,7 @@ h3 {
   }
 
   #md1 #buildRouteBtn,
+  #md1 #suggestRouteBtn,
   #md1 #zoomToLastFix {
     grid-column: span 1;
     width: 100%;
@@ -2949,6 +2968,7 @@ h3 {
 
   #md1 .fpl-route-field,
   #md1 #buildRouteBtn,
+  #md1 #suggestRouteBtn,
   #md1 #zoomToLastFix {
     grid-column: 1 / -1;
   }

@@ -6,7 +6,7 @@
 <meta name="description" content="AeroTrack flight and route tracking web app.">
 <title>AeroTrack</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/mapa_style.css?v=20260708b">
+<link rel="stylesheet" href="./css/mapa_style.css?v=20261113a">
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
@@ -85,7 +85,9 @@
           <input type="text" id="fixes" placeholder="Route" autocomplete="off" autocapitalize="characters" spellcheck="false">
         </div>
         <div id="routeMessages" class="route-messages" aria-live="polite"></div>
+        <div id="routeSuggestion" class="route-suggestion" aria-live="polite"></div>
         <div id="routeSummary" class="route-summary" aria-live="polite"></div>
+        <button id="suggestRouteBtn" type="button">Suggest Route</button>
         <button id="buildRouteBtn" type="button">Process FPL</button>
         <button id="zoomToLastFix">Zoom Dest AD</button>
         <h2>DEST AD info</h2>
@@ -147,6 +149,7 @@
 <script src="./JS/mapaProject/data.js?v=20260706e"></script>
 <script src="./JS/mapaProject/data_validator.js?v=20260706a"></script>
 <script src="./JS/mapaProject/route_engine.js?v=20260706c"></script>
+<script src="./JS/mapaProject/route_suggester.js?v=20261113a"></script>
 <script src="./JS/updatePolyline.js"></script>
 <script src="./JS/mapaProject/add_map_and_get_pos-1.js?v=20260707a">//f invocadas updatePolyline(), writePos(), updateDistanceFromCurrent()</script>
 <script src="./JS/get_distance_haversine.js"></script>
@@ -160,6 +163,7 @@
 <script src="./JS/geojson/generadorRutas.js?v=20260706f"></script>
 <script src="./JS/mapaProject/fpl_inputs.js?v=20260706a"></script>
 <script src="./JS/mapaProject/build_route.js?v=20260706h"></script>
+<script src="./JS/mapaProject/route_suggester_ui.js?v=20261113a"></script>
 <script src="./JS/mapaProject/tab_navigation.js?v=20260706b"></script>
 
 <script>
