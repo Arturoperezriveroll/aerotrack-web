@@ -1,8 +1,12 @@
-const CACHE_NAME = 'aerotrack-v21';
+const CACHE_NAME = 'aerotrack-v48';
 const APP_SHELL = [
   './manifest.json',
   './JS/png/icon-192.png',
-  './JS/png/icon-512.png'
+  './JS/png/icon-512.png',
+  './JS/vendor/pdf-lib.min.js',
+  './JS/mapaProject/aip_2026_data.js',
+  './JS/mapaProject/export_icao_fpl.js',
+  './assets/pdf/FPL_FORM_AFAC.PDF'
 ];
 
 self.addEventListener('install', event => {

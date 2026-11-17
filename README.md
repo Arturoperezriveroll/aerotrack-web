@@ -22,6 +22,10 @@ Open `index.html` from a local static server. Browser geolocation and the servic
 
 Enter the departure and destination ICAO codes in the FPL tab and select **Suggest Route**. AeroTrack connects each airport to its nearest airway fixes, finds the shortest connected path through the local airway network, fills the Route field, and processes the FPL automatically. The displayed comparison includes airport-access distance and the difference from the direct great-circle distance. Suggestions depend on the coverage and accuracy of the bundled navigation data and are not for operational navigation.
 
+## Aviation Map Layers
+
+Use the **Aviation** control on the map to display optional airspace, airway, VOR, and fix overlays. Mapbox Outdoors v12 provides a clean topographic base, while RNAV and conventional airways are loaded from local GeoJSON sources instead of legacy Mapbox Studio tilesets. Layer visibility is zoom-dependent to keep the mobile map readable. The experimental `VZ23` approach geometry is intentionally excluded from this mode.
+
 ## Docker
 
 1. Copy the environment template and add your credentials:

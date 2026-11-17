@@ -1,0 +1,22 @@
+{
+  "generated": "2026-11-17",
+  "snapshot": "2026-11-17",
+  "sources": {
+    "ENR 3.2": "ENR_3.2.pdf",
+    "ENR 3.3": "ENR_3.3.pdf",
+    "ENR 4.1": "ENR_4.1.pdf",
+    "ENR 4.4": "ENR_4.4.pdf"
+  },
+  "counts": {
+    "fixes": 1090,
+    "navaids": 77,
+    "conventionalRoutes": 96,
+    "rnavRoutes": 199,
+    "routeSegments": 2217
+  },
+  "excluded": {
+    "airspace": "ENR 2 geometry requires separate manual validation",
+    "lowerRoutes": "ENR 3.1 was not supplied",
+    "routesWithFewerThanTwoParsedPoints": true
+  }
+}

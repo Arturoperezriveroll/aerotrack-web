@@ -2,7 +2,7 @@
 
 const mapboxMap = new mapboxgl.Map({
   container: 'mapbox',
-  style: 'mapbox://styles/arturoriverol/clmofit4704je01ma2d8fblkr',
+  style: 'mapbox://styles/mapbox/outdoors-v12',
   center: [-92.50, 15],
   zoom: 10
 });

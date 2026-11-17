@@ -7,7 +7,7 @@ if [ -f /opt/aerotrack/runtime-config.local.js ]; then
 fi
 
 : "${MAPBOX_ACCESS_TOKEN:=}"
-: "${MAPBOX_STYLE:=mapbox://styles/arturoriverol/clmofit4704je01ma2d8fblkr}"
+: "${MAPBOX_STYLE:=mapbox://styles/mapbox/outdoors-v12}"
 : "${ADSB_RAPIDAPI_KEY:=}"
 
 export MAPBOX_ACCESS_TOKEN MAPBOX_STYLE ADSB_RAPIDAPI_KEY

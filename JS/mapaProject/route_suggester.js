@@ -30,8 +30,14 @@
       return null;
     }
 
+    const icaoCode = normalizeToken(airport?.icaoId);
+    const iataCode = normalizeToken(airport?.iataId);
+
     return {
-      code: normalizeToken(airport?.icaoId || airport?.iataId),
+      code: icaoCode || iataCode,
+      // Exclude only the aerodrome's ICAO identifier. An IATA code can also be
+      // the valid identifier of its terminal VOR (for example OAX or MID).
+      identifiers: icaoCode && icaoCode !== '-' ? [icaoCode] : [],
       lat,
       lng,
       source: airport
@@ -88,8 +94,10 @@
     return { fixIndex, adjacency };
   }
 
-  function nearestGraphFixes(point, graph, limit, maxDistanceNm) {
+  function nearestGraphFixes(point, graph, limit, maxDistanceNm, excludedNames = []) {
+    const excluded = new Set((excludedNames || []).map(normalizeToken));
     return [...graph.adjacency.keys()]
+      .filter((name) => !excluded.has(name))
       .map((name) => {
         const fix = graph.fixIndex.get(name);
         return { name, distanceNm: calculateDistanceNm(point, fix) };
@@ -209,12 +217,24 @@
       return { ok: false, message: 'No usable airway network is available.' };
     }
 
-    // Keep access choices close to each airport. Large candidate sets can select
-    // the same midpoint fix for both airports and skip the airway network.
-    const candidateLimit = Number(options?.candidateLimit) || 3;
+    // Without a runway/SID/STAR selection, lock each terminal end to its nearest
+    // connected navigation fix. Airport identifiers are references, not graph WPs.
+    const candidateLimit = Number(options?.candidateLimit) || 1;
     const accessRadiusNm = Number(options?.accessRadiusNm) || 150;
-    const starts = nearestGraphFixes(departure, graph, candidateLimit, accessRadiusNm);
-    const destinations = nearestGraphFixes(destination, graph, candidateLimit, accessRadiusNm);
+    const starts = nearestGraphFixes(
+      departure,
+      graph,
+      candidateLimit,
+      accessRadiusNm,
+      departure.identifiers
+    );
+    const destinations = nearestGraphFixes(
+      destination,
+      graph,
+      candidateLimit,
+      accessRadiusNm,
+      destination.identifiers
+    );
     const path = shortestAirwayPath(graph, starts, destinations);
 
     if (!path) {
@@ -230,6 +250,7 @@
       ok: true,
       departure,
       destination,
+      terminalStrategy: 'nearest-connected-fix',
       routeText: formatRoute(path.nodes, path.edges),
       ...path,
       directDistanceNm,

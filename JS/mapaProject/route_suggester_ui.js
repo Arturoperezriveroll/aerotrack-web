@@ -46,8 +46,8 @@
           : `${result.detourPercent.toFixed(0)}%`;
         setSuggestionMessage(
           `Suggested ${result.nodes[0]} → ${result.nodes[result.nodes.length - 1]} | ` +
-          `${result.totalDistanceNm.toFixed(1)} NM (${detour} vs direct) | ` +
-          `airport access ${result.startAccessNm.toFixed(1)} + ${result.endAccessNm.toFixed(1)} NM`,
+          `${result.airwayDistanceNm.toFixed(1)} NM enroute (${detour} incl. terminal reference) | ` +
+          `terminal reference ${result.startAccessNm.toFixed(1)} + ${result.endAccessNm.toFixed(1)} NM`,
           false
         );
         buildRoute();

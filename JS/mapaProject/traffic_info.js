@@ -5,6 +5,7 @@ let testTrafficInterval = null;
 let testTrafficElapsedSec = 0;
 let selectedAircraft = null;
 let isTrafficLoading = false;
+let expandedAircraftPopup = null;
 
 const TRAFFIC_REFRESH_MS = 15000;
 const TRAFFIC_RADIUS_NM = 300;
@@ -39,6 +40,7 @@ function clearAircraftMarkers() {
   aircraftLabelMarkers.forEach(marker => marker.remove());
   aircraftMarkers = [];
   aircraftLabelMarkers = [];
+  expandedAircraftPopup = null;
   clearTrafficConflictLines();
 }
 
@@ -822,6 +824,7 @@ function addAircraftMarkers(aircraftData, refreshMs = TRAFFIC_REFRESH_MS, traffi
       markerElement.setAttribute('role', 'button');
       markerElement.setAttribute('tabindex', '0');
       markerElement.setAttribute('aria-label', getAircraftLabel(aircraft));
+      markerElement.setAttribute('aria-expanded', 'false');
       markerElement.innerHTML = `
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M12 2a2 2 0 0 0-2 2v5L2 14v2l8-2.5V19l-2 1.5V22l4-1 4 1v-1.5L14 19v-5.5l8 2.5v-2l-8-5V4a2 2 0 0 0-2-2Z"/>
@@ -843,22 +846,26 @@ function addAircraftMarkers(aircraftData, refreshMs = TRAFFIC_REFRESH_MS, traffi
         .setRotation(Number.isFinite(aircraft.track) ? aircraft.track : 0)
         .addTo(mapboxMap);
 
-      if (isTestAircraft(aircraft)) {
-        const labelElement = document.createElement('span');
-        labelElement.className = 'aircraft-test-label';
-        labelElement.textContent = getAircraftName(aircraft);
+      const labelElement = document.createElement('span');
+      labelElement.className = 'aircraft-callsign-label';
+      labelElement.classList.toggle('aircraft-callsign-conflict', aircraft._trafficConflicts.length > 0);
+      labelElement.classList.toggle('aircraft-callsign-test', isTestAircraft(aircraft));
+      labelElement.classList.toggle('aircraft-callsign-ground', isAircraftOnGround(aircraft));
+      labelElement.textContent = getAircraftName(aircraft);
+      labelElement.setAttribute('role', 'button');
+      labelElement.setAttribute('tabindex', '0');
+      labelElement.setAttribute('aria-expanded', 'false');
 
-        const labelMarker = new mapboxgl.Marker(labelElement, {
-          anchor: 'bottom',
-          offset: [0, -15],
-          pitchAlignment: 'viewport',
-          rotationAlignment: 'viewport'
-        })
-          .setLngLat([aircraft.lon, aircraft.lat])
-          .addTo(mapboxMap);
+      const labelMarker = new mapboxgl.Marker(labelElement, {
+        anchor: 'bottom',
+        offset: [0, -14],
+        pitchAlignment: 'viewport',
+        rotationAlignment: 'viewport'
+      })
+        .setLngLat([aircraft.lon, aircraft.lat])
+        .addTo(mapboxMap);
 
-        aircraftLabelMarkers.push(labelMarker);
-      }
+      aircraftLabelMarkers.push(labelMarker);
 
       let lastMarkerActivation = 0;
       const activateMarker = (event) => {
@@ -869,8 +876,26 @@ function addAircraftMarkers(aircraftData, refreshMs = TRAFFIC_REFRESH_MS, traffi
         event.preventDefault();
         event.stopPropagation();
         updateAircraftDetails(aircraft);
+        if (expandedAircraftPopup && expandedAircraftPopup !== popup) {
+          expandedAircraftPopup.remove();
+        }
         marker.togglePopup();
       };
+
+      popup.on('open', () => {
+        expandedAircraftPopup = popup;
+        markerElement.classList.add('is-expanded');
+        labelElement.classList.add('is-expanded');
+        markerElement.setAttribute('aria-expanded', 'true');
+        labelElement.setAttribute('aria-expanded', 'true');
+      });
+      popup.on('close', () => {
+        if (expandedAircraftPopup === popup) expandedAircraftPopup = null;
+        markerElement.classList.remove('is-expanded');
+        labelElement.classList.remove('is-expanded');
+        markerElement.setAttribute('aria-expanded', 'false');
+        labelElement.setAttribute('aria-expanded', 'false');
+      });
 
       markerElement.addEventListener('pointerdown', activateMarker);
       markerElement.addEventListener('click', activateMarker);
@@ -878,6 +903,11 @@ function addAircraftMarkers(aircraftData, refreshMs = TRAFFIC_REFRESH_MS, traffi
         if (event.key === 'Enter' || event.key === ' ') {
           activateMarker(event);
         }
+      });
+      labelElement.addEventListener('pointerdown', activateMarker);
+      labelElement.addEventListener('click', activateMarker);
+      labelElement.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') activateMarker(event);
       });
 
       aircraftMarkers.push(marker);

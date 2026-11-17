@@ -578,6 +578,175 @@ h3 {
   }
 }
 
+/* Wide landscape workspace: map beside a scrollable information rail. */
+@media (orientation: landscape) and (min-width: 900px) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
+    overflow: hidden;
+  }
+
+  #cont2 {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    position: relative;
+    top: auto;
+  }
+
+  #mapContainer {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    position: relative;
+    top: auto;
+    width: 100%;
+    height: 100% !important;
+    min-height: 0 !important;
+    border-right: 1px solid var(--at-line);
+    border-bottom: 0;
+  }
+
+  #cont3 {
+    grid-column: 2;
+    grid-row: 2;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    width: 100%;
+    padding: 6px;
+  }
+
+  #cont3 .traffic-btn {
+    min-height: 40px;
+    padding: 5px 4px;
+    font-size: clamp(10px, 0.9vw, 13px);
+    line-height: 1.1;
+  }
+
+  .app-tabs {
+    grid-column: 2;
+    grid-row: 3;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border-left: 1px solid var(--at-line);
+  }
+
+  .app-tabs .tab-list {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    overflow-x: auto;
+    background: var(--at-bg);
+  }
+
+  .app-tabs .tab-button {
+    min-width: max-content;
+    padding-inline: 8px;
+    font-size: 11px;
+  }
+
+  .app-tabs #md1 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .app-tabs #md1 .fpl-route-field,
+  .app-tabs #routeMessages,
+  .app-tabs #routeSuggestion,
+  .app-tabs #routeSummary,
+  .app-tabs #md1 h2,
+  .app-tabs #airportInfo,
+  .app-tabs #md1 .fpl-actions {
+    grid-column: 1 / -1;
+  }
+
+  .app-tabs #md1 .fpl-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .app-tabs #md1 .fpl-actions button {
+    width: 100%;
+    min-height: 38px;
+  }
+}
+
+@media (orientation: landscape) and (min-width: 1400px) {
+  body {
+    grid-template-columns: minmax(0, 4fr) minmax(300px, 1fr);
+  }
+}
+
+.aviation-popup-card {
+  color: #172033;
+  font-family: Roboto, Arial, sans-serif;
+  min-width: 210px;
+}
+
+.aviation-feature-popup .mapboxgl-popup-content {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25) !important;
+  padding: 12px 14px !important;
+}
+
+.aviation-feature-popup .mapboxgl-popup-tip {
+  display: block;
+}
+
+.aviation-popup-card h3 {
+  font-size: 1.15rem;
+  margin: 2px 22px 8px 0;
+}
+
+.aviation-popup-type {
+  color: #0f766e;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.aviation-popup-description {
+  background: #f0fdfa;
+  border-left: 3px solid #14b8a6;
+  line-height: 1.45;
+  margin-bottom: 9px;
+  padding: 7px 9px;
+}
+
+.aviation-popup-unavailable {
+  color: #64748b;
+  font-size: 0.8rem;
+  margin-bottom: 9px;
+}
+
+.aviation-popup-card dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 10px;
+  margin: 0;
+}
+
+.aviation-popup-card dt {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.aviation-popup-card dd {
+  font-family: Consolas, monospace;
+  margin: 0;
+  text-align: right;
+}
+
 /* Absolute final compact control lock */
 #cont3 {
   grid-template-columns: repeat(3, minmax(120px, 1fr));
@@ -2843,6 +3012,178 @@ h3 {
   box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.55);
 }
 
+/* Optional aviation overlay control */
+.aviation-map-control {
+  margin: 10px 0 0 10px;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.16);
+  font: 700 12px/1.2 Roboto, Arial, sans-serif;
+}
+
+.mapboxgl-ctrl-top-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mapboxgl-ctrl-top-left > .aviation-map-control {
+  order: -1;
+}
+
+.aviation-map-toggle {
+  min-width: 86px;
+  padding: 8px 10px;
+  border: 0;
+  background: #ffffff;
+  color: #0f172a;
+  font: inherit;
+  cursor: pointer;
+}
+
+.aviation-map-control.is-active .aviation-map-toggle {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.aviation-map-control.is-active .aviation-map-toggle:hover,
+.aviation-map-control.is-active .aviation-map-toggle:focus-visible {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.aviation-map-control:not(.is-active) .aviation-map-toggle:hover,
+.aviation-map-control:not(.is-active) .aviation-map-toggle:focus-visible {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.aviation-layer-panel {
+  display: none;
+  min-width: 126px;
+  padding: 7px 9px 8px;
+  border-top: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.aviation-map-control.is-active .aviation-layer-panel {
+  display: grid;
+  gap: 7px;
+}
+
+.aviation-layer-panel label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  color: #334155;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.aviation-layer-panel input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: #0f766e;
+}
+
+.aviation-map-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 8px;
+  margin-top: 2px;
+  padding-top: 7px;
+  border-top: 1px solid #dbe4ea;
+  color: #475569;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.aviation-map-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.legend-airspace { background: #f59e0b; }
+.legend-airway { background: #2563eb; }
+.legend-conventional { background: #111827; }
+
+.legend-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 2px solid;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.legend-vor { border-color: #7c3aed; }
+.legend-fix { border-color: #475569; }
+
+.route-waypoint-popup .mapboxgl-popup-content {
+  background: #ffffff !important;
+  border: 1px solid rgba(6, 78, 59, 0.22);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.24) !important;
+  padding: 10px 12px !important;
+}
+
+.route-waypoint-popup .mapboxgl-popup-tip {
+  display: block;
+}
+
+.route-popup-card {
+  display: grid;
+  gap: 3px;
+  min-width: 170px;
+  color: #052e16;
+}
+
+.route-popup-card strong {
+  font-size: 16px;
+}
+
+.route-popup-card span {
+  color: #15803d;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.route-popup-card code {
+  color: #475569;
+  font-size: 11px;
+}
+
+@media (max-width: 430px) {
+  .aviation-map-control {
+    margin: 7px 0 0 7px;
+  }
+
+  .aviation-map-toggle {
+    min-width: 78px;
+    padding: 7px 8px;
+    font-size: 11px;
+  }
+
+  .aviation-layer-panel {
+    min-width: 112px;
+    padding: 6px 8px 7px;
+    font-size: 11px;
+  }
+}
+
 #md1 #buildRouteBtn {
   grid-column: 1 / span 3;
 }
@@ -2914,6 +3255,31 @@ h3 {
   min-height: 46px;
 }
 
+#md1 .fpl-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+#md1 .fpl-actions button {
+  flex: 0 1 180px;
+  width: 180px;
+  min-height: 42px;
+  margin: 0;
+}
+
+#md1 .fpl-actions .reset-app-btn {
+  background: #475569;
+  color: #ffffff;
+}
+
+#md1 .fpl-actions .reset-app-btn:hover,
+#md1 .fpl-actions .reset-app-btn:focus-visible {
+  background: #334155;
+}
+
 .route-suggestion {
   min-height: 1.25em;
   color: #0f766e;
@@ -2959,6 +3325,16 @@ h3 {
     grid-column: span 1;
     width: 100%;
   }
+
+  #md1 .fpl-actions {
+    gap: 8px;
+  }
+
+  #md1 .fpl-actions button {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
 }
 
 @media (max-width: 430px) {
@@ -2973,9 +3349,165 @@ h3 {
     grid-column: 1 / -1;
   }
 
+  #md1 .fpl-actions {
+    flex-direction: column;
+  }
+
+  #md1 .fpl-actions button {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
   #md1 .fpl-field input[type="text"] {
     padding: 7px 8px;
     font-size: clamp(15px, 4.2vw, 18px) !important;
+  }
+}
+
+.icao-fpl-details {
+  grid-column: 1 / -1;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.icao-fpl-details summary {
+  padding: 10px 12px;
+  color: #173f75;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  user-select: none;
+}
+
+.icao-fpl-details[open] summary {
+  border-bottom: 1px solid #cbd5e1;
+  background: #eaf3fb;
+}
+
+.icao-fpl-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(110px, 1fr));
+  gap: 9px;
+  padding: 11px;
+}
+
+.icao-field {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+
+.icao-field-wide {
+  grid-column: span 2;
+}
+
+.icao-field-full {
+  grid-column: 1 / -1;
+}
+
+.icao-field label {
+  margin: 0;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.icao-field label b {
+  color: #173f75;
+}
+
+.icao-field input,
+.icao-field select,
+.icao-field textarea {
+  width: 100%;
+  min-height: 38px;
+  margin: 0;
+  padding: 7px 9px;
+  border: 1px solid #aebdce;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #1f2937;
+  font: 700 14px/1.2 Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.icao-field textarea {
+  min-height: 58px;
+  resize: vertical;
+}
+
+.icao-field input:focus,
+.icao-field select:focus,
+.icao-field textarea:focus {
+  border-color: #2563eb;
+  outline: 2px solid rgba(37, 99, 235, .15);
+}
+
+/* Keep the landscape information rail fluid without nested horizontal scrollbars. */
+@media (orientation: landscape) and (min-width: 900px) {
+  .app-tabs {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .app-tabs .tab-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    overflow-x: hidden;
+    scrollbar-width: none;
+  }
+
+  .app-tabs .tab-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app-tabs .tab-button {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 3px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .app-tabs #md1,
+  .app-tabs .icao-fpl-details,
+  .app-tabs .icao-fpl-grid,
+  .app-tabs .icao-field,
+  .app-tabs input,
+  .app-tabs select,
+  .app-tabs textarea {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .app-tabs .icao-fpl-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-tabs .icao-field-wide,
+  .app-tabs .icao-field-full {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .icao-fpl-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 430px) {
+  .icao-fpl-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .icao-field-wide,
+  .icao-field-full {
+    grid-column: 1;
   }
 }
 
@@ -3251,19 +3783,50 @@ h3 {
   height: 17px;
 }
 
-.aircraft-test-label {
+.aircraft-callsign-label {
   display: block;
   padding: 2px 5px;
-  border: 1px solid #7f1d1d;
+  border: 1px solid #334155;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.95);
-  color: #7f1d1d;
+  color: #0f172a;
   font-size: 10px;
   font-weight: 900;
   line-height: 1;
   white-space: nowrap;
-  pointer-events: none;
+  cursor: pointer;
+  pointer-events: auto;
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.18);
+}
+
+.aircraft-callsign-label:hover,
+.aircraft-callsign-label:focus-visible,
+.aircraft-callsign-label.is-expanded {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+  outline: none;
+}
+
+.aircraft-callsign-conflict {
+  border-color: #991b1b;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.aircraft-callsign-ground {
+  border-color: #64748b;
+  color: #475569;
+}
+
+.aircraft-callsign-test {
+  border-color: #92400e;
+  color: #92400e;
+}
+
+.aircraft-marker.is-expanded {
+  outline: 3px solid rgba(37, 99, 235, 0.38);
+  transform: scale(1.12);
 }
 
 #cont3 {

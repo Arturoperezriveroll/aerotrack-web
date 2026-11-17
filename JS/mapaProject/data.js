@@ -8008,6 +8008,62 @@
                                     "longitud": "-99.29"
                                     }
                                     },
+                                    {
+                                    "nombre": "MX717",
+                                    "coordenadas": {
+                                    "latitud": "19.53",
+                                    "longitud": "-99.24"
+                                    }
+                                    },
+                                    {
+                                    "nombre": "SUTAS",
+                                    "coordenadas": {
+                                    "latitud": "19.43",
+                                    "longitud": "-99.26"
+                                    }
+                                    },
+                                    {
+                                    "nombre": "MD609",
+                                    "coordenadas": {
+                                    "latitud": "20.77",
+                                    "longitud": "-89.56"
+                                    }
+                                    },
+                                    {
+                                    "nombre": "MD604",
+                                    "coordenadas": {
+                                    "latitud": "20.70",
+                                    "longitud": "-89.56"
+                                    }
+                                    },
+                                    {
+                                    "nombre": "MD606",
+                                    "coordenadas": {
+                                    "latitud": "20.45",
+                                    "longitud": "-89.92"
+                                    }
+                                    },
+                                    {
+                                    "nombre": "MX741",
+                                    "coordenadas": {
+                                    "latitud": "19.24",
+                                    "longitud": "-99.08"
+                                    }
+                                    },
+                                    {
+                                    "nombre": "VOLUN",
+                                    "coordenadas": {
+                                    "latitud": "19.28",
+                                    "longitud": "-99.17"
+                                    }
+                                    },
+                                    {
+                                    "nombre": "JOTAS",
+                                    "coordenadas": {
+                                    "latitud": "19.24805556",
+                                    "longitud": "-91.15555556"
+                                    }
+                                    },
                         ];
     
     console.log(fixesData);
@@ -8404,6 +8460,35 @@
             ]
           },
           
+       { "UJ16": [
+        "CUN",
+        "XOTNA",
+        "BUBUN",
+        "BEPOR",
+        "XOVAV",
+        "XUDUN",
+        "IGSAR",
+        "USBUS",
+        "MID",
+        "URPUP",
+        "ILELA",
+        "LERMA",
+        "NUDIK",
+        "NUGAD",
+        "BASKO",
+        "ALUEN",
+        "MTT",
+        "OMATO",
+        "KANAL",
+        "XOSVO",
+        "OAX",
+        "OTSUT",
+        "MEMDI",
+        "AMIDI",
+        "SELIS",
+        "ACA"
+        ]},
+
        { "UJ18": [
         "URTOK",
         "ANTEK",
@@ -8576,6 +8661,16 @@
         "ONVIP",
         "IKDOL",
         "TAP"
+        ]},
+        {
+        "V30": [
+        "CPE",
+        "JOTAS",
+        "CONTO",
+        "CME",
+        "TETUK",
+        "EBLEV",
+        "PQE"
         ]},
         {
         "UJ25": [

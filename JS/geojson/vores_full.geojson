@@ -1,0 +1,1315 @@
+{
+  "type": "FeatureCollection",
+  "name": "AIP Mexico ENR 4.1 navaids",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "ACA",
+        "description": "Acapulco VOR/DME | 115.9 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.75396389,
+          16.75847222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "AGU",
+        "description": "Aguascalientes VOR/DME | 113.6 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.31904722,
+          21.7114
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "ELQ",
+        "description": "Allende VOR/DME | 114.1 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -105.42944444,
+          26.96472222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "SJD",
+        "description": "Cabos VOR/DME | 114.0 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.72153889,
+          23.14616111
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CPE",
+        "description": "Campeche VOR/DME | 116.2 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -90.50394444,
+          19.83083333
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CUN",
+        "description": "Cancun VOR/DME | 113.6 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -86.85871667,
+          21.02510833
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CME",
+        "description": "Carmen VOR/DME | 113.0 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -91.80514722,
+          18.66043889
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "COL",
+        "description": "Colima VOR/DME | 117.7 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -103.57900556,
+          19.27512778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CDR",
+        "description": "Concepcion VOR/DME | 117.1 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -101.48738611,
+          24.15972222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CZM",
+        "description": "Cozumel VOR/DME | 112.5 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -86.912,
+          20.50747222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "BCO",
+        "description": "Creel VOR/DME | 117.40 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -107.64018889,
+          27.72084722
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CUA",
+        "description": "Cuautla VOR/DME | 116.3 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -98.90075,
+          18.78538611
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CVJ",
+        "description": "Cuernavaca VOR/DME | 113.9 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.26924722,
+          18.82523611
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CUL",
+        "description": "Culiacan VOR/DME | 112.2 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -107.47733889,
+          24.76448056
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CTM",
+        "description": "Chetumal VOR/DME | 116.3 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -88.33365278,
+          18.50929722
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CUU",
+        "description": "Chihuahua VOR/DME | 114.2 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -105.95873333,
+          28.71638333
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "DGO",
+        "description": "Durango VOR/DME | 112.9 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.51641667,
+          24.13800556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "PXM",
+        "description": "Escondido VOR/DME | 112.5 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -97.08171389,
+          15.87510556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "GDL",
+        "description": "Guadalajara VOR/DME | 117.3 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -103.31161111,
+          20.52342222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "GYM",
+        "description": "Guaymas VOR/DME | 112.1 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.92788889,
+          27.96556667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "HMO",
+        "description": "Hermosillo VOR/DME | 112.8 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.05206667,
+          29.09554444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "HUX",
+        "description": "Huatulco VOR/DME | 113.2 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -96.26143333,
+          15.777775
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "IZT",
+        "description": "Ixtepec VOR/DME | 112.2 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.09511278,
+          16.46387
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CJS",
+        "description": "Juarez VOR/DME | 116.7 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.42684722,
+          31.63615556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CZA",
+        "description": "Kaua VOR/DME | 116.5 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -88.44823056,
+          20.64305833
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "LAP",
+        "description": "La Paz VOR/DME | 112.3 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.35866111,
+          24.08560278
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "BJX",
+        "description": "Leon VOR/DME | 115.8 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -101.48258889,
+          20.99755833
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "LTO",
+        "description": "Loreto VOR/DME | 113.2 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.34952778,
+          25.98065556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CSL",
+        "description": "Lucas VOR/DME | 116.6 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.93188889,
+          22.94693611
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "SLM",
+        "description": "Lucia DVOR/DME | 116.6 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.00593333,
+          19.74081389
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "ZLO",
+        "description": "Manzanillo VOR/DME | 116.9 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.57129722,
+          19.14941389
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "MAM",
+        "description": "Matamoros VOR/DME | 114.3 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -97.52390556,
+          25.77083889
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "MZT",
+        "description": "Mazatlan VOR/DME | 114.9 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.27096389,
+          23.16052222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "MID",
+        "description": "Merida VOR/DME | 117.7 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -89.65622222,
+          20.93804722
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "MXL",
+        "description": "Mexicali VOR/DME | 115.0 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -115.23759167,
+          32.63105556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "MEX",
+        "description": "Mexico VOR/DME | 115.9 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.0688,
+          19.43821667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "MTT",
+        "description": "Minatitlan VOR/DME | 116.4 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -94.58228889,
+          18.10288056
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "LMM",
+        "description": "Mochis VOR/DME | 115.5 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.07158056,
+          25.68261111
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "MOV",
+        "description": "Monclova VOR/DME | 117.9 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -101.47103889,
+          26.9555
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "MTY",
+        "description": "Monterrey VOR/DME | 114.7 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100.10396667,
+          25.77288056
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "MLM",
+        "description": "Morelia VOR/DME | 114.6 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -101.03704167,
+          19.84377778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "GRN",
+        "description": "Negro NDB | 382 KHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.02231389,
+          28.0269
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "NLD",
+        "description": "Newla VOR/DME | 112.6 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.56458333,
+          27.43938889
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "NCP",
+        "description": "Nichupte VOR/DME | 114.5 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -86.85535833,
+          21.03844444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TTM",
+        "description": "Noria VOR/DME | 114.4 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.77268611,
+          22.96784722
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "OAX",
+        "description": "Oaxaca VOR/DME | 112.0 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -96.73136111,
+          16.97225556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CEN",
+        "description": "Obregon VOR/DME | 115.1 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.83728333,
+          27.39475833
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "PQE",
+        "description": "Palenque VOR/DME | 115.0 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -92.03156111,
+          17.53713611
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "PTJ",
+        "description": "Pasteje VOR/DME | 114.5 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.79802778,
+          19.64569722
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "PPE",
+        "description": "Peñasco VOR/DME | 114.9 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -113.30142222,
+          31.36725
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "PNG",
+        "description": "Piedras VOR/DME | 113.6 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100.53838611,
+          28.63184444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "PAZ",
+        "description": "Poza Rica VOR/DME | 115.5 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -97.45507778,
+          20.60056389
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "SLP",
+        "description": "Potosi VOR/DME | 117.2 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100.930425,
+          22.25638889
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "PBC",
+        "description": "Puebla VOR/DME | 115.2 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -98.370175,
+          19.16091944
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "QET",
+        "description": "Queretaro VOR/DME | 113.0 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100.19362778,
+          20.61745833
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "SQN",
+        "description": "Quintin VOR/DME | 113.3 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -115.95565278,
+          30.54535833
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "REX",
+        "description": "Reynosa VOR/DME | 112.4 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -98.23186944,
+          26.01063056
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "ADN",
+        "description": "Roberto VOR/DME | 115.4 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100.23879444,
+          25.86544167
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "SLW",
+        "description": "Saltillo VOR/DME | 116.1 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100.92981111,
+          25.54611389
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TAM",
+        "description": "Tampico VOR/DME | 117.5 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -97.86302222,
+          22.28960278
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TMN",
+        "description": "Tamuin VOR/DME | 113.3 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -98.80794722,
+          22.03848333
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TAP",
+        "description": "Tapachula VOR/DME | 115.3 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -92.37571111,
+          14.79218889
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TNY",
+        "description": "Tepic VOR/DME | 113.9 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.83698056,
+          21.42651667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TEQ",
+        "description": "Tequesquitengo VOR/DME | 113.1 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.25531389,
+          18.67608333
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TIJ",
+        "description": "Tijuana VOR/DME | 116.5 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -116.9527,
+          32.54044167
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TLC",
+        "description": "Toluca VOR/DME | 114.3 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.56103333,
+          19.33286667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TRC",
+        "description": "Torreon VOR/DME | 116.4 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -103.40840833,
+          25.56396389
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TQO",
+        "description": "Tulum VOR/DME | 115.0 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.63856111,
+          20.16041389
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "TGZ",
+        "description": "Tuxtla VOR/DME | 115.7 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.03009722,
+          16.57057778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "UPN",
+        "description": "Uruapan VOR/DME | 114.2 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.04108889,
+          19.39575556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "PVR",
+        "description": "Vallarta VOR/DME | 116.5 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -105.23931667,
+          20.69195
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "VER",
+        "description": "Veracruz VOR/DME | 114.0 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -96.18913056,
+          19.14323333
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "CVM",
+        "description": "Victoria VOR/DME | 113.7 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -98.95902778,
+          23.70553056
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "VSA",
+        "description": "Villahermosa VOR/DME | 116.7 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -92.81820833,
+          17.99886111
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "ZCL",
+        "description": "Zacatecas VOR/DME | 117.6 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.69325833,
+          22.88741944
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "ZAP",
+        "description": "Zapopan VOR/DME | 113.4 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -103.465,
+          20.74972222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "ZIH",
+        "description": "Zihuatanejo VOR/DME | 113.8 MHZ | H24 | ENR 4.1",
+        "source": "ENR 4.1",
+        "airac": "08/26",
+        "effective": "2026-08-06"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -101.47671944,
+          17.60316389
+        ]
+      }
+    }
+  ]
+}

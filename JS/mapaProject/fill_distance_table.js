@@ -53,26 +53,8 @@ function displayRouteDistancesAndMarkers() {
     console.log("All route coordinates:", routeCoordinates);
     console.log(`Total distance: ${lastDistanceRow ? lastDistanceRow.totalDistanceNm.toFixed(2) : '0.00'} NM`);
 
-    // SE ELABORA EL MARKER PARA CADA FIJO
-    // Add markers and popups for each waypoint
-    waypoints.forEach(waypoint => {
-        const el1 = new Image();
-        el1.src = './JS/svg/icons8-map-marker.svg';
-        el1.style.width = '20px';
-        el1.style.height = '20px';
-
-        // Create a popup
-        let popupHtml = `<div class='my-popup'>${waypoint.name}</div>`;
-
-        const marker = new mapboxgl.Marker(el1, { anchor: 'center' }) // Set the anchor to 'center'
-            .setLngLat([waypoint.lng, waypoint.lat])
-            .setPopup(new mapboxgl.Popup().setHTML(popupHtml))
-            .addTo(mapboxMap)
-        marker.getPopup().addTo(mapboxMap); // This line will open the popup automatically
-        routeWaypointMarkers.push(marker);
-
-        return [waypoint.lng, waypoint.lat];
-    });
+    // Route points and labels are rendered as native map layers by
+    // display_route_line.js, avoiding one permanently-open popup per waypoint.
     return distanceRows;
 }
 

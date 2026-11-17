@@ -43,8 +43,6 @@ function startTracking() {
         }
 
         tripLastPos = pos;
-        console.log("📍 Added new trip point:", pos);
-
         // Update total trip distance display
         document.getElementById('distance').textContent = tripTotalDistance.toFixed(3);
       }
@@ -156,8 +154,6 @@ if (trackingButton) {
   trackingButton.addEventListener('click', toggleTracking);
   updateTrackingButton();
 }
-console.log(pathCoordinates);
-
 // función para analizar algunos valores con los datos del vuelo, como max alt, min alt, etc.
 function analyzeTrip() {
   let totalAltitude = 0;

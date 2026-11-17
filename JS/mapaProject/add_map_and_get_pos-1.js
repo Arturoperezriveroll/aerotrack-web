@@ -13,8 +13,8 @@ if (!mapboxgl.accessToken) {
 var mapboxMap = new mapboxgl.Map({
     container: 'mapbox',
     style: window.AEROTRACK_CONFIG?.mapboxStyle || 'mapbox://styles/mapbox/outdoors-v12',
-    center: [-92.50, 15], // starting position [lng, lat]
-    zoom: 9 // starting zoom
+    center: [-90.53, 19.84], // Approximate Campeche map view; not a user location.
+    zoom: 6.5
 });
 
 // se crea geolocateControl 
@@ -29,16 +29,25 @@ var geolocateControl = new mapboxgl.GeolocateControl({
       linear: false      // transiciÃ³n lineal en lugar de vuelo curvado
   }
 });
-//se aÃ±ade al mapa el geolocate control
-mapboxMap.addControl(geolocateControl);
+// Keep map controls away from the information rail in landscape mode.
+mapboxMap.addControl(geolocateControl, 'top-left');
 
 var navControl = new mapboxgl.NavigationControl();
-mapboxMap.addControl(navControl, 'top-right'); 
+mapboxMap.addControl(navControl, 'top-left');
 
-// Automatically trigger geolocation when the map loads
-mapboxMap.on('load', function() {
-    geolocateControl.trigger();
-});
+let mapResizeFrame = null;
+function resizeMapForViewport() {
+  if (mapResizeFrame !== null) cancelAnimationFrame(mapResizeFrame);
+  mapResizeFrame = requestAnimationFrame(() => {
+    mapResizeFrame = null;
+    mapboxMap.resize();
+  });
+}
+window.addEventListener('resize', resizeMapForViewport);
+window.addEventListener('orientationchange', resizeMapForViewport);
+
+// Privacy: geolocation is never requested automatically. The user must
+// explicitly select the location control or start Track Path.
 
 // Declare global variables for lng and lat
 let lng, lat;
@@ -74,11 +83,8 @@ if (lastPos) {
 lastPos = currentPos; // update the last position
 
 const altitudeText = Number.isFinite(altitude) ? `${altitude.toFixed(0)} m` : '';
-console.log(`Current location set: Latitude: ${currentLocation.lat}, Longitude: ${currentLocation.lng}, Acc: ${currentLocation.acc}, gpsAlt: ${altitudeText}`);
-
 // Update pathCoordinates with the new location
 pathCoordinates.push([currentLocation.lng, currentLocation.lat]);
-console.log("Past Track: " + pathCoordinates);
 
 document.getElementById('distance').textContent = totalDistance.toFixed(3);
 
@@ -110,6 +116,5 @@ if (posInfo) {
 // Call the function to update the polyline on the map
 //updatePolyline(); //this f is commented bc it is being called since the beginning and I dont want the blue line printed since the beginning
 updateDistanceFromCurrent(currentLocation);
-console.log("Global lat: ", lat," Global lng: ", lng);
 });
 
