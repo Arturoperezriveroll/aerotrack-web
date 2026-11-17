@@ -518,7 +518,9 @@
   function createControl() {
     let container;
     let toggle;
+    let layersToggle;
     let panel;
+    let panelOpen = false;
     const inputs = new Map();
 
     return {
@@ -533,6 +535,23 @@
         toggle.setAttribute('aria-pressed', 'false');
         toggle.addEventListener('click', () => setEnabled(!state.enabled));
         container.appendChild(toggle);
+
+        layersToggle = document.createElement('button');
+        layersToggle.type = 'button';
+        layersToggle.className = 'aviation-layers-toggle';
+        layersToggle.textContent = 'Layers';
+        layersToggle.setAttribute('aria-expanded', 'false');
+        layersToggle.setAttribute('aria-label', 'Show aviation layer options');
+        layersToggle.addEventListener('click', () => {
+          panelOpen = !panelOpen;
+          container.classList.toggle('is-panel-open', panelOpen);
+          layersToggle.setAttribute('aria-expanded', String(panelOpen));
+          layersToggle.setAttribute(
+            'aria-label',
+            panelOpen ? 'Hide aviation layer options' : 'Show aviation layer options'
+          );
+        });
+        container.appendChild(layersToggle);
 
         panel = document.createElement('div');
         panel.className = 'aviation-layer-panel';
@@ -567,6 +586,12 @@
           return;
         }
         container.classList.toggle('is-active', state.enabled);
+        if (!state.enabled && panelOpen) {
+          panelOpen = false;
+          container.classList.remove('is-panel-open');
+          layersToggle.setAttribute('aria-expanded', 'false');
+          layersToggle.setAttribute('aria-label', 'Show aviation layer options');
+        }
         toggle.setAttribute('aria-pressed', String(state.enabled));
         toggle.textContent = state.enabled ? 'Aviation on' : 'Aviation';
         inputs.forEach((input, group) => {

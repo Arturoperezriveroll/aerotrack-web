@@ -3043,6 +3043,10 @@ h3 {
   cursor: pointer;
 }
 
+.aviation-layers-toggle {
+  display: none;
+}
+
 .aviation-map-control.is-active .aviation-map-toggle {
   background: #0f766e;
   color: #ffffff;
@@ -3169,6 +3173,9 @@ h3 {
 @media (max-width: 430px) {
   .aviation-map-control {
     margin: 7px 0 0 7px;
+    display: grid;
+    grid-template-columns: auto auto;
+    max-width: calc(100vw - 66px);
   }
 
   .aviation-map-toggle {
@@ -3178,9 +3185,43 @@ h3 {
   }
 
   .aviation-layer-panel {
-    min-width: 112px;
+    grid-column: 1 / -1;
+    min-width: 0;
     padding: 6px 8px 7px;
     font-size: 11px;
+  }
+
+  .aviation-map-control.is-active .aviation-layer-panel {
+    display: none;
+  }
+
+  .aviation-map-control.is-active.is-panel-open .aviation-layer-panel {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    gap: 6px 10px;
+  }
+
+  .aviation-layers-toggle {
+    display: none;
+    padding: 7px 8px;
+    border: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.35);
+    background: #0f766e;
+    color: #ffffff;
+    font: 700 11px/1.2 Roboto, Arial, sans-serif;
+    cursor: pointer;
+  }
+
+  .aviation-map-control.is-active .aviation-layers-toggle {
+    display: block;
+  }
+
+  .aviation-map-control.is-panel-open .aviation-layers-toggle {
+    background: #115e59;
+  }
+
+  .aviation-map-legend {
+    display: none;
   }
 }
 

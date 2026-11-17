@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aerotrack-v48';
+const CACHE_NAME = 'aerotrack-v49';
 const APP_SHELL = [
   './manifest.json',
   './JS/png/icon-192.png',

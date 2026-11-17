@@ -6,7 +6,7 @@
 <meta name="description" content="AeroTrack flight and route tracking web app.">
 <title>AeroTrack</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/mapa_style.css?v=20261117a">
+<link rel="stylesheet" href="./css/mapa_style.css?v=20261117b">
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
@@ -240,7 +240,7 @@
 <script src="./JS/mapaProject/route_suggester.js?v=20261116a"></script>
 <script src="./JS/updatePolyline.js"></script>
 <script src="./JS/mapaProject/add_map_and_get_pos-1.js?v=20261116b">//f invocadas updatePolyline(), writePos(), updateDistanceFromCurrent()</script>
-<script src="./JS/mapaProject/aviation_layer_manager.js?v=20261117a"></script>
+<script src="./JS/mapaProject/aviation_layer_manager.js?v=20261117b"></script>
 <script>
 mapboxMap.on('load', function () {
   AeroTrackAviationLayers.initialize(mapboxMap);
@@ -301,7 +301,7 @@ mapboxMap.on('mousemove', function(e) {
 
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js?v=20260706b')
+    navigator.serviceWorker.register('service-worker.js?v=20261117c')
       .then(reg => {
         console.log('Service Worker registered:', reg.scope);
         reg.update();
