@@ -1,0 +1,46 @@
+{
+  "snapshot": "2026-11-17",
+  "source": "User-provided USB copy of Mexico AIP",
+  "notes": [
+    "Page-level effective dates and AIRAC amendments can vary within each PDF.",
+    "PDF source files are stored locally and intentionally excluded from Git and Docker."
+  ],
+  "files": [
+    {
+      "name": "ENR_2.1.pdf",
+      "bytes": 6196993,
+      "pages": 217,
+      "sha256": "79790e89260ee75fc446522a0a443601a5cf188c6b8c2448ed5b02582371e39c"
+    },
+    {
+      "name": "ENR_2.2.pdf",
+      "bytes": 279069,
+      "pages": 14,
+      "sha256": "8a6e45a9bacbaac25306d2d99d4b1cc99cd2ab789442b1c9b14b3945c4ca23cc"
+    },
+    {
+      "name": "ENR_3.2.pdf",
+      "bytes": 1759898,
+      "pages": 46,
+      "sha256": "d36e1bf9ebe912ea1ee98aa514ac73bb2e474c81499ee1db4663faadc004bdae"
+    },
+    {
+      "name": "ENR_3.3.pdf",
+      "bytes": 715819,
+      "pages": 57,
+      "sha256": "7cfe7b88a4349c24e4b7b037d7a8e6143cbf3bb6e7ff6ffa7606ce498786e80f"
+    },
+    {
+      "name": "ENR_4.1.pdf",
+      "bytes": 91543,
+      "pages": 2,
+      "sha256": "16f3da02a71065fa3dbda69620416f90c2a5f78fe362c10f6466ec9079965b39"
+    },
+    {
+      "name": "ENR_4.4.pdf",
+      "bytes": 240683,
+      "pages": 12,
+      "sha256": "c93618c33aa26080256b2813c0514bbcd91a127dcc5985deff4ebb9e75351e9c"
+    }
+  ]
+}

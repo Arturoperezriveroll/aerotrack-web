@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aerotrack-v49';
+const CACHE_NAME = 'aerotrack-v63';
 const APP_SHELL = [
   './manifest.json',
   './JS/png/icon-192.png',
@@ -6,6 +6,7 @@ const APP_SHELL = [
   './JS/vendor/pdf-lib.min.js',
   './JS/mapaProject/aip_2026_data.js',
   './JS/mapaProject/export_icao_fpl.js',
+  './JS/mapaProject/mobile_keyboard.js',
   './assets/pdf/FPL_FORM_AFAC.PDF'
 ];
 

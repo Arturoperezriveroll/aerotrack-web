@@ -4,7 +4,11 @@ COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY docker/config.local.js.template /opt/aerotrack/config.local.js.template
 COPY docker/20-aerotrack-config.sh /docker-entrypoint.d/20-aerotrack-config.sh
 
-COPY . /usr/share/nginx/html
+COPY index.html manifest.json service-worker.js config.js /usr/share/nginx/html/
+COPY JS /usr/share/nginx/html/JS
+COPY assets /usr/share/nginx/html/assets
+COPY css /usr/share/nginx/html/css
+COPY data /usr/share/nginx/html/data
 
 RUN chmod +x /docker-entrypoint.d/20-aerotrack-config.sh \
     && rm -f /usr/share/nginx/html/config.local.js

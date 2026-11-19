@@ -10,3 +10,6 @@ config.local.js
 __pycache__/
 *.pyc
 navcalc-c/build/
+
+# Local AIP source documents. Keep manifests/notes in Git, but not licensed PDFs.
+reference/aip/**/*.pdf

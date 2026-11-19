@@ -7,8 +7,8 @@
          "features": [{ 
             "type": "Feature", 
             "properties": { 
-                "Name": "TGZ  TMA", 
-                "description": "TGZ TMA\nCLASS D\nSFC/FL195\n\nATZ TGZ\nCLASS D\nGND/A035\n\nAPP/TWR\n118.6", "timestamp": null, 
+                "Name": "TGZ TMA / CTR / TWR",
+                "description": "TMA / APP\nCLASS D\nUPPER LIMIT: FL195\nLOWER LIMIT: VARIES BY PUBLISHED AREA\nSERVICE: TUXTLA APPROACH\nAPP NO RADAR: 118.6 MHz\nHOURS: SEE MMTG AD 2.18\n\nCTR / TWR\nSERVICE: TUXTLA TOWER\nFREQUENCY: 118.6 MHz\nHOURS: SEE MMTG AD 2.18\nLIMITS: SEE MMTG AD 2.17", "airspaceClass": "D", "upperLimit": "FL195", "lowerLimits": "Varies by published area", "approachService": "APP NO RADAR 118.6 MHz", "controlZoneService": "CTR / TWR 118.6 MHz", "source": "AIP Mexico ENR 2.1 / ENR 2.2", "airac": "AIRAC AMDT 10/26", "effective": "2026-10-01", "timestamp": null,
                 "begin": null, 
                 "end": null, 
                 "altitudeMode": "absolute", 

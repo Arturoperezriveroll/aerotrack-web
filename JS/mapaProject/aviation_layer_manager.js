@@ -16,6 +16,14 @@
   const BASEMAP_DIMMER_SOURCE_ID = 'aviation-basemap-dimmer-source';
   const BASEMAP_DIMMER_LAYER_ID = 'aviation-basemap-dimmer';
   const SELECTION_SOURCE_ID = 'aviation-selection-source';
+  const AIRSPACE_CLASS_COLORS = {
+    B: '#2563eb',
+    C: '#c026d3',
+    D: '#2563eb',
+    E: '#c026d3',
+    F: '#d97706',
+    G: '#64748b'
+  };
 
   const AIRSPACE_SOURCES = [
     { id: 'aviation-sector-1', data: './JS/geojson/SEC1.json', geometry: 'line', color: '#0f766e', lineOpacity: 0.55, lineWidth: 1.3 },
@@ -25,10 +33,10 @@
     { id: 'aviation-sector-5', data: './JS/geojson/sector5pol.json', geometry: 'line', color: '#0f766e', lineOpacity: 0.55, lineWidth: 1.3 },
     { id: 'aviation-sector-6', data: './JS/geojson/sector6pol.json', geometry: 'line', color: '#0f766e', lineOpacity: 0.55, lineWidth: 1.3 },
     { id: 'aviation-mid-acc', data: './JS/geojson/midacctrack.json', geometry: 'line', color: '#0f766e', lineOpacity: 0.65, lineWidth: 1.5 },
-    { id: 'aviation-cme-tma', data: './JS/geojson/cmetma.json', geometry: 'polygon', color: '#f59e0b' },
-    { id: 'aviation-tgz-tma', data: './JS/geojson/tgztma.json', geometry: 'polygon', color: '#f59e0b' },
-    { id: 'aviation-vsa-tma', data: './JS/geojson/vsaTma.json', geometry: 'polygon', color: '#f59e0b' },
-    { id: 'aviation-adatap', data: './JS/geojson/adatap.json', geometry: 'polygon', color: '#ef4444' }
+    { id: 'aviation-cme-tma', data: './JS/geojson/cmetma.json?v=20261118d', geometry: 'polygon', color: AIRSPACE_CLASS_COLORS.D, lineDasharray: [6, 4] },
+    { id: 'aviation-tgz-tma', data: './JS/geojson/tgztma.json?v=20261118b', geometry: 'polygon', color: AIRSPACE_CLASS_COLORS.D, lineDasharray: [6, 4] },
+    { id: 'aviation-vsa-tma', data: './JS/geojson/vsaTma.json?v=20261118d', geometry: 'polygon', color: AIRSPACE_CLASS_COLORS.D, lineDasharray: [6, 4] },
+    { id: 'aviation-adatap', data: './JS/geojson/adatap.json?v=20261118b', geometry: 'polygon', color: AIRSPACE_CLASS_COLORS.F, lineDasharray: [2, 2] }
   ];
 
   const state = {
@@ -55,6 +63,10 @@
     return Number.isFinite(number) ? number.toFixed(6) : 'Not available';
   }
 
+  function propertyFlag(value) {
+    return value === true || String(value).toLowerCase() === 'true';
+  }
+
   function featureCategory(layerId) {
     if (layerId.startsWith('aviation-vors')) return 'VOR';
     if (layerId.startsWith('aviation-fixes')) return 'Fix';
@@ -62,38 +74,85 @@
     return 'Airspace';
   }
 
-  function buildFeatureDetails(feature, lngLat) {
+  function buildFeatureDetails(feature) {
     const properties = feature?.properties || {};
     const category = featureCategory(feature?.layer?.id || '');
     const name = properties.Name || properties.name || category;
     const description = properties.description || properties.Description || '';
-    const pointCoordinates = feature?.geometry?.type === 'Point'
+    const geometryType = feature?.geometry?.type || '';
+    const airspaceClass = String(properties.airspaceClass || '').trim().toUpperCase();
+    const isPointFeature = geometryType === 'Point';
+    const explicitLatitude = Number(
+      properties.coordinateLatitude ?? properties.centerLatitude
+    );
+    const explicitLongitude = Number(
+      properties.coordinateLongitude ?? properties.centerLongitude
+    );
+    const hasExplicitAreaCoordinates =
+      !isPointFeature &&
+      propertyFlag(properties.showCoordinates) &&
+      Number.isFinite(explicitLatitude) &&
+      Number.isFinite(explicitLongitude);
+    const pointCoordinates = isPointFeature
       ? feature.geometry.coordinates
-      : [lngLat?.lng, lngLat?.lat];
+      : hasExplicitAreaCoordinates
+        ? [explicitLongitude, explicitLatitude]
+        : [];
 
     return {
       category,
       name: String(name),
       description: String(description || ''),
+      accentColor: category === 'Airspace'
+        ? (AIRSPACE_CLASS_COLORS[airspaceClass] || '#0f766e')
+        : '#0f766e',
+      showCoordinates: isPointFeature || hasExplicitAreaCoordinates,
+      coordinateLabel: hasExplicitAreaCoordinates
+        ? String(properties.coordinateLabel || 'Reference point')
+        : '',
       longitude: formatCoordinate(pointCoordinates?.[0]),
       latitude: formatCoordinate(pointCoordinates?.[1])
     };
   }
 
   function detailsHtml(details) {
+    const descriptionSections = details.description
+      ? details.description.split(/\r?\n\s*\r?\n/)
+      : [];
     const description = details.description
-      ? `<div class="aviation-popup-description">${escapeHtml(details.description).replace(/\r?\n/g, '<br>')}</div>`
+      ? `<div class="aviation-popup-description">${descriptionSections.length === 1
+          ? escapeHtml(details.description).replace(/\r?\n/g, '<br>')
+          : descriptionSections.map((section) => {
+            const [heading, ...lines] = section.split(/\r?\n/);
+            if (!lines.length) return escapeHtml(heading);
+            return `<section class="aviation-popup-section">
+              <div class="aviation-popup-section-title">${escapeHtml(heading)}</div>
+              <div>${lines.map(escapeHtml).join('<br>')}</div>
+            </section>`;
+          })
+          .join('')}</div>`
       : '<div class="aviation-popup-unavailable">Frequency and schedule: not available in the current data.</div>';
 
-    return `<article class="aviation-popup-card">
+    const coordinateHeading = details.coordinateLabel
+      ? `<div class="aviation-popup-coordinate-heading">${escapeHtml(details.coordinateLabel)}</div>`
+      : '';
+    const coordinates = details.showCoordinates
+      ? `${coordinateHeading}<dl>
+        <dt>Latitude</dt><dd>${escapeHtml(details.latitude)}°</dd>
+        <dt>Longitude</dt><dd>${escapeHtml(details.longitude)}°</dd>
+      </dl>`
+      : '';
+
+    return `<article class="aviation-popup-card" style="--aviation-popup-accent: ${escapeHtml(details.accentColor || '#0f766e')}">
       <div class="aviation-popup-type">${escapeHtml(details.category)}</div>
       <h3>${escapeHtml(details.name)}</h3>
       ${description}
-      <dl>
-        <dt>Latitude</dt><dd>${escapeHtml(details.latitude)}°</dd>
-        <dt>Longitude</dt><dd>${escapeHtml(details.longitude)}°</dd>
-      </dl>
+      ${coordinates}
     </article>`;
+  }
+
+  function shouldHighlightFeature(details) {
+    return details?.category !== 'Airspace';
   }
 
   function interactiveLayerIds() {
@@ -131,17 +190,24 @@
         return;
       }
 
-      const details = buildFeatureDetails(feature, event.lngLat);
+      const details = buildFeatureDetails(feature);
       if (state.popup) {
         const previousPopup = state.popup;
         state.popup = null;
         previousPopup.remove();
       }
-      map.getSource(SELECTION_SOURCE_ID)?.setData({
-        type: 'Feature',
-        properties: feature.properties || {},
-        geometry: feature.geometry
-      });
+      map.getSource(SELECTION_SOURCE_ID)?.setData(
+        shouldHighlightFeature(details)
+          ? {
+              type: 'Feature',
+              properties: feature.properties || {},
+              geometry: feature.geometry
+            }
+          : {
+              type: 'FeatureCollection',
+              features: []
+            }
+      );
       const popup = new mapboxgl.Popup({
         closeButton: true,
         maxWidth: '310px',
@@ -267,7 +333,8 @@
         paint: {
           'line-color': item.color,
           'line-width': item.lineWidth || ['interpolate', ['linear'], ['zoom'], 3, 1.8, 9, 3],
-          'line-opacity': item.lineOpacity ?? 1
+          'line-opacity': item.lineOpacity ?? 1,
+          ...(item.lineDasharray ? { 'line-dasharray': item.lineDasharray } : {})
         }
       }, 'airspace');
 
@@ -625,11 +692,13 @@
   }
 
   return {
+    AIRSPACE_CLASS_COLORS,
     AIRSPACE_SOURCES,
     GROUPS,
     convertVorData,
     buildFeatureDetails,
     detailsHtml,
+    shouldHighlightFeature,
     initialize,
     setEnabled,
     setGroupEnabled

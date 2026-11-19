@@ -8,7 +8,7 @@ let isTrafficLoading = false;
 let expandedAircraftPopup = null;
 
 const TRAFFIC_REFRESH_MS = 15000;
-const TRAFFIC_RADIUS_NM = 300;
+const TRAFFIC_RADIUS_NM = 400;
 const TRAFFIC_API_HOST = 'adsbexchange-com1.p.rapidapi.com';
 const TRAFFIC_CONFLICT_HORIZONTAL_NM = 5;
 const TRAFFIC_CONFLICT_VERTICAL_FT = 1000;
@@ -91,6 +91,7 @@ function stopTrafficTracking(message = 'Air traffic removed.') {
   }
 
   clearAircraftMarkers();
+  selectedAircraft = null;
   setTrafficToggleState(false);
   setTrafficTestState(false);
   setTrafficStatus(message, 'info');
@@ -772,40 +773,130 @@ function getAircraftPopupHtml(aircraft) {
   `;
 }
 
+function formatTrafficNumber(value, decimals = 0, suffix = '') {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) return '';
+  return `${numericValue.toLocaleString('en-US', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  })}${suffix}`;
+}
+
+function formatTrafficAltitude(value) {
+  if (!hasValue(value)) return '';
+  if (typeof value === 'string' && /ground|gnd/i.test(value)) return 'GND';
+  return formatTrafficNumber(value, 0, ' ft');
+}
+
+function formatTrafficRate(value) {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) return '';
+  const trend = numericValue > 50 ? ' ↑' : numericValue < -50 ? ' ↓' : ' —';
+  const sign = numericValue > 0 ? '+' : '';
+  return `${sign}${formatTrafficNumber(numericValue, 0, ' ft/min')}${trend}`;
+}
+
+function formatTrafficHeading(value) {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) return '';
+  return `${String(Math.round(numericValue)).padStart(3, '0')}°`;
+}
+
+function trafficDetailItem(label, value, className = '') {
+  if (!hasValue(value)) return '';
+  return `<div${className ? ` class="${className}"` : ''}><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`;
+}
+
+function trafficDetailSection(title, items) {
+  const content = items.filter(Boolean).join('');
+  if (!content) return '';
+  return `<section class="traffic-detail-section"><h4>${escapeHtml(title)}</h4><div class="aircraft-detail-grid">${content}</div></section>`;
+}
+
 function updateAircraftDetails(aircraft) {
   selectedAircraft = aircraft;
 
   const aircraftDetailsDiv = document.getElementById('aircraftDetails');
   if (!aircraftDetailsDiv) return;
 
-  const flight = cleanText(aircraft.flight);
-  const type = cleanText(aircraft.t);
-  const gs = aircraft.gs ? `${Math.floor(aircraft.gs)} kt` : '';
-  const reg = cleanText(aircraft.r);
-  const squawk = cleanText(aircraft.squawk);
-  const hex = cleanText(aircraft.hex);
-  const altGeom = hasValue(aircraft.alt_geom) ? aircraft.alt_geom : '';
-  const altitude = isAircraftOnGround(aircraft)
-    ? 'GND'
-    : aircraft.alt_baro
-      ? `F${String(Math.round(aircraft.alt_baro / 100)).padStart(3, '0')}`
+  const navModes = Array.isArray(aircraft.nav_modes)
+    ? aircraft.nav_modes.map(mode => cleanText(mode).toUpperCase()).filter(Boolean).join(' · ')
+    : '';
+  const emergency = cleanText(aircraft.emergency);
+  const emergencyActive = emergency && emergency.toLowerCase() !== 'none';
+  const wind = Number.isFinite(aircraft.wd) && Number.isFinite(aircraft.ws)
+    ? `${formatTrafficHeading(aircraft.wd)} / ${formatTrafficNumber(aircraft.ws, 0, ' kt')}`
+    : '';
+  const freshness = Number.isFinite(aircraft.seen_pos)
+    ? `${formatTrafficNumber(aircraft.seen_pos, 1, ' s ago')}`
+    : Number.isFinite(aircraft.seen)
+      ? `${formatTrafficNumber(aircraft.seen, 1, ' s ago')}`
       : '';
 
+  const identification = trafficDetailSection('Identification', [
+    trafficDetailItem('CALLSIGN', cleanText(aircraft.flight) || getAircraftName(aircraft)),
+    trafficDetailItem('AIRCRAFT', cleanText(aircraft.t)),
+    trafficDetailItem('REGISTRATION', cleanText(aircraft.r)),
+    trafficDetailItem('CATEGORY', cleanText(aircraft.category)),
+    trafficDetailItem('SQUAWK', cleanText(aircraft.squawk)),
+    trafficDetailItem('ICAO HEX', cleanText(aircraft.hex)),
+    trafficDetailItem('SOURCE', cleanText(aircraft.type))
+  ]);
+  const position = trafficDetailSection('Position', [
+    trafficDetailItem('LATITUDE', formatTrafficNumber(aircraft.lat, 5, '°')),
+    trafficDetailItem('LONGITUDE', formatTrafficNumber(aircraft.lon, 5, '°')),
+    trafficDetailItem('BARO ALT', isAircraftOnGround(aircraft) ? 'GND' : formatTrafficAltitude(aircraft.alt_baro)),
+    trafficDetailItem('GEOMETRIC ALT', formatTrafficAltitude(aircraft.alt_geom)),
+    trafficDetailItem('POSITION AGE', freshness)
+  ]);
+  const movement = trafficDetailSection('Movement', [
+    trafficDetailItem('GROUND SPEED', formatTrafficNumber(aircraft.gs, 0, ' kt')),
+    trafficDetailItem('IAS', formatTrafficNumber(aircraft.ias, 0, ' kt')),
+    trafficDetailItem('TAS', formatTrafficNumber(aircraft.tas, 0, ' kt')),
+    trafficDetailItem('MACH', formatTrafficNumber(aircraft.mach, 2)),
+    trafficDetailItem('TRACK', formatTrafficHeading(aircraft.track)),
+    trafficDetailItem('MAG HEADING', formatTrafficHeading(aircraft.mag_heading)),
+    trafficDetailItem('TRUE HEADING', formatTrafficHeading(aircraft.true_heading)),
+    trafficDetailItem('BARO RATE', formatTrafficRate(aircraft.baro_rate)),
+    trafficDetailItem('GEOMETRIC RATE', formatTrafficRate(aircraft.geom_rate)),
+    trafficDetailItem('ROLL', formatTrafficNumber(aircraft.roll, 1, '°'))
+  ]);
+  const navigation = trafficDetailSection('Selected navigation', [
+    trafficDetailItem('MCP ALTITUDE', formatTrafficAltitude(aircraft.nav_altitude_mcp)),
+    trafficDetailItem('FMS ALTITUDE', formatTrafficAltitude(aircraft.nav_altitude_fms)),
+    trafficDetailItem('SELECTED HEADING', formatTrafficHeading(aircraft.nav_heading)),
+    trafficDetailItem('QNH', formatTrafficNumber(aircraft.nav_qnh, 1, ' hPa')),
+    trafficDetailItem('MODES', navModes)
+  ]);
+  const status = trafficDetailSection('Status and atmosphere', [
+    trafficDetailItem('EMERGENCY', emergency || 'None', emergencyActive ? 'traffic-detail-alert' : ''),
+    trafficDetailItem('WIND', wind),
+    trafficDetailItem('OAT', formatTrafficNumber(aircraft.oat, 0, ' °C')),
+    trafficDetailItem('TAT', formatTrafficNumber(aircraft.tat, 0, ' °C'))
+  ]);
+  const qualityItems = [
+    trafficDetailItem('NIC', formatTrafficNumber(aircraft.nic)),
+    trafficDetailItem('RC', formatTrafficNumber(aircraft.rc, 0, ' m')),
+    trafficDetailItem('NAC P', formatTrafficNumber(aircraft.nac_p)),
+    trafficDetailItem('NAC V', formatTrafficNumber(aircraft.nac_v)),
+    trafficDetailItem('SIL', formatTrafficNumber(aircraft.sil)),
+    trafficDetailItem('GVA', formatTrafficNumber(aircraft.gva)),
+    trafficDetailItem('SDA', formatTrafficNumber(aircraft.sda)),
+    trafficDetailItem('ADS-B VERSION', formatTrafficNumber(aircraft.version)),
+    trafficDetailItem('RSSI', formatTrafficNumber(aircraft.rssi, 1, ' dBFS')),
+    trafficDetailItem('MESSAGES', formatTrafficNumber(aircraft.messages))
+  ].filter(Boolean).join('');
+
   aircraftDetailsDiv.innerHTML = `
-    <div class="aircraft-detail-grid">
-      <div><span>FN</span><strong>${flight}</strong></div>
-      <div><span>AC</span><strong>${type}</strong></div>
-      <div><span>GS</span><strong>${gs}</strong></div>
-      <div><span>FL</span><strong>${altitude}</strong></div>
-      <div><span>GPS ALT</span><strong>${altGeom}</strong></div>
-      <div><span>REG</span><strong>${reg}</strong></div>
-      <div><span>HEX</span><strong>${hex}</strong></div>
-      <div><span>SQUAWK</span><strong>${squawk}</strong></div>
+    <div class="traffic-aircraft-details">
+      ${identification}${position}${movement}${navigation}${status}
+      ${qualityItems ? `<details class="traffic-quality-details"><summary>Data quality</summary><div class="aircraft-detail-grid">${qualityItems}</div></details>` : ''}
     </div>
   `;
 }
 
 function addAircraftMarkers(aircraftData, refreshMs = TRAFFIC_REFRESH_MS, trafficStatus = null) {
+  const selectedHex = cleanText(selectedAircraft?.hex);
   clearAircraftMarkers();
 
   const conflicts = detectTrafficConflicts(aircraftData);
@@ -915,10 +1006,18 @@ function addAircraftMarkers(aircraftData, refreshMs = TRAFFIC_REFRESH_MS, traffi
 
   const aircraftDetailsDiv = document.getElementById('aircraftDetails');
   if (aircraftDetailsDiv) {
-    aircraftDetailsDiv.innerHTML = `
-      ${getConflictListHtml(conflicts, trafficStatus)}
-      ${getTrafficMetaHtml(aircraftMarkers.length, refreshMs)}
-    `;
+    const refreshedSelection = selectedHex
+      ? aircraftData.find(aircraft => cleanText(aircraft.hex) === selectedHex)
+      : null;
+    if (refreshedSelection) {
+      updateAircraftDetails(refreshedSelection);
+    } else {
+      selectedAircraft = null;
+      aircraftDetailsDiv.innerHTML = `
+        ${getConflictListHtml(conflicts, trafficStatus)}
+        ${getTrafficMetaHtml(aircraftMarkers.length, refreshMs)}
+      `;
+    }
   }
 }
 
