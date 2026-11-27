@@ -773,8 +773,15 @@ function getAircraftPopupHtml(aircraft) {
   `;
 }
 
+function parseTrafficNumber(value) {
+  if (typeof value === 'number') return value;
+  // Do not let Number() turn absent ADS-B values into a reported zero.
+  if (typeof value !== 'string' || value.trim() === '') return NaN;
+  return Number(value);
+}
+
 function formatTrafficNumber(value, decimals = 0, suffix = '') {
-  const numericValue = Number(value);
+  const numericValue = parseTrafficNumber(value);
   if (!Number.isFinite(numericValue)) return '';
   return `${numericValue.toLocaleString('en-US', {
     minimumFractionDigits: decimals,
@@ -789,7 +796,7 @@ function formatTrafficAltitude(value) {
 }
 
 function formatTrafficRate(value) {
-  const numericValue = Number(value);
+  const numericValue = parseTrafficNumber(value);
   if (!Number.isFinite(numericValue)) return '';
   const trend = numericValue > 50 ? ' ↑' : numericValue < -50 ? ' ↓' : ' —';
   const sign = numericValue > 0 ? '+' : '';
@@ -797,7 +804,7 @@ function formatTrafficRate(value) {
 }
 
 function formatTrafficHeading(value) {
-  const numericValue = Number(value);
+  const numericValue = parseTrafficNumber(value);
   if (!Number.isFinite(numericValue)) return '';
   return `${String(Math.round(numericValue)).padStart(3, '0')}°`;
 }
